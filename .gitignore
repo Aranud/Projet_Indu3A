@@ -1,0 +1,6 @@
+*.o
+*.user
+*.exe
+DataTeamInterface/Makefile
+*.Debug
+*.Release
