@@ -15,9 +15,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    tcpconnection.cpp
+    tcpconnection.cpp \
+    joystick.cpp
 
 HEADERS  += mainwindow.h \
-    tcpconnection.h
+    tcpconnection.h \
+    joystick.h
 
 FORMS    += mainwindow.ui
