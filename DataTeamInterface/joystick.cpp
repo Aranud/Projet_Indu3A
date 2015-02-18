@@ -11,7 +11,7 @@ Joystick::Joystick(QObject *parent) :
 
     connect(m_pController, SIGNAL(controllerConnected(uint)), this, SLOT(slotOnControllerConntected(uint)));
     connect(m_pController, SIGNAL(controllerDisconnected(uint)), this, SLOT(slotOnControllerDisconntected(uint)));
-    connect(m_pController, SIGNAL(controllerNewState(SimpleXbox360Controller::InputState), this, SLOT(SimpleXbox360Controller::InputState))
+    connect(m_pController, SIGNAL(controllerNewState(SimpleXbox360Controller::InputState)), this, SLOT(SimpleXbox360Controller::InputState));
 
 
 
@@ -39,8 +39,6 @@ void Joystick::slotOnEvent(SimpleXbox360Controller::InputState p_InputState)
         baValue[0] = Datasend;
         baValue[1] = Datasend;
 
-
-        emit baValue;
+        emit dataReceivedFromStick(baValue);
     }
-
 }
