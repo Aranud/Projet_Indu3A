@@ -15,7 +15,7 @@ public:
     explicit Joystick(QObject *parent = 0);
 
 signals:
-    void dataReceivedFromStick(QString);
+    void dataReceivedFromStick(QByteArray);
 
 public slots:
     void slotOnControllerConntected(unsigned int p_iControllerNum);

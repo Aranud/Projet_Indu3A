@@ -53,30 +53,30 @@ bool TCPConnection::SendData(QByteArray p_baData)
     if(p_baData.isEmpty())
         return false;
 
-    QByteArray baDataToSend;
-    baDataToSend.clear();
+//    QByteArray baDataToSend;
+//    baDataToSend.clear();
 
-    baDataToSend[0] = 0x4E;  // N
-    baDataToSend[1] = 0x41;  // A
-    baDataToSend[2] = 0x49;  // I
-    baDataToSend[3] = 0x4F;  // O
-    baDataToSend[4] = 0x30;  // 0
-    baDataToSend[5] = 0x31;  // 1
-    baDataToSend[6] = 0x01;  // ID  = 01)
-    baDataToSend[7] = 0x00;  // SIZE
-    baDataToSend[8] = 0x00;  // SIZE
-    baDataToSend[9] = 0x00;  // SIZE
-    baDataToSend[10] = 0x02;  // SIZE
-    baDataToSend[11] = 0x7F;  // Left
-    baDataToSend[12] = 0x7F;  // Right
-    baDataToSend[13] = 0x00;  // crc
-    baDataToSend[14] = 0x00;  // crc
-    baDataToSend[15] = 0x00;  // crc
-    baDataToSend[16] = 0x00;  // crc
+//    baDataToSend[0] = 0x4E;  // N
+//    baDataToSend[1] = 0x41;  // A
+//    baDataToSend[2] = 0x49;  // I
+//    baDataToSend[3] = 0x4F;  // O
+//    baDataToSend[4] = 0x30;  // 0
+//    baDataToSend[5] = 0x31;  // 1
+//    baDataToSend[6] = 0x01;  // ID  = 01)
+//    baDataToSend[7] = 0x00;  // SIZE
+//    baDataToSend[8] = 0x00;  // SIZE
+//    baDataToSend[9] = 0x00;  // SIZE
+//    baDataToSend[10] = 0x02;  // SIZE
+//    baDataToSend[11] = 0x7F;  // Left
+//    baDataToSend[12] = 0x7F;  // Right
+//    baDataToSend[13] = 0x00;  // crc
+//    baDataToSend[14] = 0x00;  // crc
+//    baDataToSend[15] = 0x00;  // crc
+//    baDataToSend[16] = 0x00;  // crc
 
-    m_pTcpSocket->write(baDataToSend);
+    m_pTcpSocket->write(p_baData);
 
-    qDebug() << baDataToSend.toHex() << " |---> Data Lenght To Write : " << m_pTcpSocket->bytesToWrite();
+    qDebug() << p_baData.toHex() << " |---> Data Lenght To Write : " << m_pTcpSocket->bytesToWrite();
 
     return true;
 }
