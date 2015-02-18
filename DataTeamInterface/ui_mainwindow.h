@@ -86,7 +86,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         leServerAddress->setText(QApplication::translate("MainWindow", "127.0.0.1", 0));
-        leServerPort->setText(QApplication::translate("MainWindow", "3334", 0));
+        leServerPort->setText(QApplication::translate("MainWindow", "3331", 0));
         lbDataReceived->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         pbSendData->setText(QApplication::translate("MainWindow", "SendData", 0));
         pbConnection->setText(QApplication::translate("MainWindow", "Connection", 0));

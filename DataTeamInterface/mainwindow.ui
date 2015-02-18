@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>3334</string>
+     <string>3331</string>
     </property>
    </widget>
    <widget class="QLabel" name="lbDataReceived">

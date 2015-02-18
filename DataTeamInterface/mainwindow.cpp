@@ -11,6 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_bIsConnectionEtablished = false;
 
+    m_pJoystick = new Joystick();
+    m_pProtocole = new Protocole();
+
+    connect(m_pJoystick, SIGNAL(dataReceivedFromStick(QByteArray)), this, SLOT(slotOnJoystickTouch(QByteArray)));
+
     connect(m_pTCPConnection, SIGNAL(Connected()), this, SLOT(slotOnConnection()));
     connect(m_pTCPConnection, SIGNAL(Disconnected()), this, SLOT(slotOnDisconnection()));
     connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QString)), this, SLOT(slotOnDataReceived(QString)));
@@ -36,6 +41,18 @@ void MainWindow::slotOnDisconnection()
 void MainWindow::slotOnDataReceived(QString p_sDataReceived)
 {
     ui->lbDataReceived->setText(p_sDataReceived);
+}
+
+void MainWindow::slotOnJoystickTouch(QByteArray p_baData)
+{
+    QByteArray baCommandFormatted;
+    baCommandFormatted.clear();
+
+    baCommandFormatted = m_pProtocole->FormateCommand(eIDCommmandMotors, p_baData);
+
+    qDebug() << baCommandFormatted;
+
+    m_pTCPConnection->SendData(baCommandFormatted);
 }
 
 void MainWindow::on_pbConnection_clicked()
