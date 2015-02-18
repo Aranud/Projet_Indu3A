@@ -39,10 +39,6 @@ void Joystick::slotOnEvent(SimpleXbox360Controller::InputState p_InputState)
         baValue[0] = Datasend;
         baValue[1] = Datasend;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
         emit dataReceivedFromStick(baValue);
     }
 }

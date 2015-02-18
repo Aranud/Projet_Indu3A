@@ -26,5 +26,7 @@ HEADERS  += mainwindow.h \
     joystick.h \
     simplexbox360controller.h \
     protocole.h \
+    global.h \
+    global.h
 
 FORMS    += mainwindow.ui
