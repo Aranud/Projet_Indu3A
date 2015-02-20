@@ -6,3 +6,5 @@ DataTeamInterface/Makefile
 *.Release
 DataTeamInterface/debug/moc_simplexbox360controller.cpp
 DataTeamInterface/debug/moc_joystick.cpp
+DataTeamInterface/debug/moc_tcpconnection.cpp
+DataTeamInterface/debug/moc_tcpconnection.cpp

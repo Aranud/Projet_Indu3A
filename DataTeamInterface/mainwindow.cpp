@@ -5,7 +5,6 @@
  * @brief MainWindow::MainWindow
  * @param parent
  */
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -28,8 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 /**
  * @brief MainWindow::~MainWindow
- */*
-
+ */
 MainWindow::~MainWindow()
 {
     delete ui;
