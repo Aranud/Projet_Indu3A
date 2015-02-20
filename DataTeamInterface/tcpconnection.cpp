@@ -106,7 +106,7 @@ void TCPConnection::OnDataReceived()
 
     qDebug() << "Data Received Result : " << baDataReceived.toHex();
 
-    emit DataReceivedFromServer(baDataReceived);
+    emit QString(baDataReceived.data());
 }
 
 void TCPConnection::OnDataWritten(qint64 p_iDataLength)

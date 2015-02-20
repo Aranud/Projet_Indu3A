@@ -7,8 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    m_pTCPConnection = new TCPConnection();
-//    m_bIsConnectionEtablished = false;
+    m_pTCPConnection = new TCPConnection();
+
+    m_bIsConnectionEtablished = false;
 
     m_pJoystick = new Joystick();
     m_pProtocole = new Protocole();

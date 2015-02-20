@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     joystick.cpp \
     simplexbox360controller.cpp \
     protocole.cpp\
-    captor.cpp
 
 HEADERS  += mainwindow.h \
     tcpconnection.h \
@@ -28,7 +27,6 @@ HEADERS  += mainwindow.h \
     simplexbox360controller.h \
     protocole.h \
     global.h \
-    global.h \
-    captor.h
+    global.h
 
 FORMS    += mainwindow.ui
