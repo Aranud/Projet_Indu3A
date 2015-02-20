@@ -30,11 +30,11 @@ signals:
     void DataReceivedFromServer(QByteArray);
 
 public slots:
-    void slotOnConnected();
-    void slotOnDisconnected();
-    void slotOnDataReceived();
+    void OnConnected();
+    void OnDisconnected();
+    void OnDataReceived();
 
-    void slotOnDataWritten(qint64 p_iDataLength);
+    void OnDataWritten(qint64 p_iDataLength);
 };
 
 #endif // TCPCONNECTION_H

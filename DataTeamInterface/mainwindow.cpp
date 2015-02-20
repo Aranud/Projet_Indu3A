@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-/**
- * @brief MainWindow::MainWindow
- * @param parent
- */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -24,49 +20,28 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QString)), this, SLOT(slotOnDataReceived(QString)));
 }
 
-/**
- * @brief MainWindow::~MainWindow
- */
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-/*******************************************************************************/
-/*********************************** SLOT **************************************/
-/*******************************************************************************/
-
-/**
- * @brief MainWindow::slotOnConnection
- */
 void MainWindow::slotOnConnection()
 {
     m_bIsConnectionEtablished = true;
     ui->pbConnection->setText("Disconnect");
 }
 
-/**
- * @brief MainWindow::slotOnDisconnection
- */
 void MainWindow::slotOnDisconnection()
 {
     m_bIsConnectionEtablished = false;
     ui->pbConnection->setText("Connect");
 }
 
-/**
- * @brief MainWindow::slotOnDataReceived
- * @param p_sDataReceived
- */
 void MainWindow::slotOnDataReceived(QString p_sDataReceived)
 {
     ui->lbDataReceived->setText(p_sDataReceived);
 }
 
-/**
- * @brief MainWindow::slotOnJoystickTouch
- * @param p_baData
- */
 void MainWindow::slotOnJoystickTouch(QByteArray p_baData)
 {
     QByteArray baCommandFormatted;
@@ -79,13 +54,6 @@ void MainWindow::slotOnJoystickTouch(QByteArray p_baData)
     m_pTCPConnection->SendData(baCommandFormatted);
 }
 
-/*******************************************************************************/
-/*********************************** SLOT BUTTON *******************************/
-/*******************************************************************************/
-
-/**
- * @brief MainWindow::on_pbConnection_clicked
- */
 void MainWindow::on_pbConnection_clicked()
 {
     if(m_bIsConnectionEtablished == false)
@@ -99,9 +67,6 @@ void MainWindow::on_pbConnection_clicked()
     }
 }
 
-/**
- * @brief MainWindow::on_pbSendData_clicked
- */
 void MainWindow::on_pbSendData_clicked()
 {
     m_pTCPConnection->SendData(ui->leDataToSend->text().toUtf8());

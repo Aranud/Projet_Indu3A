@@ -1,9 +1,5 @@
 #include "tcpconnection.h"
 
-/**
- * @brief TCPConnection::TCPConnection
- * @param parent
- */
 TCPConnection::TCPConnection(QObject *parent) :
     QObject(parent)
 {
@@ -13,33 +9,20 @@ TCPConnection::TCPConnection(QObject *parent) :
 
     m_bIsConnectionEtablished = false;
 
-    connect(m_pTcpSocket, SIGNAL(connected()), this, SLOT(slotOnConnected()));
-    connect(m_pTcpSocket, SIGNAL(connected()), this, SIGNAL(slotConnected()));
-    connect(m_pTcpSocket, SIGNAL(disconnected()), this, SLOT(slotOnDisconnected()));
-    connect(m_pTcpSocket, SIGNAL(disconnected()), this, SIGNAL(slotDisconnected()));
+    connect(m_pTcpSocket, SIGNAL(connected()), this, SLOT(OnConnected()));
+    connect(m_pTcpSocket, SIGNAL(connected()), this, SIGNAL(Connected()));
+    connect(m_pTcpSocket, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
+    connect(m_pTcpSocket, SIGNAL(disconnected()), this, SIGNAL(Disconnected()));
 
-    connect(m_pTcpSocket, SIGNAL(readyRead()), this, SLOT(slotOnDataReceived()));
-    connect(m_pTcpSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(slotOnDataWritten(qint64)));
+    connect(m_pTcpSocket, SIGNAL(readyRead()), this, SLOT(OnDataReceived()));
+    connect(m_pTcpSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(OnDataWritten(qint64)));
 }
 
-/**
- * @brief TCPConnection::~TCPConnection
- */
 TCPConnection::~TCPConnection()
 {
 
 }
 
-/*******************************************************************************/
-/*********************************** METHOD ************************************/
-/*******************************************************************************/
-
-/**
- * @brief TCPConnection::ConnectFromServer
- * @param p_sAddress
- * @param p_iPort
- * @return
- */
 bool TCPConnection::ConnectFromServer(QString p_sAddress, int p_iPort)
 {
     if(m_bIsConnectionEtablished)       // Connection already etablished
@@ -54,24 +37,17 @@ bool TCPConnection::ConnectFromServer(QString p_sAddress, int p_iPort)
     m_iPort = p_iPort;          // Keep a trace
 
     qDebug() << "Try to Connect From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
+
     return true;
 }
 
-/**
- * @brief TCPConnection::DisconnectFromServer
- * @return
- */
 bool TCPConnection::DisconnectFromServer()
 {
     m_pTcpSocket->disconnectFromHost();
+
     return true;
 }
 
-/**
- * @brief TCPConnection::SendData
- * @param p_baData
- * @return
- */
 bool TCPConnection::SendData(QByteArray p_baData)
 {
     if(p_baData.isEmpty())
@@ -105,32 +81,19 @@ bool TCPConnection::SendData(QByteArray p_baData)
     return true;
 }
 
-/*******************************************************************************/
-/*********************************** SLOT **************************************/
-/*******************************************************************************/
-
-/**
- * @brief TCPConnection::slotOnConnected
- */
-void TCPConnection::slotOnConnected()
+void TCPConnection::OnConnected()
 {
     m_bIsConnectionEtablished = true;
     qDebug() << "Connection Etablished From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
 }
 
-/**
- * @brief TCPConnection::slotOnDisconnected
- */
-void TCPConnection::slotOnDisconnected()
+void TCPConnection::OnDisconnected()
 {
     m_bIsConnectionEtablished = false;
     qDebug() << "Disconnect From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
 }
 
-/**
- * @brief TCPConnection::slotOnDataReceived
- */
-void TCPConnection::slotOnDataReceived()
+void TCPConnection::OnDataReceived()
 {
     QByteArray baDataReceived;
     baDataReceived.clear();
@@ -146,11 +109,7 @@ void TCPConnection::slotOnDataReceived()
     emit DataReceivedFromServer(baDataReceived);
 }
 
-/**
- * @brief TCPConnection::slotOnDataWritten
- * @param p_iDataLength
- */
-void TCPConnection::slotOnDataWritten(qint64 p_iDataLength)
+void TCPConnection::OnDataWritten(qint64 p_iDataLength)
 {
     qDebug() << "Number Of Byte Written ---> " << p_iDataLength;
 }
