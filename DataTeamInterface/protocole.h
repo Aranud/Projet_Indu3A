@@ -17,7 +17,7 @@ public:
     ~Protocole();
 
     QByteArray FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baValueCommand);
-    QString ExtractData(QByteArray p_baData);
+    QByteArray ExtractData(QByteArray p_baData);
 
     QString getDefautName() const;
     void setDefautName(const QString &p_sDefautName);

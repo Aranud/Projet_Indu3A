@@ -76,6 +76,25 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
     return baDataToSend;
 }
 
+QByteArray Protocole::ExtractData( QByteArray p_baData)
+{
+    QByteArray baData;
+    int iSize=0;
+
+    qDebug() << "Lenght Of This Data : " <<p_baData.length() ;
+
+    for(int i = 0; i < 4; i++)
+        iSize += (QString::number(p_baData[7 + i]).toInt());
+
+    qDebug() << "String OtherSize --->" << iSize;
+
+
+    //size = (int)p_baData[10]+ 10 * (int)p_baData[9]+ 100 * (int)p_baData[8]+ 1000 * (int)p_baData[7];
+
+    baData = p_baData.mid(11, iSize);
+    return baData;
+}
+
 /*******************************************************************************/
 /**************************** ACCESSOR - MODIFICATOR ***************************/
 /*******************************************************************************/

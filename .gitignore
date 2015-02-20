@@ -6,3 +6,5 @@ DataTeamInterface/Makefile
 *.Release
 DataTeamInterface/debug/moc_simplexbox360controller.cpp
 DataTeamInterface/debug/moc_joystick.cpp
+*.2-pre1
+*.18
