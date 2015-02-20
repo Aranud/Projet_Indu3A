@@ -4,12 +4,17 @@
 #include <QObject>
 #include "simplexbox360controller.h"
 
+#define AUTO_POLLING_TIME_ELASPE 20
+
 class Joystick : public QObject
 {
     Q_OBJECT
 private:
     SimpleXbox360Controller* m_pController;
-    float m_fOldStickValue;
+    float m_fOldLeftStickValueY;
+    float m_fOldLeftStickValueX;
+    float m_fOldRightStickValueY;
+    float m_fOldRightStickValueX;
 
 public:
     explicit Joystick(QObject *parent = 0);
