@@ -76,6 +76,11 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
     return baDataToSend;
 }
 
+/**
+ * @brief Protocole::ExtractData
+ * @param p_baData
+ * @return
+ */
 QByteArray Protocole::ExtractData( QByteArray p_baData)
 {
     QByteArray baData;

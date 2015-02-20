@@ -27,14 +27,15 @@ private:
 signals:
     void Connected();
     void Disconnected();
-    void DataReceivedFromServer(QString);
+    void DataReceivedFromServer(QByteArray);
 
 public slots:
-    void OnConnected();
-    void OnDisconnected();
-    void OnDataReceived();
+    void slotOnConnected();
+    void slotOnDisconnected();
+    void slotOnDataReceived();
 
-    void OnDataWritten(qint64 p_iDataLength);
+private slots:
+    void slotOnDataWritten(qint64 p_iDataLength);
 };
 
 #endif // TCPCONNECTION_H
