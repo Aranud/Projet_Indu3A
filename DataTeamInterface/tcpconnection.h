@@ -27,7 +27,7 @@ private:
 signals:
     void Connected();
     void Disconnected();
-    void DataReceivedFromServer(QString);
+    void DataReceivedFromServer(QByteArray);
 
 public slots:
     void slotOnConnected();

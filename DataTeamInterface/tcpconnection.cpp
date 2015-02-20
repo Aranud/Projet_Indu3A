@@ -143,7 +143,7 @@ void TCPConnection::slotOnDataReceived()
 
     qDebug() << "Data Received Result : " << baDataReceived.toHex();
 
-    emit QString(baDataReceived.data());
+    emit DataReceivedFromServer(baDataReceived);
 }
 
 /**
