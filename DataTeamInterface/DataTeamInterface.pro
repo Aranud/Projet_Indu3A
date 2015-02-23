@@ -21,7 +21,11 @@ SOURCES += main.cpp\
     simplexbox360controller.cpp \
     protocole.cpp\
     captor.cpp\
-    robotinterface.cpp
+    robotinterface.cpp \
+    gps.cpp \
+    lidar.cpp \
+    gyro.cpp \
+
 
 HEADERS  += mainwindow.h \
     tcpconnection.h \
@@ -30,6 +34,9 @@ HEADERS  += mainwindow.h \
     protocole.h \
     global.h \
     captor.h\
-    robotinterface.h
+    robotinterface.h \
+    gps.h \
+    lidar.h \
+    gyro.h \
 
 FORMS    += mainwindow.ui

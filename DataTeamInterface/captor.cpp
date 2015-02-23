@@ -4,12 +4,10 @@
  * @brief Captor::Captor
  * @param parent
  */
-Captor::Captor(eIDCommand p_eIDCommand, QObject *parent) :
-    QObject(parent)
+Captor::Captor()
 {
-    m_eIDCommand = p_eIDCommand;
-
-    //m_pProtocole = p_pProtocole->getInstance;
+    m_eIDCommand = eIDCommandNone;
+    m_pProtocole = NULL;
 
     m_pTCPConnection = new TCPConnection();
     m_bIsConnectionEtablished = false;
@@ -17,6 +15,8 @@ Captor::Captor(eIDCommand p_eIDCommand, QObject *parent) :
     connect(m_pTCPConnection, SIGNAL(Connected()), this, SLOT(slotOnConnection()));
     connect(m_pTCPConnection, SIGNAL(Disconnected()), this, SLOT(slotOnDisconnection()));
     connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QByteArray)), this, SLOT(slotOnDataReceivedFromServer(QByteArray)));
+
+    connect(this, SIGNAL(emitDataExtractedAvailable(QByteArray)), this, SLOT(slotOnDataExtractedReady(QByteArray)));
 }
 
 /**
@@ -40,7 +40,6 @@ Captor::~Captor()
 bool Captor::ConnectCaptor(QString p_sAddresse, qint16 p_iPort)
 {
     return (m_bIsConnectionEtablished = m_pTCPConnection->ConnectFromServer(p_sAddresse, p_iPort));
-
 }
 
 /**
@@ -58,13 +57,41 @@ void Captor::DisconnectCaptor()
  */
 bool Captor::SendData(QByteArray p_pDataToSend)
 {
-    Q_UNUSED(p_pDataToSend);
-    return false;
+    return m_pTCPConnection->SendData(m_pProtocole->FormateCommand(m_eIDCommand, p_pDataToSend));
+}
+
+/**
+ * @brief Captor::ReverseData
+ * @param p_baData
+ * @return
+ */
+QByteArray Captor::ReverseData(QByteArray p_baData)
+{
+    QByteArray baData;
+    for(int iIncrement = p_baData.length() - 1; iIncrement >= 0; iIncrement--)
+        baData += p_baData.at(iIncrement);
+    return baData;
 }
 
 /*******************************************************************************/
 /*********************************** SLOT **************************************/
 /*******************************************************************************/
+
+/**
+ * @brief Captor::slotOnConnection
+ */
+void Captor::slotOnConnection()
+{
+    m_bIsConnectionEtablished = true;
+}
+
+/**
+ * @brief Captor::slotOnDisconnection
+ */
+void Captor::slotOnDisconnection()
+{
+    m_bIsConnectionEtablished = false;
+}
 
 /**
  * @brief Captor::slotOnDataReceivedFromServer
@@ -79,7 +106,7 @@ void Captor::slotOnDataReceivedFromServer(QByteArray p_baData)
  * @brief Captor::slotOnDataExtractedReady
  * @param p_sDataExtracted
  */
-void Captor::slotOnDataExtractedReady(QString p_sDataExtracted)
+void Captor::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    emit emitDataAvailable(p_sDataExtracted);
+    emit emitDataAvailable(p_baDataExtracted);
 }

@@ -86,13 +86,12 @@ QByteArray Protocole::ExtractData( QByteArray p_baData)
     QByteArray baData;
     int iSize=0;
 
-    qDebug() << "Lenght Of This Data : " <<p_baData.length() ;
+    qDebug() << "Lenght Of Brut Data : " << p_baData.length() ;
 
     for(int i = 0; i < 4; i++)
         iSize += (QString::number(p_baData[7 + i]).toInt());
 
-    qDebug() << "String OtherSize --->" << iSize;
-
+    qDebug() << "Data Size --->" << iSize;
 
     //size = (int)p_baData[10]+ 10 * (int)p_baData[9]+ 100 * (int)p_baData[8]+ 1000 * (int)p_baData[7];
 

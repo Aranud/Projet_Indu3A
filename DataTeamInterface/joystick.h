@@ -2,11 +2,12 @@
 #define JOYSTICK_H
 
 #include <QObject>
+#include <captor.h>
 #include "simplexbox360controller.h"
 
 #define AUTO_POLLING_TIME_ELASPE 20
 
-class Joystick : public QObject
+class Joystick : public Captor
 {
     Q_OBJECT
 private:
@@ -18,15 +19,14 @@ private:
     float m_fOldStickValue;
 
 public:
-    explicit Joystick(QObject *parent = 0);
-
-signals:
-    void dataReceivedFromStick(QByteArray);
+    explicit Joystick(Protocole *p_pProtocole);
+    ~Joystick();
 
 public slots:
     void slotOnControllerConntected(unsigned int p_iControllerNum);
     void slotOnControllerDisconntected(unsigned int p_iControllerNum);
     void slotOnEvent(SimpleXbox360Controller::InputState p_InputState);
+    void slotOnEventOld(SimpleXbox360Controller::InputState p_InputState);
 
 };
 
