@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class RobotInterface : public QWidget
+class RobotInterface : public QObject
 {
     Q_OBJECT
 public:

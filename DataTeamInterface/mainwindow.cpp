@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QPixmap>
+
 
 /**
  * @brief MainWindow::MainWindow
@@ -13,15 +13,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 //    m_pTCPConnection = new TCPConnection();
 //    m_bIsConnectionEtablished = false;
-
-    m_pJoystick = new Joystick();
+    ui->img->setPixmap(QPixmap("img.png").scaled(ui->img->width(),ui->img->height(),Qt::KeepAspectRatio));
     m_pProtocole = new Protocole();
+//    m_pJoystick = new Joystick(m_pProtocole);
 
-    connect(m_pJoystick, SIGNAL(dataReceivedFromStick(QByteArray)), this, SLOT(slotOnJoystickTouch(QByteArray)));
+  m_pGps = new GPS(m_pProtocole);
 
-    connect(m_pTCPConnection, SIGNAL(Connected()), this, SLOT(slotOnConnection()));
-    connect(m_pTCPConnection, SIGNAL(Disconnected()), this, SLOT(slotOnDisconnection()));
-    connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QString)), this, SLOT(slotOnDataReceived(QString)));
+//    connect(m_pJoystick, SIGNAL(dataReceivedFromStick(QByteArray)), this, SLOT(slotOnJoystickTouch(QByteArray)));
+
+//    connect(m_pTCPConnection, SIGNAL(Connected()), this, SLOT(slotOnConnection()));
+//    connect(m_pTCPConnection, SIGNAL(Disconnected()), this, SLOT(slotOnDisconnection()));
+//    connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QString)), this, SLOT(slotOnDataReceived(QString)));
 }
 
 /**
@@ -60,7 +62,6 @@ void MainWindow::slotOnDisconnection()
  */
 void MainWindow::slotOnDataReceived(QString p_sDataReceived)
 {
-    ui->lbDataReceived->setText(p_sDataReceived);
 }
 
 /**
@@ -88,15 +89,7 @@ void MainWindow::slotOnJoystickTouch(QByteArray p_baData)
  */
 void MainWindow::on_pbConnection_clicked()
 {
-    if(m_bIsConnectionEtablished == false)
-    {
-        if(!m_pTCPConnection->ConnectFromServer(ui->leServerAddress->text(), ui->leServerPort->text().toInt()))
-            qDebug() << "Data entry are wrong";
-    }
-    else
-    {
-        m_pTCPConnection->DisconnectFromServer();
-    }
+   m_pGps->ConnectCaptor(ui->leServerAddress->text(),ui->gpsPort->text().toInt());
 }
 
 /**

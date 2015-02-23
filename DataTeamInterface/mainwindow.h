@@ -5,8 +5,9 @@
 #include "tcpconnection.h"
 #include "protocole.h"
 #include "joystick.h"
-
 #include "global.h"
+#include <QPixmap>
+#include "gps.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ private:
     TCPConnection* m_pTCPConnection;
     Joystick* m_pJoystick;
     Protocole* m_pProtocole;
+    GPS* m_pGps;
 
     bool m_bIsConnectionEtablished;
 

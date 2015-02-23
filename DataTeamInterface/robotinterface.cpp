@@ -1,6 +1,7 @@
 #include "robotinterface.h"
+#include "gps.h"
 
-RobotInterface::RobotInterface() : QWidget()
+RobotInterface::RobotInterface()
 {
     //*******Accelero*******//
     qint16 accX,accY,accZ;
