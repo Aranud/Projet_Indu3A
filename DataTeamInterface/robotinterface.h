@@ -17,6 +17,7 @@ class RobotInterface : public QObject
        Ui::MainWindow* m_pUi;
         Protocole* m_pProtocole;
         GPS *m_pGps;
+        Gyro *m_pGyro;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -25,6 +26,7 @@ public:
 
 public slots:
     void slotOnGpsDataAvailable();
+    void slotOnGyroDataAvailable();
 };
 
 #endif // ROBOTINTERFACE_H
