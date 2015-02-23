@@ -185,36 +185,26 @@ void GPS::setQuality(const QByteArray &p_baQuality)
  */
 void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    qDebug() << "Data Extracted : " << p_baDataExtracted.toHex();
-    qDebug() << "Data Extracted Lenght : " << p_baDataExtracted.length();
+    qlonglong llTemp = 0;
 
-    QByteArray baSomeData = p_baDataExtracted.mid(8, 8);
-    baSomeData = ReverseData(baSomeData);
-    baSomeData = baSomeData.toHex();
-    m_dLatitude = baSomeData.toDouble();
+    llTemp = ReverseData(p_baDataExtracted.mid(0, 8)).toHex().toLongLong(0, 16);
+    m_dTime = reinterpret_cast<double&>(llTemp);
 
-    qDebug() << "Lat hex : " << baSomeData;
-    qDebug() << "HERE : " << baSomeData.fromHex(baSomeData).toDouble();
-    qDebug() << "And there :" << m_dLatitude;
+    llTemp = ReverseData(p_baDataExtracted.mid(8, 8)).toHex().toLongLong(0, 16);
+    m_dLatitude = reinterpret_cast<double&>(llTemp);
 
-    qDebug() << "All Data Revert : ";
-    qDebug() << ReverseData(p_baDataExtracted.mid(0, 8)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(8, 8)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(16, 8)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(24, 8)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(32, 1)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(33, 1)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(34, 1)).toHex();
-    qDebug() << ReverseData(p_baDataExtracted.mid(35, 8)).toHex();
+    llTemp = ReverseData(p_baDataExtracted.mid(16, 8)).toHex().toLongLong(0, 16);
+    m_dLongitude = reinterpret_cast<double&>(llTemp);
 
-    qDebug() << "MID ! : " << m_dTime << " : "
-                           << m_dLatitude << " : "
-                           << m_dLongitude << " : "
-                           << m_dAltitude << " : "
-                           << m_baUnit << " : "
-                           << m_baSateliteNumber << " : "
-                           << m_baQuality << " : "
-                           << m_dGroundSpeed << " || STOP";
+    llTemp = ReverseData(p_baDataExtracted.mid(24, 8)).toHex().toLongLong(0, 16);
+    m_dAltitude = reinterpret_cast<double&>(llTemp);
+
+    m_baUnit = p_baDataExtracted.mid(32, 1).toHex();
+    m_baSateliteNumber = p_baDataExtracted.mid(33, 1).toHex();
+    m_baQuality = p_baDataExtracted.mid(34, 1).toHex();
+
+    llTemp = ReverseData(p_baDataExtracted.mid(35, 8)).toHex().toLongLong(0, 16);
+    m_dGroundSpeed = reinterpret_cast<double&>(llTemp);
 
     emit emitDataAvailable();
 }

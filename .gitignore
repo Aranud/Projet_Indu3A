@@ -19,3 +19,4 @@ DataTeamInterface/release/moc_joystick.cpp
 DataTeamInterface/release/moc_tcpconnection.cpp
 DataTeamInterface/release/moc_simplexbox360controller.cpp
 DataTeamInterface/debug/moc_actuator.cpp
+DataTeamInterface/gps.cpp.autosave

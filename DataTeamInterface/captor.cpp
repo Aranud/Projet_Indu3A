@@ -69,7 +69,7 @@ QByteArray Captor::ReverseData(QByteArray p_baData)
 {
     QByteArray baData;
     for(int iIncrement = p_baData.length() - 1; iIncrement >= 0; iIncrement--)
-        baData += p_baData.at(iIncrement);
+        baData += p_baData.mid(iIncrement, 1);
     return baData;
 }
 
