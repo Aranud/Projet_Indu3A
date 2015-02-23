@@ -14,13 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //    m_pTCPConnection = new TCPConnection();
 //    m_bIsConnectionEtablished = false;
     ui->img->setPixmap(QPixmap("img.png").scaled(ui->img->width(),ui->img->height(),Qt::KeepAspectRatio));
-    m_pProtocole = new Protocole();
+    //m_pProtocole = new Protocole();
 //    m_pJoystick = new Joystick(m_pProtocole);
 
-  m_pGps = new GPS(m_pProtocole);
-
-//    connect(m_pJoystick, SIGNAL(dataReceivedFromStick(QByteArray)), this, SLOT(slotOnJoystickTouch(QByteArray)));
-
+        m_pRobot = new RobotInterface(ui);
 //    connect(m_pTCPConnection, SIGNAL(Connected()), this, SLOT(slotOnConnection()));
 //    connect(m_pTCPConnection, SIGNAL(Disconnected()), this, SLOT(slotOnDisconnection()));
 //    connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QString)), this, SLOT(slotOnDataReceived(QString)));
@@ -89,7 +86,7 @@ void MainWindow::slotOnJoystickTouch(QByteArray p_baData)
  */
 void MainWindow::on_pbConnection_clicked()
 {
-   m_pGps->ConnectCaptor(ui->leServerAddress->text(),ui->gpsPort->text().toInt());
+   m_pRobot->connectRobot();
 }
 
 /**

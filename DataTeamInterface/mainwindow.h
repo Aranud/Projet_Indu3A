@@ -8,6 +8,7 @@
 #include "global.h"
 #include <QPixmap>
 #include "gps.h"
+#include "robotinterface.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,7 +27,7 @@ private:
     TCPConnection* m_pTCPConnection;
     Joystick* m_pJoystick;
     Protocole* m_pProtocole;
-    GPS* m_pGps;
+    RobotInterface* m_pRobot;
 
     bool m_bIsConnectionEtablished;
 
