@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QPixmap>
 
 /**
  * @brief MainWindow::MainWindow
@@ -10,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
 //    m_pTCPConnection = new TCPConnection();
 //    m_bIsConnectionEtablished = false;
 

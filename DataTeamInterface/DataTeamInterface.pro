@@ -21,6 +21,7 @@ SOURCES += main.cpp\
     simplexbox360controller.cpp \
     protocole.cpp\
     captor.cpp\
+    robotinterface.cpp
 
 HEADERS  += mainwindow.h \
     tcpconnection.h \
@@ -29,5 +30,6 @@ HEADERS  += mainwindow.h \
     protocole.h \
     global.h \
     captor.h\
+    robotinterface.h
 
 FORMS    += mainwindow.ui
