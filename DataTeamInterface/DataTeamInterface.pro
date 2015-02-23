@@ -25,6 +25,7 @@ SOURCES += main.cpp\
     gps.cpp \
     lidar.cpp \
     gyro.cpp \
+    actuator.cpp \
 
 
 HEADERS  += mainwindow.h \
@@ -38,5 +39,6 @@ HEADERS  += mainwindow.h \
     gps.h \
     lidar.h \
     gyro.h \
+    actuator.h \
 
 FORMS    += mainwindow.ui
