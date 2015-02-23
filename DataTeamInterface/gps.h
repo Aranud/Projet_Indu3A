@@ -18,7 +18,6 @@ private:
     QByteArray m_baSateliteNumber;
     QByteArray m_baQuality;
 
-
 public:
     GPS(Protocole* p_pProtocole);
     ~GPS();
