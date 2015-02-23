@@ -3,11 +3,15 @@
 /**
  * @brief Joystick::Joystick
  * @param parent
+ * @todo: Change m_eIDCommand
  */
-Joystick::Joystick(QObject *parent) :
-    QObject(parent)
+Joystick::Joystick(Protocole* p_pProtocole)
 {
+    m_pProtocole = p_pProtocole;
     m_pController = new SimpleXbox360Controller(0); // Instanciation
+
+    //m_eIDCommand = eIDCommmandRemote;
+    m_eIDCommand = eIDCommmandMotors;
 
     m_fOldLeftStickValueY = 0;
     m_fOldLeftStickValueX = 0;
@@ -18,11 +22,17 @@ Joystick::Joystick(QObject *parent) :
     m_pController->startAutoPolling(AUTO_POLLING_TIME_ELASPE); // Update appelé toutes les 20 milisecondes
     m_pController->startAutoPolling(20); // Update appelé toutes les 20 milisecondes
 
-    qDebug() << "Construit";
-
     connect(m_pController, SIGNAL(controllerConnected(uint)), this, SLOT(slotOnControllerConntected(uint)));
     connect(m_pController, SIGNAL(controllerDisconnected(uint)), this, SLOT(slotOnControllerDisconntected(uint)));
-    connect(m_pController, SIGNAL(controllerNewState(SimpleXbox360Controller::InputState)), this, SLOT(slotOnEvent(SimpleXbox360Controller::InputState)));
+    connect(m_pController, SIGNAL(controllerNewState(SimpleXbox360Controller::InputState)), this, SLOT(slotOnEventOld(SimpleXbox360Controller::InputState)));
+}
+
+/**
+ * @brief Joystick::~Joystick
+ */
+Joystick::~Joystick()
+{
+
 }
 
 /*******************************************************************************/
@@ -116,82 +126,85 @@ void Joystick::slotOnEvent(SimpleXbox360Controller::InputState p_InputState)
     baValue.append(0x7F);   //GyroZ
 
     qDebug() << "Data Emit From Joystick Event : " << baValue.toHex();
-    emit dataReceivedFromStick(baValue);
+    SendData(baValue);
 }
 
 /**
  * @brief Joystick::slotOnEvent - Deprecate
  * @param p_InputState
  */
-//void Joystick::slotOnEvent(SimpleXbox360Controller::InputState p_InputState)
-//{
+void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
+{
+    QByteArray baValue;
 
-//    if(p_InputState.leftThumbY != m_fOldLeftStickValueY || p_InputState.leftThumbX != m_fOldLeftStickValueX)
-//    {
-//        m_fOldLeftStickValueY = p_InputState.leftThumbY;
-//        m_fOldLeftStickValueX = p_InputState.leftThumbX;
+    if(p_InputState.leftThumbY != m_fOldLeftStickValueY || p_InputState.leftThumbX != m_fOldLeftStickValueX)
+    {
+        m_fOldLeftStickValueY = p_InputState.leftThumbY;
+        m_fOldLeftStickValueX = p_InputState.leftThumbX;
 
-//        if(p_InputState.leftThumbY != 0)
-//        {
-//            if(p_InputState.leftThumbX > 0)
-//            {
-//                float DatasendToMotorRight = p_InputState.leftThumbY * 127 * (1-((p_InputState.leftThumbX + 1)/2));
-//                baValue[1] = DatasendToMotorRight;
-//                float DatasendToMotorLeft = p_InputState.leftThumbY * 127 * ((p_InputState.leftThumbX + 1)/2);
-//                baValue[0] = DatasendToMotorLeft;
-//                qDebug() << QString::number(baValue[0]).toInt();
-//                qDebug() << QString::number(baValue[1]).toInt();
+        if(p_InputState.leftThumbY != 0)
+        {
+            if(p_InputState.leftThumbX > 0)
+            {
+                float DatasendToMotorRight = p_InputState.leftThumbY * 127 * (1-((p_InputState.leftThumbX + 1)/2));
+                baValue[1] = DatasendToMotorRight;
+                float DatasendToMotorLeft = p_InputState.leftThumbY * 127 * ((p_InputState.leftThumbX + 1)/2);
+                baValue[0] = DatasendToMotorLeft;
+                qDebug() << QString::number(baValue[0]).toInt();
+                qDebug() << QString::number(baValue[1]).toInt();
 
-//            }
-//            else if(p_InputState.leftThumbX < 0)
-//            {
-//                float DatasendToMotorLeft = m_fOldLeftStickValueY * 127 * (1+((p_InputState.leftThumbX - 1)/2));
-//                baValue[0] = DatasendToMotorLeft;
-//                float DatasendToMotorRight = m_fOldLeftStickValueY * 127 * (-(p_InputState.leftThumbX - 1)/2);
-//                baValue[1] = DatasendToMotorRight;
-//                qDebug() << QString::number(baValue[0]).toInt();
-//                qDebug() << QString::number(baValue[1]).toInt();
-//            }
-//        }
-//    }
+            }
+            else if(p_InputState.leftThumbX < 0)
+            {
+                float DatasendToMotorLeft = m_fOldLeftStickValueY * 127 * (1+((p_InputState.leftThumbX - 1)/2));
+                baValue[0] = DatasendToMotorLeft;
+                float DatasendToMotorRight = m_fOldLeftStickValueY * 127 * (-(p_InputState.leftThumbX - 1)/2);
+                baValue[1] = DatasendToMotorRight;
+                qDebug() << QString::number(baValue[0]).toInt();
+                qDebug() << QString::number(baValue[1]).toInt();
+            }
+        }
+    }
 
-//    if(p_InputState.rightThumbY != m_fOldRightStickValueY || p_InputState.rightThumbX != m_fOldRightStickValueX)
-//    {
-//        m_fOldRightStickValueY = p_InputState.leftThumbY;
-//        m_fOldRightStickValueX = p_InputState.leftThumbX;
+    if(p_InputState.rightThumbY != m_fOldRightStickValueY || p_InputState.rightThumbX != m_fOldRightStickValueX)
+    {
+        m_fOldRightStickValueY = p_InputState.leftThumbY;
+        m_fOldRightStickValueX = p_InputState.leftThumbX;
 
-//        if(p_InputState.rightThumbY != 0)
-//        {
-//            if(p_InputState.rightThumbX > 0)
-//            {
-//                float DatasendToMotorRight = p_InputState.rightThumbY * 127 * (1-((p_InputState.rightThumbX + 1)/2));
-//                baValue[1] = DatasendToMotorRight;
-//                float DatasendToMotorLeft = p_InputState.rightThumbY * 127 * ((p_InputState.rightThumbX + 1)/2);
-//                baValue[0] = DatasendToMotorLeft;
-//                qDebug() << QString::number(baValue[0]).toInt();
-//                qDebug() << QString::number(baValue[1]).toInt();
-//            }
-//            else if(p_InputState.leftThumbX < 0)
-//            {
-//                float DatasendToMotorLeft = p_InputState.rightThumbY * 127 * (1+((p_InputState.rightThumbX - 1)/2));
-//                baValue[0] = DatasendToMotorLeft;
-//                float DatasendToMotorRight = m_fOldStickValue * 127 * (-(p_InputState.rightThumbX - 1)/2);
-//                baValue[1] = DatasendToMotorRight;
-//                qDebug() << QString::number(baValue[0]).toInt();
-//                qDebug() << QString::number(baValue[1]).toInt();
-//            }
-//        }
-//    }
+        if(p_InputState.rightThumbY != 0)
+        {
+            if(p_InputState.rightThumbX > 0)
+            {
+                float DatasendToMotorRight = p_InputState.rightThumbY * 127 * (1-((p_InputState.rightThumbX + 1)/2));
+                baValue[1] = DatasendToMotorRight;
+                float DatasendToMotorLeft = p_InputState.rightThumbY * 127 * ((p_InputState.rightThumbX + 1)/2);
+                baValue[0] = DatasendToMotorLeft;
+                qDebug() << QString::number(baValue[0]).toInt();
+                qDebug() << QString::number(baValue[1]).toInt();
+            }
+            else if(p_InputState.leftThumbX < 0)
+            {
+                float DatasendToMotorLeft = p_InputState.rightThumbY * 127 * (1+((p_InputState.rightThumbX - 1)/2));
+                baValue[0] = DatasendToMotorLeft;
+                float DatasendToMotorRight = m_fOldStickValue * 127 * (-(p_InputState.rightThumbX - 1)/2);
+                baValue[1] = DatasendToMotorRight;
+                qDebug() << QString::number(baValue[0]).toInt();
+                qDebug() << QString::number(baValue[1]).toInt();
+            }
+        }
+    }
 
+    if(p_InputState.isButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT))
+    {
+           baValue[0]=0;
+           baValue[1]=127;
 
-//    if(p_InputState.isButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT))
-//    {
-//           baValue[0]=0;
-//           baValue[1]=127;
+    }
+    else if(p_InputState.isButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT))
+    {
+           baValue[0]=127;
+           baValue[1]=0;
+    }
 
-//    }else if(p_InputState.isButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT))
-//    {
-//           baValue[0]=127;
-//           baValue[1]=0;
-//    }
-//}
+    SendData(baValue);
+}

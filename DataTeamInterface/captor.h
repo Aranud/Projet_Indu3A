@@ -17,21 +17,24 @@ protected:
     bool m_bIsConnectionEtablished;
 
 public:
-    explicit Captor(eIDCommand p_eIDCommand, QObject *parent = 0);
+    explicit Captor();
     ~Captor();
 
-    virtual bool ConnectCaptor(QString p_sAddresse, qint16 p_iPort);
-    virtual void DisconnectCaptor();
-    virtual bool SendData(QByteArray p_pDataToSend);
+    bool ConnectCaptor(QString p_sAddresse, qint16 p_iPort);
+    void DisconnectCaptor();
+    bool SendData(QByteArray p_pDataToSend);
+    QByteArray ReverseData(QByteArray p_baData);
 
 signals:
-    void emitDataExtractedAvailable(QString);
+    void emitDataExtractedAvailable(QByteArray);
     void emitDataAvailable(QString);
 public slots:
 
 protected slots:
+    void slotOnConnection();
+    void slotOnDisconnection();
     void slotOnDataReceivedFromServer(QByteArray p_baData);
-    virtual void slotOnDataExtractedReady(QString p_sDataExtracted);
+    virtual void slotOnDataExtractedReady(QByteArray p_baDataExtracted);
 
 };
 
