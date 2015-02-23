@@ -1,21 +1,21 @@
-#ifndef LIDAR_H
-#define LIDAR_H
+#ifndef ACTUATOR_H
+#define ACTUATOR_H
 
 #include <QObject>
 #include "captor.h"
 #include "global.h"
 
-class Lidar : public Captor
+class Actuator : public Captor
 {
     Q_OBJECT
 private:
 
 public:
-    Lidar(Protocole* p_pProtocole);
-    ~Lidar();
+    Actuator();
+    ~Actuator();
 
 public slots:
     void slotOnDataExtractedReady(QByteArray p_baDataExtracted);
 };
 
-#endif // LIDAR_H
+#endif // ACTUATOR_H

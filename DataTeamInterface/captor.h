@@ -27,7 +27,7 @@ public:
 
 signals:
     void emitDataExtractedAvailable(QByteArray);
-    void emitDataAvailable(QString);
+    void emitDataAvailable();
 public slots:
 
 protected slots:

@@ -108,5 +108,6 @@ void Captor::slotOnDataReceivedFromServer(QByteArray p_baData)
  */
 void Captor::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    emit emitDataAvailable(p_baDataExtracted);
+    Q_UNUSED(p_baDataExtracted);
+    emit emitDataAvailable();
 }

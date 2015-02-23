@@ -14,9 +14,7 @@ TCPConnection::TCPConnection(QObject *parent) :
     m_bIsConnectionEtablished = false;
 
     connect(m_pTcpSocket, SIGNAL(connected()), this, SLOT(slotOnConnected()));
-    //connect(m_pTcpSocket, SIGNAL(connected()), this, SIGNAL(slotConnected()));
     connect(m_pTcpSocket, SIGNAL(disconnected()), this, SLOT(slotOnDisconnected()));
-    //connect(m_pTcpSocket, SIGNAL(disconnected()), this, SIGNAL(slotDisconnected()));
 
     connect(m_pTcpSocket, SIGNAL(readyRead()), this, SLOT(slotOnDataReceived()));
     connect(m_pTcpSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(slotOnDataWritten(qint64)));
@@ -65,7 +63,6 @@ bool TCPConnection::ConnectFromServer(QString p_sAddress, int p_iPort)
 bool TCPConnection::DisconnectFromServer()
 {
     m_pTcpSocket->disconnectFromHost();
-
     return true;
 }
 

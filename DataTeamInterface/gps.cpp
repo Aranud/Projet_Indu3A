@@ -188,19 +188,7 @@ void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
     qDebug() << "Data Extracted : " << p_baDataExtracted.toHex();
     qDebug() << "Data Extracted Lenght : " << p_baDataExtracted.length();
 
-//    m_dTime = p_baDataExtracted.mid(0, 8).toDouble();
-//    m_dLatitude = p_baDataExtracted.mid(8, 8).toDouble();
-//    m_dLongitude = p_baDataExtracted.mid(16, 8).toDouble();
-//    m_dAltitude = p_baDataExtracted.mid(24, 8).toDouble();
-//    m_baUnit = p_baDataExtracted.mid(32, 1);
-//    m_baSateliteNumber = p_baDataExtracted.mid(33, 1);
-//    m_baQuality = p_baDataExtracted.mid(34, 1);
-//    m_dGroundSpeed = p_baDataExtracted.mid(35, 8).toDouble();
-
-    qDebug() << p_baDataExtracted.mid(0, 8).toHex();
-    //qDebug() << p_baDataExtracted.mid(8, 8).toHex();
     QByteArray baSomeData = p_baDataExtracted.mid(8, 8);
-
     baSomeData = ReverseData(baSomeData);
     baSomeData = baSomeData.toHex();
     m_dLatitude = baSomeData.toDouble();
@@ -209,12 +197,15 @@ void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
     qDebug() << "HERE : " << baSomeData.fromHex(baSomeData).toDouble();
     qDebug() << "And there :" << m_dLatitude;
 
-    qDebug() << p_baDataExtracted.mid(16, 8).toHex();
-    qDebug() << p_baDataExtracted.mid(24, 8).toHex();
-    qDebug() << p_baDataExtracted.mid(32, 1).toHex();
-    qDebug() << p_baDataExtracted.mid(33, 1).toHex();
-    qDebug() << p_baDataExtracted.mid(34, 1).toHex();
-    qDebug() << p_baDataExtracted.mid(35, 8).toHex();
+    qDebug() << "All Data Revert : ";
+    qDebug() << ReverseData(p_baDataExtracted.mid(0, 8)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(8, 8)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(16, 8)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(24, 8)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(32, 1)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(33, 1)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(34, 1)).toHex();
+    qDebug() << ReverseData(p_baDataExtracted.mid(35, 8)).toHex();
 
     qDebug() << "MID ! : " << m_dTime << " : "
                            << m_dLatitude << " : "
@@ -225,15 +216,5 @@ void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
                            << m_baQuality << " : "
                            << m_dGroundSpeed << " || STOP";
 
-    QString sDataConca;
-    sDataConca.append( + "MID ! : " + QString::number(m_dTime) + " : "
-                           + QString::number(m_dLatitude) + " : "
-                           + QString::number(m_dLongitude) + " : "
-                           + QString::number(m_dAltitude) + " : "
-                           + m_baUnit + " : "
-                           + m_baSateliteNumber + " : "
-                           + m_baQuality + " : "
-                           + QString::number(m_dGroundSpeed) + " : ");
-
-    emit emitDataAvailable(sDataConca);
+    emit emitDataAvailable();
 }
