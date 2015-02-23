@@ -31,7 +31,7 @@ TCPConnection::~TCPConnection()
 }
 
 /*******************************************************************************/
-/*********************************** METHOD ************************************/
+/********************************* METHOD **************************************/
 /*******************************************************************************/
 
 /**
@@ -54,6 +54,7 @@ bool TCPConnection::ConnectFromServer(QString p_sAddress, int p_iPort)
     m_iPort = p_iPort;          // Keep a trace
 
     qDebug() << "Try to Connect From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
+
     return true;
 }
 
@@ -64,6 +65,7 @@ bool TCPConnection::ConnectFromServer(QString p_sAddress, int p_iPort)
 bool TCPConnection::DisconnectFromServer()
 {
     m_pTcpSocket->disconnectFromHost();
+
     return true;
 }
 
@@ -143,7 +145,7 @@ void TCPConnection::slotOnDataReceived()
 
     qDebug() << "Data Received Result : " << baDataReceived.toHex();
 
-    emit QString(baDataReceived.data());
+    emit DataReceivedFromServer(baDataReceived);
 }
 
 /**

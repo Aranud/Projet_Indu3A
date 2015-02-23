@@ -15,6 +15,7 @@ private:
     float m_fOldLeftStickValueX;
     float m_fOldRightStickValueY;
     float m_fOldRightStickValueX;
+    float m_fOldStickValue;
 
 public:
     explicit Joystick(QObject *parent = 0);

@@ -8,7 +8,6 @@ DataTeamInterface/debug/moc_simplexbox360controller.cpp
 DataTeamInterface/debug/moc_joystick.cpp
 DataTeamInterface/debug/moc_tcpconnection.cpp
 DataTeamInterface/debug/moc_tcpconnection.cpp
-DataTeamInterface/debug/moc_protocole.cpp
 DataTeamInterface/debug/moc_mainwindow.cpp
 DataTeamInterface/debug/moc_protocole.cpp
 DataTeamInterface/release/moc_protocole.cpp
@@ -16,4 +15,5 @@ DataTeamInterface/release/moc_mainwindow.cpp
 DataTeamInterface/release/moc_joystick.cpp
 DataTeamInterface/release/moc_tcpconnection.cpp
 DataTeamInterface/release/moc_simplexbox360controller.cpp
-DataTeamInterface/joystick.h
+DataTeamInterface/debug/moc_captor.cpp
+

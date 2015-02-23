@@ -13,8 +13,12 @@ Joystick::Joystick(QObject *parent) :
     m_fOldLeftStickValueX = 0;
     m_fOldRightStickValueY = 0;
     m_fOldRightStickValueX = 0;
+    m_fOldStickValue = 0;
 
     m_pController->startAutoPolling(AUTO_POLLING_TIME_ELASPE); // Update appelé toutes les 20 milisecondes
+    m_pController->startAutoPolling(20); // Update appelé toutes les 20 milisecondes
+
+    qDebug() << "Construit";
 
     connect(m_pController, SIGNAL(controllerConnected(uint)), this, SLOT(slotOnControllerConntected(uint)));
     connect(m_pController, SIGNAL(controllerDisconnected(uint)), this, SLOT(slotOnControllerDisconntected(uint)));
@@ -51,6 +55,7 @@ void Joystick::slotOnControllerDisconntected(unsigned int p_iControllerNum)
 void Joystick::slotOnEvent(SimpleXbox360Controller::InputState p_InputState)
 {
     qDebug() << "Enter here";
+
     qDebug() << "****** --> " << p_InputState.buttons;
 
     QByteArray baValue;
