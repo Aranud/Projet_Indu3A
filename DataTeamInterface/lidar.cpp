@@ -6,6 +6,7 @@
 Lidar::Lidar(Protocole *p_pProtocole)
 {
     m_pProtocole = p_pProtocole;
+    m_eIDCommand = eIDCommmandLidar;
 
 
 

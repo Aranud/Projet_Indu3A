@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     gyro.cpp \
     actuator.cpp \
     accelero.cpp \
-    magneto.cpp
+    magneto.cpp \
+    odo.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -43,6 +44,7 @@ HEADERS  += mainwindow.h \
     gyro.h \
     actuator.h \
     accelero.h \
-    magneto.h
+    magneto.h \
+    odo.h
 
 FORMS    += mainwindow.ui
