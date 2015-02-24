@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.3.2
+** Created by: Qt User Interface Compiler version 5.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -46,12 +46,12 @@ public:
     QLabel *qualityResult;
     QLineEdit *acceleroPort;
     QLineEdit *motorPort;
-    QLineEdit *leServerPort_4;
-    QLineEdit *leServerPort_5;
+    QLineEdit *lidarPort;
+    QLineEdit *odoPort;
     QLineEdit *gyroPort;
-    QLineEdit *leServerPort_7;
-    QLineEdit *leServerPort_8;
-    QLineEdit *leServerPort_9;
+    QLineEdit *actuatorPort;
+    QLineEdit *remotePort;
+    QLineEdit *magnetoPort;
     QLabel *label_2;
     QLabel *label_3;
     QLabel *label_4;
@@ -71,7 +71,7 @@ public:
     QLabel *label_15;
     QLabel *gyroXResult;
     QLabel *gyroYResult;
-    QLabel *GyroZResult;
+    QLabel *gyroZResult;
     QFrame *line_3;
     QFrame *line_4;
     QLabel *acceleroXResult_2;
@@ -81,6 +81,15 @@ public:
     QLabel *acceleroYResult_2;
     QLabel *label_19;
     QLabel *acceleroZResult_2;
+    QFrame *line_5;
+    QLabel *label_20;
+    QLabel *label_21;
+    QLabel *actuatorResult;
+    QPushButton *pushButton;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
+    QFrame *line_6;
+    QLabel *label_22;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -140,24 +149,24 @@ public:
         motorPort = new QLineEdit(centralWidget);
         motorPort->setObjectName(QStringLiteral("motorPort"));
         motorPort->setGeometry(QRect(280, 40, 51, 20));
-        leServerPort_4 = new QLineEdit(centralWidget);
-        leServerPort_4->setObjectName(QStringLiteral("leServerPort_4"));
-        leServerPort_4->setGeometry(QRect(60, 70, 51, 20));
-        leServerPort_5 = new QLineEdit(centralWidget);
-        leServerPort_5->setObjectName(QStringLiteral("leServerPort_5"));
-        leServerPort_5->setGeometry(QRect(280, 70, 51, 20));
+        lidarPort = new QLineEdit(centralWidget);
+        lidarPort->setObjectName(QStringLiteral("lidarPort"));
+        lidarPort->setGeometry(QRect(60, 70, 51, 20));
+        odoPort = new QLineEdit(centralWidget);
+        odoPort->setObjectName(QStringLiteral("odoPort"));
+        odoPort->setGeometry(QRect(280, 70, 51, 20));
         gyroPort = new QLineEdit(centralWidget);
         gyroPort->setObjectName(QStringLiteral("gyroPort"));
         gyroPort->setGeometry(QRect(170, 70, 51, 20));
-        leServerPort_7 = new QLineEdit(centralWidget);
-        leServerPort_7->setObjectName(QStringLiteral("leServerPort_7"));
-        leServerPort_7->setGeometry(QRect(60, 100, 51, 20));
-        leServerPort_8 = new QLineEdit(centralWidget);
-        leServerPort_8->setObjectName(QStringLiteral("leServerPort_8"));
-        leServerPort_8->setGeometry(QRect(280, 100, 51, 20));
-        leServerPort_9 = new QLineEdit(centralWidget);
-        leServerPort_9->setObjectName(QStringLiteral("leServerPort_9"));
-        leServerPort_9->setGeometry(QRect(170, 100, 51, 20));
+        actuatorPort = new QLineEdit(centralWidget);
+        actuatorPort->setObjectName(QStringLiteral("actuatorPort"));
+        actuatorPort->setGeometry(QRect(60, 100, 51, 20));
+        remotePort = new QLineEdit(centralWidget);
+        remotePort->setObjectName(QStringLiteral("remotePort"));
+        remotePort->setGeometry(QRect(280, 100, 51, 20));
+        magnetoPort = new QLineEdit(centralWidget);
+        magnetoPort->setObjectName(QStringLiteral("magnetoPort"));
+        magnetoPort->setGeometry(QRect(170, 100, 51, 20));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(10, 10, 47, 13));
@@ -219,9 +228,9 @@ public:
         gyroYResult = new QLabel(centralWidget);
         gyroYResult->setObjectName(QStringLiteral("gyroYResult"));
         gyroYResult->setGeometry(QRect(480, 40, 47, 13));
-        GyroZResult = new QLabel(centralWidget);
-        GyroZResult->setObjectName(QStringLiteral("GyroZResult"));
-        GyroZResult->setGeometry(QRect(480, 60, 47, 13));
+        gyroZResult = new QLabel(centralWidget);
+        gyroZResult->setObjectName(QStringLiteral("gyroZResult"));
+        gyroZResult->setGeometry(QRect(480, 60, 47, 13));
         line_3 = new QFrame(centralWidget);
         line_3->setObjectName(QStringLiteral("line_3"));
         line_3->setGeometry(QRect(440, 80, 301, 21));
@@ -253,7 +262,39 @@ public:
         acceleroZResult_2 = new QLabel(centralWidget);
         acceleroZResult_2->setObjectName(QStringLiteral("acceleroZResult_2"));
         acceleroZResult_2->setGeometry(QRect(560, 60, 47, 13));
+        line_5 = new QFrame(centralWidget);
+        line_5->setObjectName(QStringLiteral("line_5"));
+        line_5->setGeometry(QRect(610, 0, 20, 91));
+        line_5->setFrameShape(QFrame::VLine);
+        line_5->setFrameShadow(QFrame::Sunken);
+        label_20 = new QLabel(centralWidget);
+        label_20->setObjectName(QStringLiteral("label_20"));
+        label_20->setGeometry(QRect(660, 20, 47, 13));
+        label_21 = new QLabel(centralWidget);
+        label_21->setObjectName(QStringLiteral("label_21"));
+        label_21->setGeometry(QRect(630, 40, 31, 16));
+        actuatorResult = new QLabel(centralWidget);
+        actuatorResult->setObjectName(QStringLiteral("actuatorResult"));
+        actuatorResult->setGeometry(QRect(660, 40, 47, 13));
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(460, 320, 75, 23));
+        pushButton_2 = new QPushButton(centralWidget);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(550, 320, 75, 23));
+        pushButton_3 = new QPushButton(centralWidget);
+        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        pushButton_3->setGeometry(QRect(640, 320, 75, 23));
+        line_6 = new QFrame(centralWidget);
+        line_6->setObjectName(QStringLiteral("line_6"));
+        line_6->setGeometry(QRect(440, 280, 301, 20));
+        line_6->setFrameShape(QFrame::HLine);
+        line_6->setFrameShadow(QFrame::Sunken);
+        label_22 = new QLabel(centralWidget);
+        label_22->setObjectName(QStringLiteral("label_22"));
+        label_22->setGeometry(QRect(570, 300, 47, 13));
         MainWindow->setCentralWidget(centralWidget);
+        line_5->raise();
         line_4->raise();
         leServerAddress->raise();
         gpsPort->raise();
@@ -271,12 +312,12 @@ public:
         qualityResult->raise();
         acceleroPort->raise();
         motorPort->raise();
-        leServerPort_4->raise();
-        leServerPort_5->raise();
+        lidarPort->raise();
+        odoPort->raise();
         gyroPort->raise();
-        leServerPort_7->raise();
-        leServerPort_8->raise();
-        leServerPort_9->raise();
+        actuatorPort->raise();
+        remotePort->raise();
+        magnetoPort->raise();
         label_2->raise();
         label_3->raise();
         label_4->raise();
@@ -296,7 +337,7 @@ public:
         label_15->raise();
         gyroXResult->raise();
         gyroYResult->raise();
-        GyroZResult->raise();
+        gyroZResult->raise();
         line_3->raise();
         acceleroXResult_2->raise();
         label_16->raise();
@@ -305,6 +346,14 @@ public:
         acceleroYResult_2->raise();
         label_19->raise();
         acceleroZResult_2->raise();
+        label_20->raise();
+        label_21->raise();
+        actuatorResult->raise();
+        pushButton->raise();
+        pushButton_2->raise();
+        pushButton_3->raise();
+        line_6->raise();
+        label_22->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 735, 21));
@@ -339,12 +388,12 @@ public:
         qualityResult->setText(QString());
         acceleroPort->setText(QApplication::translate("MainWindow", "3339", 0));
         motorPort->setText(QApplication::translate("MainWindow", "3331", 0));
-        leServerPort_4->setText(QApplication::translate("MainWindow", "3337", 0));
-        leServerPort_5->setText(QApplication::translate("MainWindow", "3335", 0));
+        lidarPort->setText(QApplication::translate("MainWindow", "3337", 0));
+        odoPort->setText(QApplication::translate("MainWindow", "3335", 0));
         gyroPort->setText(QApplication::translate("MainWindow", "3340", 0));
-        leServerPort_7->setText(QApplication::translate("MainWindow", "3345", 0));
-        leServerPort_8->setText(QApplication::translate("MainWindow", "3338", 0));
-        leServerPort_9->setText(QString());
+        actuatorPort->setText(QApplication::translate("MainWindow", "3345", 0));
+        remotePort->setText(QApplication::translate("MainWindow", "3338", 0));
+        magnetoPort->setText(QString());
         label_2->setText(QApplication::translate("MainWindow", "Ip", 0));
         label_3->setText(QApplication::translate("MainWindow", "GPS", 0));
         label_4->setText(QApplication::translate("MainWindow", "Lidar", 0));
@@ -362,7 +411,7 @@ public:
         label_15->setText(QApplication::translate("MainWindow", "Gyro", 0));
         gyroXResult->setText(QString());
         gyroYResult->setText(QString());
-        GyroZResult->setText(QString());
+        gyroZResult->setText(QString());
         acceleroXResult_2->setText(QString());
         label_16->setText(QApplication::translate("MainWindow", "Accelero", 0));
         label_17->setText(QApplication::translate("MainWindow", "X:", 0));
@@ -370,6 +419,13 @@ public:
         acceleroYResult_2->setText(QString());
         label_19->setText(QApplication::translate("MainWindow", "Y:", 0));
         acceleroZResult_2->setText(QString());
+        label_20->setText(QApplication::translate("MainWindow", "Actuator", 0));
+        label_21->setText(QApplication::translate("MainWindow", "Tool:", 0));
+        actuatorResult->setText(QString());
+        pushButton->setText(QApplication::translate("MainWindow", "1", 0));
+        pushButton_2->setText(QApplication::translate("MainWindow", "2", 0));
+        pushButton_3->setText(QApplication::translate("MainWindow", "3", 0));
+        label_22->setText(QApplication::translate("MainWindow", "Epreuve", 0));
     } // retranslateUi
 
 };

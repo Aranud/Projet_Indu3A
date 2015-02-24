@@ -11,16 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    m_pTCPConnection = new TCPConnection();
-//    m_bIsConnectionEtablished = false;
-    ui->img->setPixmap(QPixmap("img.png").scaled(ui->img->width(),ui->img->height(),Qt::KeepAspectRatio));
-    //m_pProtocole = new Protocole();
-//    m_pJoystick = new Joystick(m_pProtocole);
+    ui->img->setPixmap(QPixmap("img2.png").scaled(ui->img->width(),ui->img->height(),Qt::KeepAspectRatio));
 
-        m_pRobot = new RobotInterface(ui);
-//    connect(m_pTCPConnection, SIGNAL(Connected()), this, SLOT(slotOnConnection()));
-//    connect(m_pTCPConnection, SIGNAL(Disconnected()), this, SLOT(slotOnDisconnection()));
-//    connect(m_pTCPConnection, SIGNAL(DataReceivedFromServer(QString)), this, SLOT(slotOnDataReceived(QString)));
+    m_pRobot = new RobotInterface(ui);
 }
 
 /**
