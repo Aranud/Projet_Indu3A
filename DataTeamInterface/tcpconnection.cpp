@@ -91,6 +91,7 @@ void TCPConnection::slotOnConnected()
 {
     m_bIsConnectionEtablished = true;
     qDebug() << "Connection Etablished From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
+    emit Connected();
 }
 
 /**
@@ -100,6 +101,7 @@ void TCPConnection::slotOnDisconnected()
 {
     m_bIsConnectionEtablished = false;
     qDebug() << "Disconnect From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
+    emit Disconnected();
 }
 
 /**

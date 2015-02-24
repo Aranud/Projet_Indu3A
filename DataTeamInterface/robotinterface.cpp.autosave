@@ -49,9 +49,7 @@ RobotInterface::~RobotInterface()
  */
 bool RobotInterface::connectRobot()
 {
-
-    if(m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt()))
-         m_pUi->img->setPixmap(QPixmap("img.png").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
+    m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
     m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
     m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
