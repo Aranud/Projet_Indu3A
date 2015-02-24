@@ -150,8 +150,6 @@ void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
                 baValue[1] = DatasendToMotorRight;
                 float DatasendToMotorLeft = p_InputState.leftThumbY * 127 * ((p_InputState.leftThumbX + 1)/2);
                 baValue[0] = DatasendToMotorLeft;
-                qDebug() << QString::number(baValue[0]).toInt();
-                qDebug() << QString::number(baValue[1]).toInt();
 
             }
             else if(p_InputState.leftThumbX < 0)
@@ -160,10 +158,11 @@ void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
                 baValue[0] = DatasendToMotorLeft;
                 float DatasendToMotorRight = m_fOldLeftStickValueY * 127 * (-(p_InputState.leftThumbX - 1)/2);
                 baValue[1] = DatasendToMotorRight;
-                qDebug() << QString::number(baValue[0]).toInt();
-                qDebug() << QString::number(baValue[1]).toInt();
             }
         }
     }
+
+
+
     SendData(baValue);
 }
