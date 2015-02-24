@@ -161,8 +161,5 @@ void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
             }
         }
     }
-
-
-
     SendData(baValue);
 }
