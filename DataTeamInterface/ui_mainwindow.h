@@ -49,13 +49,8 @@ public:
     QLineEdit *lidarPort;
     QLineEdit *odoPort;
     QLineEdit *gyroPort;
-<<<<<<< HEAD
     QLineEdit *actuatorPort;
     QLineEdit *remotePort;
-=======
-    QLineEdit *leServerPort_7;
-    QLineEdit *leServerPort_8;
->>>>>>> origin/master
     QLineEdit *magnetoPort;
     QLabel *label_2;
     QLabel *label_3;
@@ -163,21 +158,12 @@ public:
         gyroPort = new QLineEdit(centralWidget);
         gyroPort->setObjectName(QStringLiteral("gyroPort"));
         gyroPort->setGeometry(QRect(170, 70, 51, 20));
-<<<<<<< HEAD
         actuatorPort = new QLineEdit(centralWidget);
         actuatorPort->setObjectName(QStringLiteral("actuatorPort"));
         actuatorPort->setGeometry(QRect(60, 100, 51, 20));
         remotePort = new QLineEdit(centralWidget);
         remotePort->setObjectName(QStringLiteral("remotePort"));
         remotePort->setGeometry(QRect(280, 100, 51, 20));
-=======
-        leServerPort_7 = new QLineEdit(centralWidget);
-        leServerPort_7->setObjectName(QStringLiteral("leServerPort_7"));
-        leServerPort_7->setGeometry(QRect(60, 100, 51, 20));
-        leServerPort_8 = new QLineEdit(centralWidget);
-        leServerPort_8->setObjectName(QStringLiteral("leServerPort_8"));
-        leServerPort_8->setGeometry(QRect(280, 100, 51, 20));
->>>>>>> origin/master
         magnetoPort = new QLineEdit(centralWidget);
         magnetoPort->setObjectName(QStringLiteral("magnetoPort"));
         magnetoPort->setGeometry(QRect(170, 100, 51, 20));
@@ -329,13 +315,8 @@ public:
         lidarPort->raise();
         odoPort->raise();
         gyroPort->raise();
-<<<<<<< HEAD
         actuatorPort->raise();
         remotePort->raise();
-=======
-        leServerPort_7->raise();
-        leServerPort_8->raise();
->>>>>>> origin/master
         magnetoPort->raise();
         label_2->raise();
         label_3->raise();
@@ -410,13 +391,8 @@ public:
         lidarPort->setText(QApplication::translate("MainWindow", "3337", 0));
         odoPort->setText(QApplication::translate("MainWindow", "3335", 0));
         gyroPort->setText(QApplication::translate("MainWindow", "3340", 0));
-<<<<<<< HEAD
         actuatorPort->setText(QApplication::translate("MainWindow", "3345", 0));
         remotePort->setText(QApplication::translate("MainWindow", "3338", 0));
-=======
-        leServerPort_7->setText(QApplication::translate("MainWindow", "3345", 0));
-        leServerPort_8->setText(QApplication::translate("MainWindow", "3338", 0));
->>>>>>> origin/master
         magnetoPort->setText(QString());
         label_2->setText(QApplication::translate("MainWindow", "Ip", 0));
         label_3->setText(QApplication::translate("MainWindow", "GPS", 0));
