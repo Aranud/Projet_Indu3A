@@ -22,3 +22,4 @@ DataTeamInterface/debug/moc_actuator.cpp
 DataTeamInterface/gps.cpp.autosave
 DataTeamInterface/debug/moc_accelero.cpp
 DataTeamInterface/debug/moc_robotinterface.cpp
+DataTeamInterface/debug/moc_robotinterface.cpp
