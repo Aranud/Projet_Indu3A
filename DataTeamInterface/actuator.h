@@ -11,7 +11,7 @@ class Actuator : public Captor
 private:
 
 public:
-    Actuator();
+    Actuator(Protocole* p_pProtocole);
     ~Actuator();
 
 public slots:

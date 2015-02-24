@@ -7,17 +7,20 @@
 #include "actuator.h"
 #include "gyro.h"
 #include "lidar.h"
+#include "accelero.h"
 #include "ui_mainwindow.h"
 
 class RobotInterface : public QObject
 {
     Q_OBJECT
 
-    private:
-       Ui::MainWindow* m_pUi;
-        Protocole* m_pProtocole;
-        GPS *m_pGps;
-        Gyro *m_pGyro;
+private:
+    Ui::MainWindow* m_pUi;
+    Protocole* m_pProtocole;
+    GPS *m_pGps;
+    Gyro *m_pGyro;
+    Actuator *m_pActuator;
+    Accelero *m_pAccelero;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -27,6 +30,8 @@ public:
 public slots:
     void slotOnGpsDataAvailable();
     void slotOnGyroDataAvailable();
+    void slotOnActuatorDataAvailable();
+    void slotOnAcceleroDataAvailable();
 };
 
 #endif // ROBOTINTERFACE_H
