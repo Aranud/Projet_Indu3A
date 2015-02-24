@@ -19,5 +19,14 @@ typedef enum eIDCommand
 
 }E_IDCommand;
 
+typedef enum eActuatorTool
+{
+
+    eActuatorToolNone = -1,
+    eActuatorToolRaise = 0b01,
+    eActuatorToolLower = 0b10,
+    eActuatorToolFreeze = 0b11,
+
+}E_ActuatorTool;
 
 #endif // GLOBAL_H

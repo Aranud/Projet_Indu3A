@@ -8,6 +8,7 @@
 #include "gyro.h"
 #include "lidar.h"
 #include "joystick.h"
+#include "accelero.h"
 #include "ui_mainwindow.h"
 
 class RobotInterface : public QObject
@@ -20,6 +21,8 @@ private:
     GPS *m_pGps;
     Gyro *m_pGyro;
     Joystick* m_pJoystick;
+    Actuator *m_pActuator;
+    Accelero *m_pAccelero;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -29,6 +32,8 @@ public:
 public slots:
     void slotOnGpsDataAvailable();
     void slotOnGyroDataAvailable();
+    void slotOnActuatorDataAvailable();
+    void slotOnAcceleroDataAvailable();
 };
 
 #endif // ROBOTINTERFACE_H

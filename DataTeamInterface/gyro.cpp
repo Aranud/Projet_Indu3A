@@ -88,14 +88,14 @@ void Gyro::setZGyro(const qint16 &p_iZGyro)
  */
 void Gyro::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    qDebug() << "Data Extracted : " << p_baDataExtracted.toHex();
-    qDebug() << "Data Extracted Lenght : " << p_baDataExtracted.length();
+    qDebug() << "Gyro Data Extracted : " << p_baDataExtracted.toHex();
+    qDebug() << "Gyro Data Extracted Lenght : " << p_baDataExtracted.length();
 
     m_iXGyro = ReverseData(p_baDataExtracted.mid(0, 2)).toInt();
     m_iYGyro = ReverseData(p_baDataExtracted.mid(2, 2)).toInt();
     m_iZGyro = ReverseData(p_baDataExtracted.mid(4, 2)).toInt();
 
-    qDebug() << "X : "<< m_iXGyro << " Y : " << m_iXGyro << " Z : " << m_iZGyro;
+    qDebug() << "Gyro Value --> : X : "<< m_iXGyro << " Y : " << m_iXGyro << " Z : " << m_iZGyro;
 
     emit emitDataAvailable();
 }

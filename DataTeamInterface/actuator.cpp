@@ -3,8 +3,10 @@
 /**
  * @brief Actuator::Actuator
  */
-Actuator::Actuator()
+Actuator::Actuator(Protocole *p_pProtocole)
 {
+    m_pProtocole = p_pProtocole;
+    m_eIDCommand = eIDCommmandActuator;
 }
 
 /**
