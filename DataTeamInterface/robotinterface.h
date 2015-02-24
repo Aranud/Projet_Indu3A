@@ -46,7 +46,6 @@ public slots:
     void slotOnMagnetoDataAvailable();
     void slotOnOdoDataAvailable();
     void slotOnRemoteDataAvailable();
-    void slotOnMagnetoDataAvailable();
 };
 
 #endif // ROBOTINTERFACE_H
