@@ -23,3 +23,5 @@ DataTeamInterface/gps.cpp.autosave
 DataTeamInterface/debug/moc_accelero.cpp
 DataTeamInterface/debug/moc_robotinterface.cpp
 DataTeamInterface/debug/moc_robotinterface.cpp
+DataTeamInterface/debug/moc_magneto.cpp
+DataTeamInterface/debug/moc_robotinterface.cpp

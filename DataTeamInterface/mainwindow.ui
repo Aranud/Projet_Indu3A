@@ -284,7 +284,7 @@
      <string>3338</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="leServerPort_9">
+   <widget class="QLineEdit" name="magnetoPort">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -696,7 +696,7 @@
    <zorder>gyroPort</zorder>
    <zorder>leServerPort_7</zorder>
    <zorder>leServerPort_8</zorder>
-   <zorder>leServerPort_9</zorder>
+   <zorder>magnetoPort</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>

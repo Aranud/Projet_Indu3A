@@ -7,6 +7,7 @@ Actuator::Actuator(Protocole *p_pProtocole)
 {
     m_pProtocole = p_pProtocole;
     m_eIDCommand = eIDCommmandActuator;
+    m_iActuator = 0;
 }
 
 /**
@@ -17,11 +18,38 @@ Actuator::~Actuator()
 
 }
 
+/*******************************************************************************/
+/**************************** ACCESSOR - MODIFICATOR ***************************/
+/*******************************************************************************/
+
+/**
+ * @brief Actuator::setActuator
+ * @param p_iXActuator
+ */
+void Actuator::setActuator(const qint16 &p_iXActuator)
+{
+    m_iActuator = p_iXActuator;
+}
+
+/**
+ * @brief Actuator::getActuator
+ * @return
+ */
+qint16 Actuator::getActuator() const
+{
+    return m_iActuator;
+}
+
+/*******************************************************************************/
+/******************************** SLOT *****************************************/
+/*******************************************************************************/
+
 /**
  * @brief Actuator::slotOnDataExtractedReady
  * @param p_baDataExtracted
  */
 void Actuator::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
+    m_iActuator = p_baDataExtracted.toInt();
     qDebug() << p_baDataExtracted;
 }

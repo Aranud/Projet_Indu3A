@@ -51,7 +51,7 @@ public:
     QLineEdit *gyroPort;
     QLineEdit *leServerPort_7;
     QLineEdit *leServerPort_8;
-    QLineEdit *leServerPort_9;
+    QLineEdit *magnetoPort;
     QLabel *label_2;
     QLabel *label_3;
     QLabel *label_4;
@@ -155,9 +155,9 @@ public:
         leServerPort_8 = new QLineEdit(centralWidget);
         leServerPort_8->setObjectName(QStringLiteral("leServerPort_8"));
         leServerPort_8->setGeometry(QRect(280, 100, 51, 20));
-        leServerPort_9 = new QLineEdit(centralWidget);
-        leServerPort_9->setObjectName(QStringLiteral("leServerPort_9"));
-        leServerPort_9->setGeometry(QRect(170, 100, 51, 20));
+        magnetoPort = new QLineEdit(centralWidget);
+        magnetoPort->setObjectName(QStringLiteral("magnetoPort"));
+        magnetoPort->setGeometry(QRect(170, 100, 51, 20));
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(10, 10, 47, 13));
@@ -276,7 +276,7 @@ public:
         gyroPort->raise();
         leServerPort_7->raise();
         leServerPort_8->raise();
-        leServerPort_9->raise();
+        magnetoPort->raise();
         label_2->raise();
         label_3->raise();
         label_4->raise();
@@ -344,7 +344,7 @@ public:
         gyroPort->setText(QApplication::translate("MainWindow", "3340", 0));
         leServerPort_7->setText(QApplication::translate("MainWindow", "3345", 0));
         leServerPort_8->setText(QApplication::translate("MainWindow", "3338", 0));
-        leServerPort_9->setText(QString());
+        magnetoPort->setText(QString());
         label_2->setText(QApplication::translate("MainWindow", "Ip", 0));
         label_3->setText(QApplication::translate("MainWindow", "GPS", 0));
         label_4->setText(QApplication::translate("MainWindow", "Lidar", 0));

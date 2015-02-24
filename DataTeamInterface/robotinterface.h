@@ -9,6 +9,7 @@
 #include "lidar.h"
 #include "joystick.h"
 #include "accelero.h"
+#include "magneto.h"
 #include "ui_mainwindow.h"
 
 class RobotInterface : public QObject
@@ -23,6 +24,7 @@ private:
     Joystick* m_pJoystick;
     Actuator *m_pActuator;
     Accelero *m_pAccelero;
+    Magneto* m_pMagneto;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -34,6 +36,7 @@ public slots:
     void slotOnGyroDataAvailable();
     void slotOnActuatorDataAvailable();
     void slotOnAcceleroDataAvailable();
+    void slotOnMagnetoDataAvailable();
 };
 
 #endif // ROBOTINTERFACE_H

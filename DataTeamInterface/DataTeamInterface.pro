@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     lidar.cpp \
     gyro.cpp \
     actuator.cpp \
-    accelero.cpp
+    accelero.cpp \
+    magneto.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -41,6 +42,7 @@ HEADERS  += mainwindow.h \
     lidar.h \
     gyro.h \
     actuator.h \
-    accelero.h
+    accelero.h \
+    magneto.h
 
 FORMS    += mainwindow.ui

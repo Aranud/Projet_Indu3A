@@ -13,11 +13,13 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pJoystick = new Joystick(m_pProtocole);
     m_pActuator = new Actuator(m_pProtocole);
     m_pAccelero = new Accelero(m_pProtocole);
+    m_pMagneto = new Magneto(m_pProtocole);
 
     connect(m_pGps, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGpsDataAvailable()));
     connect(m_pGyro, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGyroDataAvailable()));
     connect(m_pActuator, SIGNAL(emitDataAvailable()), this, SLOT(slotOnActuatorDataAvailable()));
     connect(m_pAccelero, SIGNAL(emitDataAvailable()), this, SLOT(slotOnAcceleroDataAvailable()));
+    connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
 }
 
 /**
@@ -41,8 +43,9 @@ bool RobotInterface::connectRobot()
     m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
     m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
     m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
-    //m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->->text().toInt());
+    //m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
+    m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
 
     return true;
 }
@@ -88,5 +91,12 @@ void RobotInterface::slotOnAcceleroDataAvailable()
     m_pUi->acceleroXResult_2->setText(QString::number(m_pAccelero->getXAccelero()));
     m_pUi->acceleroYResult_2->setText(QString::number(m_pAccelero->getYAccelero()));
     m_pUi->acceleroZResult_2->setText(QString::number(m_pAccelero->getZAccelero()));
+}
+
+void RobotInterface::slotOnMagnetoDataAvailable()
+{
+//    m_pUi->acceleroXResult_2->setText(QString::number(m_pAccelero->getXAccelero()));
+//    m_pUi->acceleroYResult_2->setText(QString::number(m_pAccelero->getYAccelero()));
+//    m_pUi->acceleroZResult_2->setText(QString::number(m_pAccelero->getZAccelero()));
 }
 
