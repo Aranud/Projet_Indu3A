@@ -6,6 +6,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pProtocole = new Protocole();
     m_pGps = new GPS(m_pProtocole);
     m_pGyro = new Gyro(m_pProtocole);
+    m_pJoystick = new Joystick(m_pProtocole);
 
      connect(m_pGps, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGpsDataAvailable()));
      connect(m_pGyro, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGyroDataAvailable()));
@@ -18,8 +19,11 @@ RobotInterface::~RobotInterface()
 
 bool RobotInterface::connectRobot()
 {
-    m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(),m_pUi->gpsPort->text().toInt());
-    m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(),m_pUi->gyroPort->text().toInt());
+    m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
+    m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
+    m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+
+    return true;
 }
 
 void RobotInterface::slotOnGpsDataAvailable()

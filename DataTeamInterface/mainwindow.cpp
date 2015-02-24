@@ -59,6 +59,7 @@ void MainWindow::slotOnDisconnection()
  */
 void MainWindow::slotOnDataReceived(QString p_sDataReceived)
 {
+    Q_UNUSED(p_sDataReceived);
 }
 
 /**

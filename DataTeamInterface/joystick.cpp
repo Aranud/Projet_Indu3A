@@ -165,46 +165,5 @@ void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
             }
         }
     }
-
-    if(p_InputState.rightThumbY != m_fOldRightStickValueY || p_InputState.rightThumbX != m_fOldRightStickValueX)
-    {
-        m_fOldRightStickValueY = p_InputState.leftThumbY;
-        m_fOldRightStickValueX = p_InputState.leftThumbX;
-
-        if(p_InputState.rightThumbY != 0)
-        {
-            if(p_InputState.rightThumbX > 0)
-            {
-                float DatasendToMotorRight = p_InputState.rightThumbY * 127 * (1-((p_InputState.rightThumbX + 1)/2));
-                baValue[1] = DatasendToMotorRight;
-                float DatasendToMotorLeft = p_InputState.rightThumbY * 127 * ((p_InputState.rightThumbX + 1)/2);
-                baValue[0] = DatasendToMotorLeft;
-                qDebug() << QString::number(baValue[0]).toInt();
-                qDebug() << QString::number(baValue[1]).toInt();
-            }
-            else if(p_InputState.leftThumbX < 0)
-            {
-                float DatasendToMotorLeft = p_InputState.rightThumbY * 127 * (1+((p_InputState.rightThumbX - 1)/2));
-                baValue[0] = DatasendToMotorLeft;
-                float DatasendToMotorRight = m_fOldStickValue * 127 * (-(p_InputState.rightThumbX - 1)/2);
-                baValue[1] = DatasendToMotorRight;
-                qDebug() << QString::number(baValue[0]).toInt();
-                qDebug() << QString::number(baValue[1]).toInt();
-            }
-        }
-    }
-
-    if(p_InputState.isButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT))
-    {
-           baValue[0]=0;
-           baValue[1]=127;
-
-    }
-    else if(p_InputState.isButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT))
-    {
-           baValue[0]=127;
-           baValue[1]=0;
-    }
-
     SendData(baValue);
 }
