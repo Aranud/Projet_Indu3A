@@ -26,5 +26,5 @@ Lidar::~Lidar()
  */
 void Lidar::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    qDebug() << p_baDataExtracted;
+    qDebug() << "Lazer : " << p_baDataExtracted.toHex();
 }
