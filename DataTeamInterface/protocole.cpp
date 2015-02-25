@@ -79,7 +79,7 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
  * @param p_baData
  * @return
  */
-QByteArray Protocole::ExtractData( QByteArray p_baData)
+QByteArray Protocole::ExtractData(QByteArray p_baData)
 {
     QByteArray baData;
     int iSize=0;
