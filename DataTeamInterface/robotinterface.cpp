@@ -82,7 +82,7 @@ void RobotInterface::slotOnGpsDataAvailable()
     m_pUi->longitudeResult->setText(QString::number(m_pGps->getLongitude()));
     m_pUi->latitudeResult->setText(QString::number(m_pGps->getLatitude()));
     m_pUi->qualityResult->setText(m_pGps->getQuality());
-    m_pUi->timeResult->setText(m_pGps->getTime());
+    m_pUi->timeResult->setText(QString::number(m_pGps->getTime()));
 }
 
 /**
