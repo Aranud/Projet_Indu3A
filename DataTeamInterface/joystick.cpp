@@ -20,7 +20,6 @@ Joystick::Joystick(Protocole* p_pProtocole)
     m_fOldStickValue = 0;
 
     m_pController->startAutoPolling(AUTO_POLLING_TIME_ELASPE); // Update appelé toutes les 20 milisecondes
-    m_pController->startAutoPolling(20); // Update appelé toutes les 20 milisecondes
 
     connect(m_pController, SIGNAL(controllerConnected(uint)), this, SLOT(slotOnControllerConntected(uint)));
     connect(m_pController, SIGNAL(controllerDisconnected(uint)), this, SLOT(slotOnControllerDisconntected(uint)));
