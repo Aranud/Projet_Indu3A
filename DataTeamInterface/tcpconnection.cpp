@@ -116,8 +116,6 @@ void TCPConnection::slotOnDataReceived()
     while(m_pTcpSocket->bytesAvailable())
         baDataReceived += m_pTcpSocket->readAll();
 
-    qDebug() << "Data Received Result : " << baDataReceived.toHex();
-
     emit DataReceivedFromServer(baDataReceived);
 }
 
