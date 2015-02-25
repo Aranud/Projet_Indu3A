@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.3.2
+** Created by: Qt User Interface Compiler version 5.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -100,6 +100,8 @@ public:
     QPushButton *pbDroite;
     QPushButton *pbGauche;
     QLabel *labelDemitour;
+    QLabel *label_24;
+    QLabel *timeResult;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -337,6 +339,12 @@ public:
         labelDemitour = new QLabel(centralWidget);
         labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
         labelDemitour->setGeometry(QRect(510, 230, 121, 20));
+        label_24 = new QLabel(centralWidget);
+        label_24->setObjectName(QStringLiteral("label_24"));
+        label_24->setGeometry(QRect(30, 310, 47, 13));
+        timeResult = new QLabel(centralWidget);
+        timeResult->setObjectName(QStringLiteral("timeResult"));
+        timeResult->setGeometry(QRect(80, 310, 47, 13));
         MainWindow->setCentralWidget(centralWidget);
         line_7->raise();
         line_5->raise();
@@ -408,6 +416,8 @@ public:
         pbDroite->raise();
         pbGauche->raise();
         labelDemitour->raise();
+        label_24->raise();
+        timeResult->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 735, 21));
@@ -488,6 +498,8 @@ public:
         pbDroite->setText(QApplication::translate("MainWindow", "Droite", 0));
         pbGauche->setText(QApplication::translate("MainWindow", "Gauche", 0));
         labelDemitour->setText(QApplication::translate("MainWindow", "Unused", 0));
+        label_24->setText(QApplication::translate("MainWindow", "time", 0));
+        timeResult->setText(QString());
     } // retranslateUi
 
 };

@@ -921,6 +921,32 @@
      <string>Unused</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_24">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>310</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>time</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="timeResult">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>310</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>line_7</zorder>
    <zorder>line_5</zorder>
    <zorder>line_4</zorder>
@@ -991,6 +1017,8 @@
    <zorder>pbDroite</zorder>
    <zorder>pbGauche</zorder>
    <zorder>labelDemitour</zorder>
+   <zorder>label_24</zorder>
+   <zorder>timeResult</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
