@@ -447,7 +447,7 @@ public:
         gyroPort->setText(QApplication::translate("MainWindow", "3340", 0));
         actuatorPort->setText(QApplication::translate("MainWindow", "3345", 0));
         remotePort->setText(QApplication::translate("MainWindow", "3338", 0));
-        magnetoPort->setText(QString());
+        magnetoPort->setText(QApplication::translate("MainWindow", "3341", 0));
         label_2->setText(QApplication::translate("MainWindow", "Ip", 0));
         label_3->setText(QApplication::translate("MainWindow", "GPS", 0));
         label_4->setText(QApplication::translate("MainWindow", "Lidar", 0));

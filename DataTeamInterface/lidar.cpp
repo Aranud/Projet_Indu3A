@@ -74,14 +74,6 @@ void Lidar::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
             m_lstiAlbedo.append(QString::number(p_baDataExtracted.at(iIncrement + 542)).toInt());
         }
 
-    //    m_lstiDistance.append(ReverseData(p_baDataExtracted.mid(0, 271)).toHex().toInt());
-    //    m_lstiDegree.append(ReverseData(p_baDataExtracted.mid(271, 271)).toHex().toInt());
-    //    m_lstiAlbedo.append(ReverseData(p_baDataExtracted.mid(542, 271)).toHex().toInt());
-
-//        qDebug() << "lstDistance" << m_lstiDistance;
-//        qDebug() << "lstPoids" << m_lstiPoids;
-//        qDebug() << "lstAlbedo" << m_lstiAlbedo;
-
         emit emitDataAvailable();
     }
 }
