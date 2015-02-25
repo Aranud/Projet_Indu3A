@@ -78,9 +78,9 @@ void Lidar::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
     //    m_lstiDegree.append(ReverseData(p_baDataExtracted.mid(271, 271)).toHex().toInt());
     //    m_lstiAlbedo.append(ReverseData(p_baDataExtracted.mid(542, 271)).toHex().toInt());
 
-        qDebug() << "lstDistance" << m_lstiDistance;
-        qDebug() << "lstDegree" << m_lstiDegree;
-        qDebug() << "lstAlbedo" << m_lstiAlbedo;
+        //qDebug() << "lstDistance" << m_lstiDistance;
+        //qDebug() << "lstDegree" << m_lstiDegree;
+       // qDebug() << "lstAlbedo" << m_lstiAlbedo;
 
         emit emitDataAvailable();
     }
