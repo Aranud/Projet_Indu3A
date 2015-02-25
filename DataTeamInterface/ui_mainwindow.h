@@ -99,6 +99,7 @@ public:
     QFrame *line_8;
     QPushButton *pbDroite;
     QPushButton *pbGauche;
+    QLabel *labelDemitour;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -333,6 +334,9 @@ public:
         pbGauche = new QPushButton(centralWidget);
         pbGauche->setObjectName(QStringLiteral("pbGauche"));
         pbGauche->setGeometry(QRect(560, 200, 75, 23));
+        labelDemitour = new QLabel(centralWidget);
+        labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
+        labelDemitour->setGeometry(QRect(510, 230, 121, 20));
         MainWindow->setCentralWidget(centralWidget);
         line_7->raise();
         line_5->raise();
@@ -403,6 +407,7 @@ public:
         line_8->raise();
         pbDroite->raise();
         pbGauche->raise();
+        labelDemitour->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 735, 21));
@@ -482,6 +487,7 @@ public:
         rr->setText(QString());
         pbDroite->setText(QApplication::translate("MainWindow", "Droite", 0));
         pbGauche->setText(QApplication::translate("MainWindow", "Gauche", 0));
+        labelDemitour->setText(QApplication::translate("MainWindow", "Unused", 0));
     } // retranslateUi
 
 };

@@ -160,4 +160,17 @@ void RobotInterface::on_pbDroite_clicked()
         }
     }
     SendData(baValue);*/
+    QByteArray baValue;
+
+    m_pUi->labelDemitour->setText("Demi tour in process");
+
+
+    for(int i=0;i<=10;i++)
+    {
+        baValue[0] = 0;
+        baValue[0] = 127;
+        SendData(baValue);
+    }
+
+    m_pUi->labelDemitour->setText("Unused");
 }
