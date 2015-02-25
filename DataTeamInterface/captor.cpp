@@ -99,9 +99,6 @@ void Captor::slotOnDisconnection()
  */
 void Captor::slotOnDataReceivedFromServer(QByteArray p_baData)
 {
-    if(m_eIDCommand == eIDCommmandLidar)
-        qDebug() << "Brut Data Lidar : " << p_baData.toHex();
-
     emit emitDataExtractedAvailable(m_pProtocole->ExtractData(p_baData));
 }
 
