@@ -6,8 +6,7 @@
 Lidar::Lidar(Protocole *p_pProtocole)
 {
     m_pProtocole = p_pProtocole;
-
-
+    m_eIDCommand = eIDCommmandLidar;
 
 }
 
@@ -25,5 +24,5 @@ Lidar::~Lidar()
  */
 void Lidar::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    qDebug() << p_baDataExtracted;
+    qDebug() << "Lazer : " << p_baDataExtracted.toHex();
 }

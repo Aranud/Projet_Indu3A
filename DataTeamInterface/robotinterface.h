@@ -24,7 +24,13 @@ private:
     Joystick* m_pJoystick;
     Actuator *m_pActuator;
     Accelero *m_pAccelero;
+    Lidar *m_pLidar;
+    //Magneto *m_pMagneto;
+    //Odo *m_pOdo;
+    //Motor *m_pMotor;
+    //Remote *m_pRemote;
     Magneto* m_pMagneto;
+
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -36,7 +42,10 @@ public slots:
     void slotOnGyroDataAvailable();
     void slotOnActuatorDataAvailable();
     void slotOnAcceleroDataAvailable();
+    void slotOnLidarDataAvailable();
     void slotOnMagnetoDataAvailable();
+    void slotOnOdoDataAvailable();
+    void slotOnRemoteDataAvailable();
 };
 
 #endif // ROBOTINTERFACE_H
