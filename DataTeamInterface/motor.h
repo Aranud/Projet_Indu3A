@@ -9,11 +9,11 @@ class Motor : public Captor
 {
     Q_OBJECT
 public:
-    Motor();
+    Motor(Protocole *p_pProtocole);
     ~Motor();
 
 public slots:
-
+    void slotOnDataExtractedReady(QByteArray p_baDataExtracted);
 };
 
 #endif // MOTOR_H

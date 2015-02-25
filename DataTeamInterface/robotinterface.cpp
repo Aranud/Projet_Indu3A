@@ -16,7 +16,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pLidar = new Lidar(m_pProtocole);
     //m_pMagneto = new Magneto(m_pProtocole);
     m_pOdo = new Odo(m_pProtocole);
-    //m_pMotor = new Motor(m_pProtocole);
+    m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
     m_pMagneto = new Magneto(m_pProtocole);
 
@@ -55,7 +55,7 @@ bool RobotInterface::connectRobot()
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
     m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
 //    m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
-//    m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+    m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
 //    m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
@@ -169,7 +169,7 @@ void RobotInterface::on_pbDroite_clicked()
     {
         baValue[0] = 0;
         baValue[0] = 127;
-        SendData(baValue);
+        m_pMotor->SendData(baValue);
     }
 
     m_pUi->labelDemitour->setText("Unused");

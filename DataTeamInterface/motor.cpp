@@ -3,8 +3,10 @@
 /**
  * @brief Motor::Motor
  */
-Motor::Motor()
+Motor::Motor(Protocole* p_pProtocole)
 {
+    m_pProtocole = p_pProtocole;
+    m_eIDCommand = eIDCommmandMotors;
 }
 
 /**
@@ -25,5 +27,5 @@ Motor::~Motor()
  */
 void Motor::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-
+    Q_UNUSED(p_baDataExtracted);
 }

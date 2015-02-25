@@ -11,6 +11,7 @@
 #include "accelero.h"
 #include "magneto.h"
 #include "odo.h"
+#include "motor.h"
 #include "ui_mainwindow.h"
 
 class RobotInterface : public QObject
@@ -28,7 +29,7 @@ private:
     Lidar *m_pLidar;
     //Magneto *m_pMagneto;
     Odo *m_pOdo;
-    //Motor *m_pMotor;
+    Motor *m_pMotor;
     //Remote *m_pRemote;
     Magneto* m_pMagneto;
 
