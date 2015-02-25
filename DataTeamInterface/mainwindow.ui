@@ -882,6 +882,32 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
+   <widget class="QPushButton" name="pbDroite">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>200</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Droite</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbGauche">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>200</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Gauche</string>
+    </property>
+   </widget>
    <zorder>line_7</zorder>
    <zorder>line_5</zorder>
    <zorder>line_4</zorder>
@@ -949,6 +975,8 @@
    <zorder>rl</zorder>
    <zorder>rr</zorder>
    <zorder>line_8</zorder>
+   <zorder>pbDroite</zorder>
+   <zorder>pbGauche</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

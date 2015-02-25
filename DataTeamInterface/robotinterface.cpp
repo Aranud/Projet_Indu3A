@@ -54,10 +54,7 @@ bool RobotInterface::connectRobot()
     m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
     m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
-<<<<<<< HEAD
 //    m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
-=======
->>>>>>> origin/master
 //    m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
 //    m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
@@ -133,3 +130,34 @@ void RobotInterface::slotOnMagnetoDataAvailable()
 //    m_pUi->acceleroZResult_2->setText(QString::number(m_pAccelero->getZAccelero()));
 }
 
+
+void RobotInterface::on_pbDroite_clicked()
+{
+   /* QByteArray baValue;
+
+    if(p_InputState.leftThumbY != m_fOldLeftStickValueY || p_InputState.leftThumbX != m_fOldLeftStickValueX)
+    {
+        m_fOldLeftStickValueY = p_InputState.leftThumbY;
+        m_fOldLeftStickValueX = p_InputState.leftThumbX;
+
+        if(p_InputState.leftThumbY != 0)
+        {
+            if(p_InputState.leftThumbX > 0)
+            {
+                float DatasendToMotorRight = p_InputState.leftThumbY * 127 * (1-((p_InputState.leftThumbX + 1)/2));
+                baValue[1] = DatasendToMotorRight;
+                float DatasendToMotorLeft = p_InputState.leftThumbY * 127 * ((p_InputState.leftThumbX + 1)/2);
+                baValue[0] = DatasendToMotorLeft;
+
+            }
+            else if(p_InputState.leftThumbX < 0)
+            {
+                float DatasendToMotorLeft = m_fOldLeftStickValueY * 127 * (1+((p_InputState.leftThumbX - 1)/2));
+                baValue[0] = DatasendToMotorLeft;
+                float DatasendToMotorRight = m_fOldLeftStickValueY * 127 * (-(p_InputState.leftThumbX - 1)/2);
+                baValue[1] = DatasendToMotorRight;
+            }
+        }
+    }
+    SendData(baValue);*/
+}
