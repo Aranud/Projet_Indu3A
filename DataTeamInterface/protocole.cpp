@@ -45,7 +45,6 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
 //    baDataToSend[3] = 0x4F;  // O
 //    baDataToSend[4] = 0x30;  // 0
 //    baDataToSend[5] = 0x31;  // 1
-
     baDataToSend.append(m_sDefautName);
 
 //    baDataToSend[6] = 0x01;  // ID  = 01)
@@ -55,7 +54,6 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
 //    baDataToSend[8] = 0x00;  // SIZE
 //    baDataToSend[9] = 0x00;  // SIZE
 //    baDataToSend[10] = 0x02;  // SIZE
-
     baDataToSend.append(QString("%1").arg(p_baValueCommand.size(), 4, 10, cFillChar));
 
 //    baDataToSend[11] = 0x7F;  // Left
@@ -66,10 +64,10 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
 //    baDataToSend[14] = 0x00;  // CRC
 //    baDataToSend[15] = 0x00;  // CRC
 //    baDataToSend[16] = 0x00;  // CRC
-    baDataToSend.append((QChar)0x00);
-    baDataToSend.append((QChar)0x00);
-    baDataToSend.append((QChar)0x00);
-    baDataToSend.append((QChar)0x00);
+    baDataToSend.append(cFillChar);
+    baDataToSend.append(cFillChar);
+    baDataToSend.append(cFillChar);
+    baDataToSend.append(cFillChar);
 
     return baDataToSend;
 }
@@ -79,15 +77,22 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
  * @param p_baData
  * @return
  */
-QByteArray Protocole::ExtractData( QByteArray p_baData)
+QByteArray Protocole::ExtractData(QByteArray p_baData)
+{
+    int iSize = ReverseData(p_baData.mid(7, 4)).toHex().toInt(0, 16);
+    return p_baData.mid(11, iSize);
+}
+
+/**
+ * @brief Protocole::ReverseData
+ * @param p_baData
+ * @return
+ */
+QByteArray Protocole::ReverseData(QByteArray p_baData)
 {
     QByteArray baData;
-    int iSize=0;
-
-    for(int i = 0; i < 4; i++)
-        iSize += (QString::number(p_baData[7 + i]).toInt());
-
-    baData = p_baData.mid(11, iSize);
+    for(int iIncrement = p_baData.length() - 1; iIncrement >= 0; iIncrement--)
+        baData += p_baData.mid(iIncrement, 1);
     return baData;
 }
 

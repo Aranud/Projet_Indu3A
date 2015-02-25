@@ -18,6 +18,7 @@ public:
 
     QByteArray FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baValueCommand);
     QByteArray ExtractData(QByteArray p_baData);
+    QByteArray ReverseData(QByteArray p_baData);
 
     QString getDefautName() const;
     void setDefautName(const QString &p_sDefautName);
