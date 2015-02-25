@@ -15,7 +15,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pAccelero = new Accelero(m_pProtocole);
     m_pLidar = new Lidar(m_pProtocole);
     //m_pMagneto = new Magneto(m_pProtocole);
-    //m_pOdo = new Odo(m_pProtocole);
+    m_pOdo = new Odo(m_pProtocole);
     //m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
     m_pMagneto = new Magneto(m_pProtocole);
@@ -26,7 +26,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     connect(m_pAccelero, SIGNAL(emitDataAvailable()), this, SLOT(slotOnAcceleroDataAvailable()));
     connect(m_pLidar, SIGNAL(emitDataAvailable()), this, SLOT(slotOnLidarDataAvailable()));
 //    connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable());
-//    connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnOdoDataAvailable()));
+    connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnOdoDataAvailable()));
 //    connect(m_pRemote, SIGNAL(emitDataAvailable()), this, SLOT(slotOnRemoteDataAvailable()));
     connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
 }
@@ -49,18 +49,14 @@ RobotInterface::~RobotInterface()
  */
 bool RobotInterface::connectRobot()
 {
-
-    if(m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt()))
-         m_pUi->img->setPixmap(QPixmap("img.png").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
+    m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
     m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
     m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
-    m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
-//    m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
+    m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
 //    m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
-//    m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
+    m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
 //    m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
-    //m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
 
@@ -117,7 +113,10 @@ void RobotInterface::slotOnLidarDataAvailable()
 
 void RobotInterface::slotOnOdoDataAvailable()
 {
-
+    m_pUi->fl->setText(QString::number(m_pOdo->getFrontLeft()));
+    m_pUi->fr->setText(QString::number(m_pOdo->getFrontRight()));
+    m_pUi->rl->setText(QString::number(m_pOdo->getRearLeft()));
+    m_pUi->rr->setText(QString::number(m_pOdo->getRearRight()));
 }
 
 void RobotInterface::slotOnRemoteDataAvailable()

@@ -791,6 +791,98 @@
      <string>Epreuve</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_23">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>100</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Odo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fl">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>120</y>
+      <width>47</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fr">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>120</y>
+      <width>47</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rl">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>150</y>
+      <width>47</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rr">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>150</y>
+      <width>47</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="Line" name="line_7">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>90</y>
+      <width>20</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_8">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>170</y>
+      <width>301</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <zorder>line_7</zorder>
    <zorder>line_5</zorder>
    <zorder>line_4</zorder>
    <zorder>leServerAddress</zorder>
@@ -814,8 +906,6 @@
    <zorder>gyroPort</zorder>
    <zorder>actuatorPort</zorder>
    <zorder>remotePort</zorder>
-   <zorder>leServerPort_7</zorder>
-   <zorder>leServerPort_8</zorder>
    <zorder>magnetoPort</zorder>
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
@@ -853,6 +943,12 @@
    <zorder>pushButton_3</zorder>
    <zorder>line_6</zorder>
    <zorder>label_22</zorder>
+   <zorder>label_23</zorder>
+   <zorder>fl</zorder>
+   <zorder>fr</zorder>
+   <zorder>rl</zorder>
+   <zorder>rr</zorder>
+   <zorder>line_8</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
