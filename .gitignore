@@ -21,10 +21,12 @@ DataTeamInterface/release/moc_simplexbox360controller.cpp
 DataTeamInterface/debug/moc_actuator.cpp
 DataTeamInterface/gps.cpp.autosave
 DataTeamInterface/debug/moc_accelero.cpp
-DataTeamInterface/debug/moc_robotinterface.cpp
-DataTeamInterface/debug/moc_robotinterface.cpp
 DataTeamInterface/debug/moc_magneto.cpp
-DataTeamInterface/debug/moc_robotinterface.cpp
-DataTeamInterface/debug/moc_robotinterface.cpp
-DataTeamInterface/debug/moc_robotinterface.cpp
 DataTeamInterface/debug/moc_odo.cpp
+DataTeamInterface/lidar.cpp.autosave
+DataTeamInterface/motor.h.autosave
+DataTeamInterface/debug/moc_robotinterface.cpp
+
+DataTeamInterface/debug/moc_motor.cpp
+DataTeamInterface/debug/moc_robotinterface.cpp
+DataTeamInterface/debug/moc_robotinterface.cpp

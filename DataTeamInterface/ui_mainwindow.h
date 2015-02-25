@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.0
+** Created by: Qt User Interface Compiler version 5.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -97,6 +97,9 @@ public:
     QLabel *rr;
     QFrame *line_7;
     QFrame *line_8;
+    QPushButton *pbDroite;
+    QPushButton *pbGauche;
+    QLabel *labelDemitour;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -325,6 +328,15 @@ public:
         line_8->setGeometry(QRect(440, 170, 301, 21));
         line_8->setFrameShape(QFrame::HLine);
         line_8->setFrameShadow(QFrame::Sunken);
+        pbDroite = new QPushButton(centralWidget);
+        pbDroite->setObjectName(QStringLiteral("pbDroite"));
+        pbDroite->setGeometry(QRect(470, 200, 75, 23));
+        pbGauche = new QPushButton(centralWidget);
+        pbGauche->setObjectName(QStringLiteral("pbGauche"));
+        pbGauche->setGeometry(QRect(560, 200, 75, 23));
+        labelDemitour = new QLabel(centralWidget);
+        labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
+        labelDemitour->setGeometry(QRect(510, 230, 121, 20));
         MainWindow->setCentralWidget(centralWidget);
         line_7->raise();
         line_5->raise();
@@ -393,6 +405,9 @@ public:
         rl->raise();
         rr->raise();
         line_8->raise();
+        pbDroite->raise();
+        pbGauche->raise();
+        labelDemitour->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 735, 21));
@@ -470,6 +485,9 @@ public:
         fr->setText(QString());
         rl->setText(QString());
         rr->setText(QString());
+        pbDroite->setText(QApplication::translate("MainWindow", "Droite", 0));
+        pbGauche->setText(QApplication::translate("MainWindow", "Gauche", 0));
+        labelDemitour->setText(QApplication::translate("MainWindow", "Unused", 0));
     } // retranslateUi
 
 };
