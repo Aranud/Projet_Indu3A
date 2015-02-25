@@ -90,3 +90,13 @@ void MainWindow::on_pbSendData_clicked()
 {
     m_pTCPConnection->SendData(ui->leDataToSend->text().toUtf8());
 }
+
+void MainWindow::on_pbDroite_clicked()
+{
+    m_pRobot->PushButonRight();
+}
+
+void MainWindow::on_pbGauche_clicked()
+{
+    m_pRobot->PushButonLeft();
+}

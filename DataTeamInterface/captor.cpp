@@ -57,6 +57,7 @@ void Captor::DisconnectCaptor()
  */
 bool Captor::SendData(QByteArray p_pDataToSend)
 {
+    qDebug() << "here too";
     return m_pTCPConnection->SendData(m_pProtocole->FormateCommand(m_eIDCommand, p_pDataToSend));
 }
 

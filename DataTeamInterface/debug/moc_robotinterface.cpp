@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_RobotInterface_t {
     QByteArrayData data[11];
-    char stringdata[240];
+    char stringdata[232];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,7 +39,7 @@ QT_MOC_LITERAL(6, 119, 24),
 QT_MOC_LITERAL(7, 144, 26),
 QT_MOC_LITERAL(8, 171, 22),
 QT_MOC_LITERAL(9, 194, 25),
-QT_MOC_LITERAL(10, 220, 19)
+QT_MOC_LITERAL(10, 220, 11)
     },
     "RobotInterface\0slotOnGpsDataAvailable\0"
     "\0slotOnGyroDataAvailable\0"
@@ -48,7 +48,7 @@ QT_MOC_LITERAL(10, 220, 19)
     "slotOnLidarDataAvailable\0"
     "slotOnMagnetoDataAvailable\0"
     "slotOnOdoDataAvailable\0slotOnRemoteDataAvailable\0"
-    "on_pbDroite_clicked"
+    "slotTimeOut"
 };
 #undef QT_MOC_LITERAL
 
@@ -74,7 +74,7 @@ static const uint qt_meta_data_RobotInterface[] = {
        7,    0,   64,    2, 0x0a /* Public */,
        8,    0,   65,    2, 0x0a /* Public */,
        9,    0,   66,    2, 0x0a /* Public */,
-      10,    0,   67,    2, 0x08 /* Private */,
+      10,    0,   67,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -103,7 +103,7 @@ void RobotInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         case 5: _t->slotOnMagnetoDataAvailable(); break;
         case 6: _t->slotOnOdoDataAvailable(); break;
         case 7: _t->slotOnRemoteDataAvailable(); break;
-        case 8: _t->on_pbDroite_clicked(); break;
+        case 8: _t->slotTimeOut(); break;
         default: ;
         }
     }

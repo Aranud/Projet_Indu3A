@@ -40,6 +40,8 @@ public slots:
 private slots:
     void on_pbConnection_clicked();
     void on_pbSendData_clicked();
+    void on_pbDroite_clicked();
+    void on_pbGauche_clicked();
 };
 
 #endif // MAINWINDOW_H

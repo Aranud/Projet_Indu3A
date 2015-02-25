@@ -5,7 +5,6 @@
 
 typedef enum eIDCommand
 {
-
     eIDCommandNone = -1,
     eIDCommmandAccelero = 0x09,
     eIDCommmandActuator = 0x0C,
@@ -21,12 +20,19 @@ typedef enum eIDCommand
 
 typedef enum eActuatorTool
 {
-
     eActuatorToolNone = -1,
     eActuatorToolRaise = 0b01,
     eActuatorToolLower = 0b10,
     eActuatorToolFreeze = 0b11,
 
 }E_ActuatorTool;
+
+typedef enum eDirection
+{
+    eDirectionNone,
+    eDirectionLeft,
+    eDirectionRight
+
+}E_Direction;
 
 #endif // GLOBAL_H

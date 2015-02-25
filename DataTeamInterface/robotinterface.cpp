@@ -20,6 +20,11 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     //m_pRemote = new Remote(m_pProtocole);
     m_pMagneto = new Magneto(m_pProtocole);
 
+    m_pTimer = new QTimer();
+    m_pTimer->setInterval(500);
+
+    connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
+
     connect(m_pGps, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGpsDataAvailable()));
     connect(m_pGyro, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGyroDataAvailable()));
     connect(m_pActuator, SIGNAL(emitDataAvailable()), this, SLOT(slotOnActuatorDataAvailable()));
@@ -123,6 +128,7 @@ void RobotInterface::slotOnOdoDataAvailable()
 void RobotInterface::slotOnRemoteDataAvailable()
 {
 }
+
 void RobotInterface::slotOnMagnetoDataAvailable()
 {
 //    m_pUi->acceleroXResult_2->setText(QString::number(m_pAccelero->getXAccelero()));
@@ -131,46 +137,54 @@ void RobotInterface::slotOnMagnetoDataAvailable()
 }
 
 
-void RobotInterface::on_pbDroite_clicked()
+void RobotInterface::PushButonRight()
 {
-   /* QByteArray baValue;
+    m_eDirection = eDirectionRight;
 
-    if(p_InputState.leftThumbY != m_fOldLeftStickValueY || p_InputState.leftThumbX != m_fOldLeftStickValueX)
-    {
-        m_fOldLeftStickValueY = p_InputState.leftThumbY;
-        m_fOldLeftStickValueX = p_InputState.leftThumbX;
+    if(m_pTimer->isActive())
+        m_pTimer->stop();
+    else
+        m_pTimer->start();
+}
 
-        if(p_InputState.leftThumbY != 0)
-        {
-            if(p_InputState.leftThumbX > 0)
-            {
-                float DatasendToMotorRight = p_InputState.leftThumbY * 127 * (1-((p_InputState.leftThumbX + 1)/2));
-                baValue[1] = DatasendToMotorRight;
-                float DatasendToMotorLeft = p_InputState.leftThumbY * 127 * ((p_InputState.leftThumbX + 1)/2);
-                baValue[0] = DatasendToMotorLeft;
+void RobotInterface::PushButonLeft()
+{
+    m_eDirection = eDirectionLeft;
 
-            }
-            else if(p_InputState.leftThumbX < 0)
-            {
-                float DatasendToMotorLeft = m_fOldLeftStickValueY * 127 * (1+((p_InputState.leftThumbX - 1)/2));
-                baValue[0] = DatasendToMotorLeft;
-                float DatasendToMotorRight = m_fOldLeftStickValueY * 127 * (-(p_InputState.leftThumbX - 1)/2);
-                baValue[1] = DatasendToMotorRight;
-            }
-        }
-    }
-    SendData(baValue);*/
-    QByteArray baValue;
+    if(m_pTimer->isActive())
+        m_pTimer->stop();
+    else
+        m_pTimer->start();
+}
 
-    m_pUi->labelDemitour->setText("Demi tour in process");
+void RobotInterface::slotTimeOut()
+{
+     QByteArray baValue;
 
+     m_pUi->labelDemitour->setText("Demi tour in process");
 
-    for(int i=0;i<=10;i++)
-    {
-        baValue[0] = 0;
-        baValue[0] = 127;
-        m_pMotor->SendData(baValue);
-    }
+     if(m_eDirection == eDirectionLeft)
+     {
+         baValue[0] = 0;
+         baValue[1] = 127;
+     }
+     else if(m_eDirection == eDirectionRight)
+     {
+         baValue[0] = 127;
+         baValue[1] = 0;
+     }
+     else
+         return;
 
-    m_pUi->labelDemitour->setText("Unused");
+     if(m_iCompteur >= 13)
+     {
+        m_iCompteur = 0;
+        m_pTimer->stop();
+        return;
+     }
+
+     m_pMotor->SendData(baValue);
+     m_pUi->labelDemitour->setText("Unused");
+     m_iCompteur++;
+
 }

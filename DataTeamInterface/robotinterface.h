@@ -2,6 +2,8 @@
 #define ROBOTINTERFACE_H
 
 #include <QObject>
+#include <QTimer>
+
 #include "protocole.h"
 #include "gps.h"
 #include "actuator.h"
@@ -32,13 +34,18 @@ private:
     Motor *m_pMotor;
     //Remote *m_pRemote;
     Magneto* m_pMagneto;
+    int m_iCompteur;
 
+    QTimer* m_pTimer;
+
+    eDirection m_eDirection;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
     ~RobotInterface();
     bool connectRobot();
-
+    void PushButonRight();
+    void PushButonLeft();
 public slots:
     void slotOnGpsDataAvailable();
     void slotOnGyroDataAvailable();
@@ -48,8 +55,7 @@ public slots:
     void slotOnMagnetoDataAvailable();
     void slotOnOdoDataAvailable();
     void slotOnRemoteDataAvailable();
-private slots:
-    void on_pbDroite_clicked();
+    void slotTimeOut();
 };
 
 #endif // ROBOTINTERFACE_H
