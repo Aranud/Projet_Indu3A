@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.0
+** Created by: Qt User Interface Compiler version 5.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -74,13 +74,13 @@ public:
     QLabel *gyroZResult;
     QFrame *line_3;
     QFrame *line_4;
-    QLabel *acceleroXResult_2;
+    QLabel *acceleroXResult;
     QLabel *label_16;
     QLabel *label_17;
     QLabel *label_18;
-    QLabel *acceleroYResult_2;
+    QLabel *acceleroYResult;
     QLabel *label_19;
-    QLabel *acceleroZResult_2;
+    QLabel *acceleroZResult;
     QFrame *line_5;
     QLabel *label_20;
     QLabel *label_21;
@@ -102,6 +102,12 @@ public:
     QLabel *labelDemitour;
     QLabel *label_24;
     QLabel *timeResult;
+    QPushButton *pbAvant;
+    QPushButton *pbArriere;
+    QPushButton *pbDt;
+    QLabel *label_25;
+    QLabel *label_26;
+    QLabel *label_27;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -253,9 +259,9 @@ public:
         line_4->setGeometry(QRect(523, 0, 20, 91));
         line_4->setFrameShape(QFrame::VLine);
         line_4->setFrameShadow(QFrame::Sunken);
-        acceleroXResult_2 = new QLabel(centralWidget);
-        acceleroXResult_2->setObjectName(QStringLiteral("acceleroXResult_2"));
-        acceleroXResult_2->setGeometry(QRect(560, 20, 47, 13));
+        acceleroXResult = new QLabel(centralWidget);
+        acceleroXResult->setObjectName(QStringLiteral("acceleroXResult"));
+        acceleroXResult->setGeometry(QRect(560, 20, 47, 13));
         label_16 = new QLabel(centralWidget);
         label_16->setObjectName(QStringLiteral("label_16"));
         label_16->setGeometry(QRect(540, 0, 47, 13));
@@ -265,15 +271,15 @@ public:
         label_18 = new QLabel(centralWidget);
         label_18->setObjectName(QStringLiteral("label_18"));
         label_18->setGeometry(QRect(540, 60, 47, 13));
-        acceleroYResult_2 = new QLabel(centralWidget);
-        acceleroYResult_2->setObjectName(QStringLiteral("acceleroYResult_2"));
-        acceleroYResult_2->setGeometry(QRect(560, 40, 47, 13));
+        acceleroYResult = new QLabel(centralWidget);
+        acceleroYResult->setObjectName(QStringLiteral("acceleroYResult"));
+        acceleroYResult->setGeometry(QRect(560, 40, 47, 13));
         label_19 = new QLabel(centralWidget);
         label_19->setObjectName(QStringLiteral("label_19"));
         label_19->setGeometry(QRect(540, 40, 47, 13));
-        acceleroZResult_2 = new QLabel(centralWidget);
-        acceleroZResult_2->setObjectName(QStringLiteral("acceleroZResult_2"));
-        acceleroZResult_2->setGeometry(QRect(560, 60, 47, 13));
+        acceleroZResult = new QLabel(centralWidget);
+        acceleroZResult->setObjectName(QStringLiteral("acceleroZResult"));
+        acceleroZResult->setGeometry(QRect(560, 60, 47, 13));
         line_5 = new QFrame(centralWidget);
         line_5->setObjectName(QStringLiteral("line_5"));
         line_5->setGeometry(QRect(610, 0, 20, 91));
@@ -332,19 +338,37 @@ public:
         line_8->setFrameShadow(QFrame::Sunken);
         pbDroite = new QPushButton(centralWidget);
         pbDroite->setObjectName(QStringLiteral("pbDroite"));
-        pbDroite->setGeometry(QRect(470, 200, 75, 23));
+        pbDroite->setGeometry(QRect(450, 220, 51, 23));
         pbGauche = new QPushButton(centralWidget);
         pbGauche->setObjectName(QStringLiteral("pbGauche"));
-        pbGauche->setGeometry(QRect(560, 200, 75, 23));
+        pbGauche->setGeometry(QRect(570, 220, 51, 23));
         labelDemitour = new QLabel(centralWidget);
         labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
-        labelDemitour->setGeometry(QRect(510, 230, 121, 20));
+        labelDemitour->setGeometry(QRect(600, 250, 131, 20));
         label_24 = new QLabel(centralWidget);
         label_24->setObjectName(QStringLiteral("label_24"));
         label_24->setGeometry(QRect(30, 310, 47, 13));
         timeResult = new QLabel(centralWidget);
         timeResult->setObjectName(QStringLiteral("timeResult"));
         timeResult->setGeometry(QRect(80, 310, 47, 13));
+        pbAvant = new QPushButton(centralWidget);
+        pbAvant->setObjectName(QStringLiteral("pbAvant"));
+        pbAvant->setGeometry(QRect(510, 190, 51, 23));
+        pbArriere = new QPushButton(centralWidget);
+        pbArriere->setObjectName(QStringLiteral("pbArriere"));
+        pbArriere->setGeometry(QRect(510, 250, 51, 23));
+        pbDt = new QPushButton(centralWidget);
+        pbDt->setObjectName(QStringLiteral("pbDt"));
+        pbDt->setGeometry(QRect(510, 220, 51, 23));
+        label_25 = new QLabel(centralWidget);
+        label_25->setObjectName(QStringLiteral("label_25"));
+        label_25->setGeometry(QRect(450, 190, 51, 16));
+        label_26 = new QLabel(centralWidget);
+        label_26->setObjectName(QStringLiteral("label_26"));
+        label_26->setGeometry(QRect(570, 250, 51, 21));
+        label_27 = new QLabel(centralWidget);
+        label_27->setObjectName(QStringLiteral("label_27"));
+        label_27->setGeometry(QRect(630, 100, 47, 13));
         MainWindow->setCentralWidget(centralWidget);
         line_7->raise();
         line_5->raise();
@@ -392,13 +416,13 @@ public:
         gyroYResult->raise();
         gyroZResult->raise();
         line_3->raise();
-        acceleroXResult_2->raise();
+        acceleroXResult->raise();
         label_16->raise();
         label_17->raise();
         label_18->raise();
-        acceleroYResult_2->raise();
+        acceleroYResult->raise();
         label_19->raise();
-        acceleroZResult_2->raise();
+        acceleroZResult->raise();
         label_20->raise();
         label_21->raise();
         actuatorResult->raise();
@@ -418,6 +442,12 @@ public:
         labelDemitour->raise();
         label_24->raise();
         timeResult->raise();
+        pbAvant->raise();
+        pbArriere->raise();
+        pbDt->raise();
+        label_25->raise();
+        label_26->raise();
+        label_27->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 735, 21));
@@ -476,13 +506,13 @@ public:
         gyroXResult->setText(QString());
         gyroYResult->setText(QString());
         gyroZResult->setText(QString());
-        acceleroXResult_2->setText(QString());
+        acceleroXResult->setText(QString());
         label_16->setText(QApplication::translate("MainWindow", "Accelero", 0));
         label_17->setText(QApplication::translate("MainWindow", "X:", 0));
         label_18->setText(QApplication::translate("MainWindow", "Z:", 0));
-        acceleroYResult_2->setText(QString());
+        acceleroYResult->setText(QString());
         label_19->setText(QApplication::translate("MainWindow", "Y:", 0));
-        acceleroZResult_2->setText(QString());
+        acceleroZResult->setText(QString());
         label_20->setText(QApplication::translate("MainWindow", "Actuator", 0));
         label_21->setText(QApplication::translate("MainWindow", "Tool:", 0));
         actuatorResult->setText(QString());
@@ -500,6 +530,12 @@ public:
         labelDemitour->setText(QApplication::translate("MainWindow", "Unused", 0));
         label_24->setText(QApplication::translate("MainWindow", "time", 0));
         timeResult->setText(QString());
+        pbAvant->setText(QApplication::translate("MainWindow", "Avant", 0));
+        pbArriere->setText(QApplication::translate("MainWindow", "Arri\303\250re", 0));
+        pbDt->setText(QApplication::translate("MainWindow", "DT", 0));
+        label_25->setText(QApplication::translate("MainWindow", "Contr\303\264le", 0));
+        label_26->setText(QApplication::translate("MainWindow", "etat:", 0));
+        label_27->setText(QApplication::translate("MainWindow", "Magneto", 0));
     } // retranslateUi
 
 };

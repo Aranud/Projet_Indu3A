@@ -89,6 +89,7 @@ void MainWindow::on_pbConnection_clicked()
 void MainWindow::on_pbSendData_clicked()
 {
     m_pTCPConnection->SendData(ui->leDataToSend->text().toUtf8());
+
 }
 
 void MainWindow::on_pbDroite_clicked()
@@ -103,5 +104,12 @@ void MainWindow::on_pbGauche_clicked()
 {
     ui->labelDemitour->setText("Demi tour in process");
     m_pRobot->PushButonLeft();
+    ui->labelDemitour->setText("Unused");
+}
+
+void MainWindow::on_pbAvant_clicked()
+{
+    ui->labelDemitour->setText("Demi tour in process");
+    m_pRobot->PushButonFront();
     ui->labelDemitour->setText("Unused");
 }

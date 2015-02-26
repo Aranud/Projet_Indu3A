@@ -155,6 +155,12 @@ void RobotInterface::PushButonLeft()
         m_pTimer->start();
 }
 
+void RobotInterface::PushButonFront()
+{
+    m_pLidar->CalculDeplacement();
+
+}
+
 void RobotInterface::slotTimeOut()
 {
      QByteArray baValue;

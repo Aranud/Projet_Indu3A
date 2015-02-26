@@ -42,6 +42,7 @@ private slots:
     void on_pbSendData_clicked();
     void on_pbDroite_clicked();
     void on_pbGauche_clicked();
+    void on_pbAvant_clicked();
 };
 
 #endif // MAINWINDOW_H
