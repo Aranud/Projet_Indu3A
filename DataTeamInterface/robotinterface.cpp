@@ -108,9 +108,9 @@ void RobotInterface::slotOnActuatorDataAvailable()
  */
 void RobotInterface::slotOnAcceleroDataAvailable()
 {
-    m_pUi->acceleroXResult_2->setText(QString::number(m_pAccelero->getXAccelero()));
-    m_pUi->acceleroYResult_2->setText(QString::number(m_pAccelero->getYAccelero()));
-    m_pUi->acceleroZResult_2->setText(QString::number(m_pAccelero->getZAccelero()));
+    m_pUi->acceleroXResult->setText(QString::number(m_pAccelero->getXAccelero()));
+    m_pUi->acceleroYResult->setText(QString::number(m_pAccelero->getYAccelero()));
+    m_pUi->acceleroZResult->setText(QString::number(m_pAccelero->getZAccelero()));
 }
 
 void RobotInterface::slotOnLidarDataAvailable()
