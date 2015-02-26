@@ -27,7 +27,6 @@ Motor::~Motor()
  */
 void Motor::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    qDebug() << "Heeeeein retour moteur";
     emit emitDataAvailable();
     Q_UNUSED(p_baDataExtracted);
 }
