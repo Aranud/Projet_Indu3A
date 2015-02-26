@@ -89,6 +89,7 @@ void MainWindow::on_pbConnection_clicked()
 void MainWindow::on_pbSendData_clicked()
 {
     m_pTCPConnection->SendData(ui->leDataToSend->text().toUtf8());
+    
 }
 
 void MainWindow::on_pbDroite_clicked()

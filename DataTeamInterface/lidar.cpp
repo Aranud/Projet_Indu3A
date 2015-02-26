@@ -51,6 +51,31 @@ void Lidar::setAlbedoList(const QList<qint16> &p_lstiAlbedo)
     m_lstiAlbedo = p_lstiAlbedo;
 }
 
+void Lidar::CalculDeplacement()
+{
+    QList<qint16> lstiPoids;
+    QList<qint16> lstiDistance;
+    QList<qint16> PxD;
+
+    double MotorLeft;
+    double MotorRight;
+
+    lstiDistance = getDistanceList();
+    lstiPoids = getPoidsList();
+
+    //PxD = lstiDistance * lstiPoids;
+
+    for(int i=0 ; i < lstiDistance.length(); i++)
+    {
+        for(int j=0 ; j < lstiPoids.length(); j++)
+        {
+            PxD.append(lstiDistance[i]*lstiPoids[j]);
+        }
+    }
+    qDebug() << "Lidar Liste PxD : " << PxD;
+
+}
+
 /*******************************************************************************/
 /********************************** SLOT ***************************************/
 /*******************************************************************************/

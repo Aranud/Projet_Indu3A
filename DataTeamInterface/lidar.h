@@ -26,6 +26,8 @@ public:
     QList<qint16> getAlbedoList() const;
     void setAlbedoList(const QList<qint16> &p_lstiAlbedo);
 
+    void CalculDeplacement();
+
 public slots:
     void slotOnDataExtractedReady(QByteArray p_baDataExtracted);
 };

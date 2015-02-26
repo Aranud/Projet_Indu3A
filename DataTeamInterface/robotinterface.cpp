@@ -159,7 +159,7 @@ void RobotInterface::slotTimeOut()
 {
      QByteArray baValue;
 
-     m_pUi->labelDemitour->setText("Demi tour in process");
+
 
      if(m_eDirection == eDirectionLeft)
      {
@@ -182,7 +182,7 @@ void RobotInterface::slotTimeOut()
      }
 
      m_pMotor->SendData(baValue);
-     m_pUi->labelDemitour->setText("Unused");
+
      m_iCompteur++;
 
 }
