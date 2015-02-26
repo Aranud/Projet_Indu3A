@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>735</width>
-    <height>399</height>
+    <width>739</width>
+    <height>645</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,10 +79,10 @@
    <widget class="QLabel" name="img">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>140</x>
       <y>210</y>
-      <width>261</width>
-      <height>131</height>
+      <width>151</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="text">
@@ -92,8 +92,8 @@
    <widget class="QLabel" name="altitude">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>230</y>
+      <x>30</x>
+      <y>210</y>
       <width>21</width>
       <height>16</height>
      </rect>
@@ -105,8 +105,8 @@
    <widget class="QLabel" name="longitude">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>250</y>
+      <x>20</x>
+      <y>230</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -118,8 +118,8 @@
    <widget class="QLabel" name="latitude">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>270</y>
+      <x>30</x>
+      <y>250</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -131,8 +131,8 @@
    <widget class="QLabel" name="quality">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>290</y>
+      <x>10</x>
+      <y>270</y>
       <width>47</width>
       <height>16</height>
      </rect>
@@ -144,8 +144,8 @@
    <widget class="QLabel" name="altitudeResult">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>230</y>
+      <x>70</x>
+      <y>210</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -157,8 +157,8 @@
    <widget class="QLabel" name="longitudeResult">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>250</y>
+      <x>70</x>
+      <y>230</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -170,8 +170,8 @@
    <widget class="QLabel" name="latitudeResult">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>270</y>
+      <x>70</x>
+      <y>250</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -183,8 +183,8 @@
    <widget class="QLabel" name="qualityResult">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>290</y>
+      <x>70</x>
+      <y>270</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -459,7 +459,7 @@
       <x>430</x>
       <y>0</y>
       <width>20</width>
-      <height>351</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="orientation">
@@ -729,8 +729,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>320</y>
+      <x>330</x>
+      <y>220</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -742,8 +742,8 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>320</y>
+      <x>330</x>
+      <y>250</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -755,8 +755,8 @@
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>320</y>
+      <x>330</x>
+      <y>280</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -768,27 +768,14 @@
    <widget class="Line" name="line_6">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>280</y>
-      <width>301</width>
+      <x>0</x>
+      <y>300</y>
+      <width>741</width>
       <height>20</height>
      </rect>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_22">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>300</y>
-      <width>47</width>
-      <height>13</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Epreuve</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_23">
@@ -924,8 +911,8 @@
    <widget class="QLabel" name="label_24">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>310</y>
+      <x>20</x>
+      <y>290</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -937,8 +924,8 @@
    <widget class="QLabel" name="timeResult">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>310</y>
+      <x>70</x>
+      <y>290</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -1025,6 +1012,16 @@
      <string>Magneto</string>
     </property>
    </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>330</y>
+      <width>651</width>
+      <height>251</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>line_7</zorder>
    <zorder>line_5</zorder>
    <zorder>line_4</zorder>
@@ -1085,7 +1082,6 @@
    <zorder>pushButton_2</zorder>
    <zorder>pushButton_3</zorder>
    <zorder>line_6</zorder>
-   <zorder>label_22</zorder>
    <zorder>label_23</zorder>
    <zorder>fl</zorder>
    <zorder>fr</zorder>
@@ -1103,13 +1099,14 @@
    <zorder>label_25</zorder>
    <zorder>label_26</zorder>
    <zorder>label_27</zorder>
+   <zorder>graphicsView</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>735</width>
+     <width>739</width>
      <height>21</height>
     </rect>
    </property>
