@@ -21,10 +21,10 @@ win32:LIBS += $${_PRO_FILE_PWD_}/SimpleXbox360Controller/XInput.lib
 SOURCES += src/main.cpp\
     src/mainwindow.cpp \
     src/tcpconnection.cpp \
-    SimpleXbox360Controller/simplexbox360controller.cpp \
     src/protocole.cpp\
     src/captor.cpp\
     src/robotinterface.cpp \
+    SimpleXbox360Controller/simplexbox360controller.cpp \
     src/captor/joystick.cpp \
     src/captor/gps.cpp \
     src/captor/lidar.cpp \
@@ -38,10 +38,10 @@ SOURCES += src/main.cpp\
 
 HEADERS  += src/mainwindow.h \
     src/tcpconnection.h \
-    SimpleXbox360Controller/simplexbox360controller.h \
     src/protocole.h \
     src/global.h \
     src/captor.h\
+    SimpleXbox360Controller/simplexbox360controller.h \
     src/robotinterface.h \
     src/captor/joystick.h \
     src/captor/gps.h \
