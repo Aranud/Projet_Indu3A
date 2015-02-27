@@ -84,7 +84,7 @@ void SimpleXbox360Controller::update(){
             curState.batteryLevel=BATTERY_LEVEL_EMPTY;
         }
 
-        if(curState!=prevState) emit controllerNewState(curState);
+        /*if(curState!=prevState)*/ emit controllerNewState(curState);
         if(!InputState::batteryEquals(prevState,curState)) emit controllerNewBatteryState(curState.batteryType,curState.batteryLevel);
         prevState=curState;
     }

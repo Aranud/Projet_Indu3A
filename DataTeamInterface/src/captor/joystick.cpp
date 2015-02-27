@@ -136,8 +136,8 @@ void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
 {
     QByteArray baValue;
 
-    if(p_InputState.leftThumbY != m_fOldLeftStickValueY || p_InputState.leftThumbX != m_fOldLeftStickValueX)
-    {
+//    if(p_InputState.leftThumbY != m_fOldLeftStickValueY || p_InputState.leftThumbX != m_fOldLeftStickValueX)
+//    {
         m_fOldLeftStickValueY = p_InputState.leftThumbY;
         m_fOldLeftStickValueX = p_InputState.leftThumbX;
 
@@ -159,6 +159,6 @@ void Joystick::slotOnEventOld(SimpleXbox360Controller::InputState p_InputState)
                 baValue[1] = DatasendToMotorRight;
             }
         }
-    }
+//    }
     SendData(baValue);
 }

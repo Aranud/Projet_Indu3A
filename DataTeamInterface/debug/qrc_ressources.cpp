@@ -1,13 +1,15 @@
 /****************************************************************************
 ** Resource object code
 **
-** Created by: The Resource Compiler for Qt version 5.4.0
+** Created by: The Resource Compiler for Qt version 5.3.2
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
+#include <QtCore/qglobal.h>
+
 static const unsigned char qt_resource_data[] = {
-  // C:/Users/imerir/Documents/GitHub/Projet_Indu3A/DataTeamInterface/res/img2.png
+  // C:/Users/laurent/Documents/GitHub/Projet_Indu3A/DataTeamInterface/res/img2.png
   0x0,0x0,0x7d,0xdc,
   0x89,
   0x50,0x4e,0x47,0xd,0xa,0x1a,0xa,0x0,0x0,0x0,0xd,0x49,0x48,0x44,0x52,0x0,
@@ -2024,7 +2026,7 @@ static const unsigned char qt_resource_data[] = {
   0x1b,0x29,0x36,0x37,0xde,0x64,0x8d,0x39,0xb6,0x27,0x87,0xc,0x21,0xa4,0x8e,0x14,
   0x52,0x47,0xee,0xd8,0xff,0xf,0x0,0x37,0x2f,0xaa,0x4e,0x7,0xaf,0x95,0xd5,0x0,
   0x0,0x0,0x0,0x49,0x45,0x4e,0x44,0xae,0x42,0x60,0x82,
-    // C:/Users/imerir/Documents/GitHub/Projet_Indu3A/DataTeamInterface/res/img.png
+    // C:/Users/laurent/Documents/GitHub/Projet_Indu3A/DataTeamInterface/res/img.png
   0x0,0x0,0x7a,0x93,
   0x89,
   0x50,0x4e,0x47,0xd,0xa,0x1a,0xa,0x0,0x0,0x0,0xd,0x49,0x48,0x44,0x52,0x0,
@@ -4023,49 +4025,32 @@ static const unsigned char qt_resource_struct[] = {
 
 };
 
-#ifdef QT_NAMESPACE
-#  define QT_RCC_PREPEND_NAMESPACE(name) ::QT_NAMESPACE::name
-#  define QT_RCC_MANGLE_NAMESPACE0(x) x
-#  define QT_RCC_MANGLE_NAMESPACE1(a, b) a##_##b
-#  define QT_RCC_MANGLE_NAMESPACE2(a, b) QT_RCC_MANGLE_NAMESPACE1(a,b)
-#  define QT_RCC_MANGLE_NAMESPACE(name) QT_RCC_MANGLE_NAMESPACE2( \
-        QT_RCC_MANGLE_NAMESPACE0(name), QT_RCC_MANGLE_NAMESPACE0(QT_NAMESPACE))
-#else
-#   define QT_RCC_PREPEND_NAMESPACE(name) name
-#   define QT_RCC_MANGLE_NAMESPACE(name) name
-#endif
+QT_BEGIN_NAMESPACE
 
-#ifdef QT_NAMESPACE
-namespace QT_NAMESPACE {
-#endif
+extern Q_CORE_EXPORT bool qRegisterResourceData
+    (int, const unsigned char *, const unsigned char *, const unsigned char *);
 
-bool qRegisterResourceData(int, const unsigned char *, const unsigned char *, const unsigned char *);
+extern Q_CORE_EXPORT bool qUnregisterResourceData
+    (int, const unsigned char *, const unsigned char *, const unsigned char *);
 
-bool qUnregisterResourceData(int, const unsigned char *, const unsigned char *, const unsigned char *);
+QT_END_NAMESPACE
 
-#ifdef QT_NAMESPACE
-}
-#endif
 
-int QT_RCC_MANGLE_NAMESPACE(qInitResources_ressources)();
-int QT_RCC_MANGLE_NAMESPACE(qInitResources_ressources)()
+int QT_MANGLE_NAMESPACE(qInitResources_ressources)()
 {
-    QT_RCC_PREPEND_NAMESPACE(qRegisterResourceData)
+    QT_PREPEND_NAMESPACE(qRegisterResourceData)
         (0x01, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 
-int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_ressources)();
-int QT_RCC_MANGLE_NAMESPACE(qCleanupResources_ressources)()
+Q_CONSTRUCTOR_FUNCTION(QT_MANGLE_NAMESPACE(qInitResources_ressources))
+
+int QT_MANGLE_NAMESPACE(qCleanupResources_ressources)()
 {
-    QT_RCC_PREPEND_NAMESPACE(qUnregisterResourceData)
+    QT_PREPEND_NAMESPACE(qUnregisterResourceData)
        (0x01, qt_resource_struct, qt_resource_name, qt_resource_data);
     return 1;
 }
 
-namespace {
-   struct initializer {
-       initializer() { QT_RCC_MANGLE_NAMESPACE(qInitResources_ressources)(); }
-       ~initializer() { QT_RCC_MANGLE_NAMESPACE(qCleanupResources_ressources)(); }
-   } dummy;
-}
+Q_DESTRUCTOR_FUNCTION(QT_MANGLE_NAMESPACE(qCleanupResources_ressources))
+

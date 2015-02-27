@@ -31,7 +31,8 @@ typedef enum eDirection
 {
     eDirectionNone,
     eDirectionLeft,
-    eDirectionRight
+    eDirectionRight,
+    eDirectionFront
 
 }E_Direction;
 

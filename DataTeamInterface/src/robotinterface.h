@@ -47,6 +47,7 @@ public:
     void PushButonRight();
     void PushButonLeft();
     void PushButonFront();
+    void FrontMove();
 
 public slots:
     void slotOnGpsDataAvailable();

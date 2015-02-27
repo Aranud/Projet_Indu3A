@@ -100,23 +100,115 @@ void RobotInterface::PushButonLeft()
  */
 void RobotInterface::PushButonFront()
 {
+    m_eDirection = eDirectionFront;
+
+    if(m_pTimer->isActive())
+        m_pTimer->stop();
+    else
+        m_pTimer->start();
+}
+
+void RobotInterface::FrontMove()
+{
     QList<qint16> lstiPoids;
     QList<qint16> lstiDistance;
     QList<qint16> PxD;
 
+    QByteArray baValue;
+
+    double MotorLeft = 0;
+    double MotorRight = 0;
+    double Difference;
+    signed int reference = -500;
+
     lstiDistance = m_pLidar->getDistanceList();
     lstiPoids = m_pLidar->getPoidsList();
+
 
     //PxD = lstiDistance * lstiPoids;
 
     for(int i=0 ; i < lstiDistance.length(); i++)
     {
-        for(int j=0 ; j < lstiPoids.length(); j++)
-        {
-            PxD.append(lstiDistance[i]*lstiPoids[j]);
-        }
+        if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
+            PxD.append(reference);
+        else
+            PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
     }
+
     qDebug() << "Lidar Liste PxD : " << PxD;
+    qDebug() << "_____________________________________________________________";
+    qDebug() << "Lidar Liste Poids : " << lstiDistance;
+    qDebug() << "_____________________________________________________________";
+    qDebug() << "Lidar Liste Distance : " << lstiPoids;
+    qDebug() << "_____________________________________________________________";
+    for(int iteML=0; iteML < 136 ; iteML++)
+       MotorLeft += PxD.at(iteML);
+
+    for(int iteMR=136; iteMR < 271 ; iteMR++)
+       MotorRight += PxD.at(iteMR);
+
+
+    Difference = MotorLeft - MotorRight;
+    qDebug() << " Difference = " << Difference;
+
+    if(Difference > 0) // Moteur Gauche doit être actif
+    {
+       Difference = ( Difference / 45000 ) * 127 + 100;
+       baValue[0] = Difference;
+
+
+      /* if(PxD.at(135) > 0) //Cas de mur en face
+       {
+           baValue[0] = -127;
+           baValue[1] = -127;
+       }
+       else*/
+       if(MotorLeft > -130000 && MotorLeft < -90000 && MotorRight > -130000 && MotorRight < -90000)
+       {
+           baValue[0] = 127;
+           baValue[1] = 127;
+       }
+       else
+       {
+           baValue[1] = 70;
+       }
+
+
+
+    }
+    else if(Difference < 0) // Moteur Droit doit être actif
+    {
+       Difference = ( - Difference / 45000) * 127 + 100;
+       baValue[1] = Difference;
+       /*if(PxD.at(135) > 0) //Cas de mur en face
+       {
+           baValue[0] = -127;
+           baValue[1] = -127;
+       }
+       else*/
+       if(MotorLeft > -130000 && MotorLeft < -90000 && MotorRight > -130000 && MotorRight < -90000)
+       {
+           baValue[0] = 127;
+           baValue[1] = 127;
+       }
+       else
+       {
+           baValue[0] = 70;
+       }
+    }
+    else
+    {
+        baValue[0] = 127;
+        baValue[1] = 127;
+    }
+
+    m_pMotor->SendData(baValue);
+
+
+    qDebug() << "_____________________________________________________________";
+    qDebug() << " Motor Left = " << MotorLeft;
+    qDebug() << " Motor Right = " << MotorRight;
+    qDebug() << " Difference = " << Difference;
 
 }
 
@@ -211,9 +303,14 @@ void RobotInterface::slotTimeOut()
          baValue[0] = 127;
          baValue[1] = 0;
      }
+     else if(m_eDirection == eDirectionFront)
+     {
+         FrontMove();
+         return;
+     }
      else
          return;
-
+/*
      if(m_iCompteur >= 13)
      {
         m_iCompteur = 0;
@@ -224,5 +321,5 @@ void RobotInterface::slotTimeOut()
      m_pMotor->SendData(baValue);
 
      m_iCompteur++;
-
+*/
 }
