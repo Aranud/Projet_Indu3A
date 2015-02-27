@@ -14,18 +14,18 @@ TEMPLATE = app
 
 INCLUDEPATH += "$${_PRO_FILE_PWD_}/src"
 INCLUDEPATH += "$${_PRO_FILE_PWD_}/src/captor"
-INCLUDEPATH += "$${_PRO_FILE_PWD_}/src/captor/SimpleXbox360Controller"
 
+INCLUDEPATH += "$${_PRO_FILE_PWD_}/SimpleXbox360Controller"
 win32:LIBS += $${_PRO_FILE_PWD_}/SimpleXbox360Controller/XInput.lib
 
 SOURCES += src/main.cpp\
-        src/mainwindow.cpp \
+    src/mainwindow.cpp \
     src/tcpconnection.cpp \
-    src/captor/joystick.cpp \
-    src/simplexbox360controller.cpp \
+    SimpleXbox360Controller/simplexbox360controller.cpp \
     src/protocole.cpp\
     src/captor.cpp\
     src/robotinterface.cpp \
+    src/captor/joystick.cpp \
     src/captor/gps.cpp \
     src/captor/lidar.cpp \
     src/captor/gyro.cpp \
@@ -38,12 +38,12 @@ SOURCES += src/main.cpp\
 
 HEADERS  += src/mainwindow.h \
     src/tcpconnection.h \
-    src/captor/joystick.h \
-    src/simplexbox360controller.h \
+    SimpleXbox360Controller/simplexbox360controller.h \
     src/protocole.h \
     src/global.h \
     src/captor.h\
     src/robotinterface.h \
+    src/captor/joystick.h \
     src/captor/gps.h \
     src/captor/lidar.h \
     src/captor/gyro.h \
