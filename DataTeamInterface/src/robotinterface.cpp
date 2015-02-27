@@ -10,11 +10,11 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pProtocole = new Protocole();
     m_pGps = new GPS(m_pProtocole);
     m_pGyro = new Gyro(m_pProtocole);
-    //m_pJoystick = new Joystick(m_pProtocole);
+    m_pJoystick = new Joystick(m_pProtocole);
     m_pActuator = new Actuator(m_pProtocole);
     m_pAccelero = new Accelero(m_pProtocole);
     m_pLidar = new Lidar(m_pProtocole);
-    //m_pMagneto = new Magneto(m_pProtocole);
+    m_pMagneto = new Magneto(m_pProtocole);
     m_pOdo = new Odo(m_pProtocole);
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
@@ -30,7 +30,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     connect(m_pActuator, SIGNAL(emitDataAvailable()), this, SLOT(slotOnActuatorDataAvailable()));
     connect(m_pAccelero, SIGNAL(emitDataAvailable()), this, SLOT(slotOnAcceleroDataAvailable()));
     connect(m_pLidar, SIGNAL(emitDataAvailable()), this, SLOT(slotOnLidarDataAvailable()));
-//    connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable());
+    connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
     connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnOdoDataAvailable()));
 //    connect(m_pRemote, SIGNAL(emitDataAvailable()), this, SLOT(slotOnRemoteDataAvailable()));
     connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
@@ -56,7 +56,7 @@ bool RobotInterface::connectRobot()
 {
     m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
     m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
-    //m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+    m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
     m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
@@ -67,6 +67,57 @@ bool RobotInterface::connectRobot()
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
 
     return true;
+}
+
+/**
+ * @brief RobotInterface::PushButonRight
+ */
+void RobotInterface::PushButonRight()
+{
+    m_eDirection = eDirectionRight;
+
+    if(m_pTimer->isActive())
+        m_pTimer->stop();
+    else
+        m_pTimer->start();
+}
+
+/**
+ * @brief RobotInterface::PushButonLeft
+ */
+void RobotInterface::PushButonLeft()
+{
+    m_eDirection = eDirectionLeft;
+
+    if(m_pTimer->isActive())
+        m_pTimer->stop();
+    else
+        m_pTimer->start();
+}
+
+/**
+ * @brief RobotInterface::PushButonFront
+ */
+void RobotInterface::PushButonFront()
+{
+    QList<qint16> lstiPoids;
+    QList<qint16> lstiDistance;
+    QList<qint16> PxD;
+
+    lstiDistance = m_pLidar->getDistanceList();
+    lstiPoids = m_pLidar->getPoidsList();
+
+    //PxD = lstiDistance * lstiPoids;
+
+    for(int i=0 ; i < lstiDistance.length(); i++)
+    {
+        for(int j=0 ; j < lstiPoids.length(); j++)
+        {
+            PxD.append(lstiDistance[i]*lstiPoids[j]);
+        }
+    }
+    qDebug() << "Lidar Liste PxD : " << PxD;
+
 }
 
 /*******************************************************************************/
@@ -113,11 +164,17 @@ void RobotInterface::slotOnAcceleroDataAvailable()
     m_pUi->acceleroZResult->setText(QString::number(m_pAccelero->getZAccelero()));
 }
 
+/**
+ * @brief RobotInterface::slotOnLidarDataAvailable
+ */
 void RobotInterface::slotOnLidarDataAvailable()
 {
 
 }
 
+/**
+ * @brief RobotInterface::slotOnOdoDataAvailable
+ */
 void RobotInterface::slotOnOdoDataAvailable()
 {
     m_pUi->fl->setText(QString::number(m_pOdo->getFrontLeft()));
@@ -126,46 +183,23 @@ void RobotInterface::slotOnOdoDataAvailable()
     m_pUi->rr->setText(QString::number(m_pOdo->getRearRight()));
 }
 
+/**
+ * @brief RobotInterface::slotOnRemoteDataAvailable
+ */
 void RobotInterface::slotOnRemoteDataAvailable()
 {
 }
 
+/**
+ * @brief RobotInterface::slotOnMagnetoDataAvailable
+ */
 void RobotInterface::slotOnMagnetoDataAvailable()
 {
-}
-
-
-void RobotInterface::PushButonRight()
-{
-    m_eDirection = eDirectionRight;
-
-    if(m_pTimer->isActive())
-        m_pTimer->stop();
-    else
-        m_pTimer->start();
-}
-
-void RobotInterface::PushButonLeft()
-{
-    m_eDirection = eDirectionLeft;
-
-    if(m_pTimer->isActive())
-        m_pTimer->stop();
-    else
-        m_pTimer->start();
-}
-
-void RobotInterface::PushButonFront()
-{
-    m_pLidar->CalculDeplacement();
-
 }
 
 void RobotInterface::slotTimeOut()
 {
      QByteArray baValue;
-
-
 
      if(m_eDirection == eDirectionLeft)
      {
