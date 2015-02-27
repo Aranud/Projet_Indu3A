@@ -2,7 +2,7 @@
 #define JOYSTICK_H
 
 #include <QObject>
-#include <captor.h>
+#include "captor.h"
 #include "simplexbox360controller.h"
 
 #define AUTO_POLLING_TIME_ELASPE 20

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="ICON_OZ_ENABLE">img.png</file>
+        <file alias="ICON_OZ_DISABLE">img2.png</file>
+    </qresource>
+</RCC>

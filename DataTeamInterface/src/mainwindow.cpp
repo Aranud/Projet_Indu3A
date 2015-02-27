@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->img->setPixmap(QPixmap("img2.png").scaled(ui->img->width(),ui->img->height(),Qt::KeepAspectRatio));
+    ui->img->setPixmap(QPixmap("icons:/ICON_OZ_DISABLE").scaled(ui->img->width(),ui->img->height(),Qt::KeepAspectRatio));
 
     m_pRobot = new RobotInterface(ui);
 }

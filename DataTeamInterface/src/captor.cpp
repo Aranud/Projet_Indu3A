@@ -57,7 +57,6 @@ void Captor::DisconnectCaptor()
  */
 bool Captor::SendData(QByteArray p_pDataToSend)
 {
-    qDebug() << "here too";
     return m_pTCPConnection->SendData(m_pProtocole->FormateCommand(m_eIDCommand, p_pDataToSend));
 }
 
@@ -100,8 +99,6 @@ void Captor::slotOnDisconnection()
  */
 void Captor::slotOnDataReceivedFromServer(QByteArray p_baData)
 {
-    if(m_eIDCommand == eIDCommmandMagneto)
-        //qDebug()<<"magneto :"<<p_baData.toHex();
     emit emitDataExtractedAvailable(m_pProtocole->ExtractData(p_baData));
 }
 

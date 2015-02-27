@@ -1,18 +1,18 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'robotinterface.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.3.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.4.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../robotinterface.h"
+#include "../src/robotinterface.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'robotinterface.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.3.2. It"
+#error "This file was generated using the moc from 5.4.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -29,17 +29,18 @@ struct qt_meta_stringdata_RobotInterface_t {
     )
 static const qt_meta_stringdata_RobotInterface_t qt_meta_stringdata_RobotInterface = {
     {
-QT_MOC_LITERAL(0, 0, 14),
-QT_MOC_LITERAL(1, 15, 22),
-QT_MOC_LITERAL(2, 38, 0),
-QT_MOC_LITERAL(3, 39, 23),
-QT_MOC_LITERAL(4, 63, 27),
-QT_MOC_LITERAL(5, 91, 27),
-QT_MOC_LITERAL(6, 119, 24),
-QT_MOC_LITERAL(7, 144, 26),
-QT_MOC_LITERAL(8, 171, 22),
-QT_MOC_LITERAL(9, 194, 25),
-QT_MOC_LITERAL(10, 220, 11)
+QT_MOC_LITERAL(0, 0, 14), // "RobotInterface"
+QT_MOC_LITERAL(1, 15, 22), // "slotOnGpsDataAvailable"
+QT_MOC_LITERAL(2, 38, 0), // ""
+QT_MOC_LITERAL(3, 39, 23), // "slotOnGyroDataAvailable"
+QT_MOC_LITERAL(4, 63, 27), // "slotOnActuatorDataAvailable"
+QT_MOC_LITERAL(5, 91, 27), // "slotOnAcceleroDataAvailable"
+QT_MOC_LITERAL(6, 119, 24), // "slotOnLidarDataAvailable"
+QT_MOC_LITERAL(7, 144, 26), // "slotOnMagnetoDataAvailable"
+QT_MOC_LITERAL(8, 171, 22), // "slotOnOdoDataAvailable"
+QT_MOC_LITERAL(9, 194, 25), // "slotOnRemoteDataAvailable"
+QT_MOC_LITERAL(10, 220, 11) // "slotTimeOut"
+
     },
     "RobotInterface\0slotOnGpsDataAvailable\0"
     "\0slotOnGyroDataAvailable\0"
@@ -112,7 +113,7 @@ void RobotInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
 
 const QMetaObject RobotInterface::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_RobotInterface.data,
-      qt_meta_data_RobotInterface,  qt_static_metacall, 0, 0}
+      qt_meta_data_RobotInterface,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
 
@@ -123,7 +124,7 @@ const QMetaObject *RobotInterface::metaObject() const
 
 void *RobotInterface::qt_metacast(const char *_clname)
 {
-    if (!_clname) return 0;
+    if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_RobotInterface.stringdata))
         return static_cast<void*>(const_cast< RobotInterface*>(this));
     return QObject::qt_metacast(_clname);
