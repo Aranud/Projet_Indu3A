@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>739</width>
-    <height>645</height>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1012,16 +1012,6 @@
      <string>Magneto</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>330</y>
-      <width>651</width>
-      <height>251</height>
-     </rect>
-    </property>
-   </widget>
    <zorder>line_7</zorder>
    <zorder>line_5</zorder>
    <zorder>line_4</zorder>
@@ -1099,7 +1089,6 @@
    <zorder>label_25</zorder>
    <zorder>label_26</zorder>
    <zorder>label_27</zorder>
-   <zorder>graphicsView</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

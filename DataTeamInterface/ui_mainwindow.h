@@ -14,7 +14,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QFrame>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -108,7 +107,6 @@ public:
     QLabel *label_25;
     QLabel *label_26;
     QLabel *label_27;
-    QGraphicsView *graphicsView;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -117,7 +115,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(739, 645);
+        MainWindow->resize(739, 372);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         leServerAddress = new QLineEdit(centralWidget);
@@ -367,9 +365,6 @@ public:
         label_27 = new QLabel(centralWidget);
         label_27->setObjectName(QStringLiteral("label_27"));
         label_27->setGeometry(QRect(630, 100, 47, 13));
-        graphicsView = new QGraphicsView(centralWidget);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(40, 330, 651, 251));
         MainWindow->setCentralWidget(centralWidget);
         line_7->raise();
         line_5->raise();
@@ -448,7 +443,6 @@ public:
         label_25->raise();
         label_26->raise();
         label_27->raise();
-        graphicsView->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 739, 21));

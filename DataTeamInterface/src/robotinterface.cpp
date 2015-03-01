@@ -23,6 +23,17 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pTimer = new QTimer();
     m_pTimer->setInterval(500);
 
+    m_pGraphScene = new QGraphicsScene();
+    m_pGraphScene->setSceneRect(0,0,790,290);
+
+    m_pGraphicView = new QGraphicsView;
+    m_pGraphicView->setFixedSize(800, 300);
+    m_pGraphicView->setScene(m_pGraphScene);
+
+    m_pGraphScene->addEllipse(10,20,1,1);
+
+    m_pGraphicView->show();
+
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
 
     connect(m_pGps, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGpsDataAvailable()));

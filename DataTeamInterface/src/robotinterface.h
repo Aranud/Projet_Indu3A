@@ -15,13 +15,16 @@
 #include "odo.h"
 #include "motor.h"
 #include "ui_mainwindow.h"
-
+#include "QGraphicsView"
+#include "QGraphicsScene"
 class RobotInterface : public QObject
 {
     Q_OBJECT
 
 private:
     Ui::MainWindow* m_pUi;
+    QGraphicsView* m_pGraphicView;
+    QGraphicsScene* m_pGraphScene;
     Protocole* m_pProtocole;
     GPS *m_pGps;
     Gyro *m_pGyro;
