@@ -135,25 +135,26 @@ void RobotInterface::FrontMove()
     lstiDistance = m_pLidar->getDistanceList();
     lstiPoids = m_pLidar->getPoidsList();
 
-
     //PxD = lstiDistance * lstiPoids;
 
-    for(int i=0 ; i < lstiDistance.length(); i++)
+    for(int i = 0 ; i < lstiPoids.length(); i++)
     {
-        if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
+        /*if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
             PxD.append(reference);
-        else
+        else*/
             PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
     }
 
     qDebug() << "Lidar Liste PxD : " << PxD;
     qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Poids : " << lstiDistance;
+    qDebug() << "Lidar Liste Poids : " << lstiPoids;
     qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Distance : " << lstiPoids;
+    qDebug() << "Lidar Liste Distance : " << lstiDistance;
     qDebug() << "_____________________________________________________________";
     for(int iteML=0; iteML < 136 ; iteML++)
        MotorLeft += PxD.at(iteML);
+
+    qDebug() << "__________________________******______________________________";
 
     for(int iteMR=136; iteMR < 271 ; iteMR++)
        MotorRight += PxD.at(iteMR);
@@ -162,56 +163,7 @@ void RobotInterface::FrontMove()
     Difference = MotorLeft - MotorRight;
     qDebug() << " Difference = " << Difference;
 
-    if(Difference > 0) // Moteur Gauche doit être actif
-    {
-       Difference = ( Difference / 45000 ) * 127 + 100;
-       baValue[0] = Difference;
 
-
-      /* if(PxD.at(135) > 0) //Cas de mur en face
-       {
-           baValue[0] = -127;
-           baValue[1] = -127;
-       }
-       else*/
-       if(MotorLeft > -130000 && MotorLeft < -90000 && MotorRight > -130000 && MotorRight < -90000)
-       {
-           baValue[0] = 127;
-           baValue[1] = 127;
-       }
-       else
-       {
-           baValue[1] = 70;
-       }
-
-
-
-    }
-    else if(Difference < 0) // Moteur Droit doit être actif
-    {
-       Difference = ( - Difference / 45000) * 127 + 100;
-       baValue[1] = Difference;
-       /*if(PxD.at(135) > 0) //Cas de mur en face
-       {
-           baValue[0] = -127;
-           baValue[1] = -127;
-       }
-       else*/
-       if(MotorLeft > -130000 && MotorLeft < -90000 && MotorRight > -130000 && MotorRight < -90000)
-       {
-           baValue[0] = 127;
-           baValue[1] = 127;
-       }
-       else
-       {
-           baValue[0] = 70;
-       }
-    }
-    else
-    {
-        baValue[0] = 127;
-        baValue[1] = 127;
-    }
 
     m_pMotor->SendData(baValue);
 

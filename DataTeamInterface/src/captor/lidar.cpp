@@ -41,19 +41,6 @@ Lidar::Lidar(Protocole *p_pProtocole)
     m_lstiPoids.append(0);
     m_lstiPoids.append(0);
     m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
-    m_lstiPoids.append(0);
     m_lstiPoids.append(1);
     m_lstiPoids.append(1);
     m_lstiPoids.append(1);
@@ -253,6 +240,12 @@ Lidar::Lidar(Protocole *p_pProtocole)
     m_lstiPoids.append(1);
     m_lstiPoids.append(1);
     m_lstiPoids.append(1);
+    m_lstiPoids.append(1);
+    m_lstiPoids.append(1);
+    m_lstiPoids.append(1);
+    m_lstiPoids.append(1);
+    m_lstiPoids.append(1);
+    m_lstiPoids.append(1);
     m_lstiPoids.append(0);
     m_lstiPoids.append(0);
     m_lstiPoids.append(0);
@@ -279,6 +272,14 @@ Lidar::Lidar(Protocole *p_pProtocole)
     m_lstiPoids.append(0);
     m_lstiPoids.append(0);
     m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+    m_lstiPoids.append(0);
+
 
 ;
 
@@ -340,13 +341,13 @@ void Lidar::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
     if(p_baDataExtracted.length() == 813)
     {
         m_lstiDistance.clear();
-        m_lstiPoids.clear();
+        //m_lstiPoids.clear();
         m_lstiAlbedo.clear();
 
         for(int iIncrement = 0; iIncrement < 271; iIncrement++)
         {
             m_lstiDistance.append(QString::number(p_baDataExtracted.at(iIncrement * 2)).toInt());
-            m_lstiPoids.append(QString::number(p_baDataExtracted.at(iIncrement * 2 + 1)).toInt());
+            //m_lstiPoids.append(QString::number(p_baDataExtracted.at(iIncrement * 2 + 1)).toInt());
             m_lstiAlbedo.append(QString::number(p_baDataExtracted.at(iIncrement + 542)).toInt());
         }
 
