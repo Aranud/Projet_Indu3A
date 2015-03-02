@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.3.2
+** Created by: Qt User Interface Compiler version 5.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -115,7 +115,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(739, 372);
+        MainWindow->resize(739, 365);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         leServerAddress = new QLineEdit(centralWidget);
@@ -334,10 +334,10 @@ public:
         line_8->setFrameShadow(QFrame::Sunken);
         pbDroite = new QPushButton(centralWidget);
         pbDroite->setObjectName(QStringLiteral("pbDroite"));
-        pbDroite->setGeometry(QRect(450, 220, 51, 23));
+        pbDroite->setGeometry(QRect(570, 220, 51, 23));
         pbGauche = new QPushButton(centralWidget);
         pbGauche->setObjectName(QStringLiteral("pbGauche"));
-        pbGauche->setGeometry(QRect(570, 220, 51, 23));
+        pbGauche->setGeometry(QRect(450, 220, 51, 23));
         labelDemitour = new QLabel(centralWidget);
         labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
         labelDemitour->setGeometry(QRect(600, 250, 131, 20));

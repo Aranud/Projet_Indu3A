@@ -872,7 +872,7 @@
    <widget class="QPushButton" name="pbDroite">
     <property name="geometry">
      <rect>
-      <x>450</x>
+      <x>570</x>
       <y>220</y>
       <width>51</width>
       <height>23</height>
@@ -885,7 +885,7 @@
    <widget class="QPushButton" name="pbGauche">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>450</x>
       <y>220</y>
       <width>51</width>
       <height>23</height>

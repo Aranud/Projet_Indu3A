@@ -24,14 +24,12 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pTimer->setInterval(500);
 
     m_pGraphScene = new QGraphicsScene();
-    m_pGraphScene->setSceneRect(0,0,790,290);
-
+    m_pGraphScene->setSceneRect(0,0,790,490);
+    m_pPoint = new QPoint(790/2,465);
     m_pGraphicView = new QGraphicsView;
-    m_pGraphicView->setFixedSize(800, 300);
+    m_pGraphicView->setFixedSize(800, 500);
     m_pGraphicView->setScene(m_pGraphScene);
-
-    m_pGraphScene->addEllipse(10,20,1,1);
-
+    m_pGraphScene->addRect(0+m_pPoint->rx()-15,0+m_pPoint->ry(),30,50);
     m_pGraphicView->show();
 
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
@@ -146,12 +144,6 @@ void RobotInterface::FrontMove()
             PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
     }
 
-    qDebug() << "Lidar Liste PxD : " << PxD;
-    qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Poids : " << lstiDistance;
-    qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Distance : " << lstiPoids;
-    qDebug() << "_____________________________________________________________";
     for(int iteML=0; iteML < 136 ; iteML++)
        MotorLeft += PxD.at(iteML);
 
@@ -160,7 +152,7 @@ void RobotInterface::FrontMove()
 
 
     Difference = MotorLeft - MotorRight;
-    qDebug() << " Difference = " << Difference;
+    //qDebug() << " Difference = " << Difference;
 
     if(Difference > 0) // Moteur Gauche doit être actif
     {
@@ -216,10 +208,10 @@ void RobotInterface::FrontMove()
     m_pMotor->SendData(baValue);
 
 
-    qDebug() << "_____________________________________________________________";
-    qDebug() << " Motor Left = " << MotorLeft;
-    qDebug() << " Motor Right = " << MotorRight;
-    qDebug() << " Difference = " << Difference;
+    //qDebug() << "_____________________________________________________________";
+    //qDebug() << " Motor Left = " << MotorLeft;
+    //qDebug() << " Motor Right = " << MotorRight;
+    //qDebug() << " Difference = " << Difference;
 
 }
 
@@ -272,7 +264,10 @@ void RobotInterface::slotOnAcceleroDataAvailable()
  */
 void RobotInterface::slotOnLidarDataAvailable()
 {
+    //QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
+    //for( int i=0; i<270;i++)
+            //m_pGraphScene->addEllipse(cos(lstDistance.at(i)-135)*100 + m_pPoint->rx(), sin(lstDistance.at(i)-135)*100 + m_pPoint->ry(),1,1);
 }
 
 /**

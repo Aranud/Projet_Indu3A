@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QList>
 
 #include "protocole.h"
 #include "gps.h"
@@ -17,6 +18,8 @@
 #include "ui_mainwindow.h"
 #include "QGraphicsView"
 #include "QGraphicsScene"
+#include "math.h"
+
 class RobotInterface : public QObject
 {
     Q_OBJECT
@@ -25,6 +28,7 @@ private:
     Ui::MainWindow* m_pUi;
     QGraphicsView* m_pGraphicView;
     QGraphicsScene* m_pGraphScene;
+    QPoint* m_pPoint;
     Protocole* m_pProtocole;
     GPS *m_pGps;
     Gyro *m_pGyro;
