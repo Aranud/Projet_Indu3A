@@ -120,8 +120,8 @@ void RobotInterface::PushButonFront()
         m_pTimer->start();
 }
 
-void RobotInterface::FrontMove()
-{
+//void RobotInterface::FrontMove()
+//{
 
 //    QList<qint16> lstiPoids;
 //    QList<qint16> lstiDistance;
@@ -270,33 +270,34 @@ void RobotInterface::FrontMove()
 //    //qDebug() << " Motor Right = " << MotorRight;
 //    //qDebug() << " Difference = " << Difference;
 
-    QList<qint16> lstiDistance;
+//    QList<qint16> lstiDistance;
 
-    QByteArray baValue;
-    QString etatcourant;
-    QString etatsuivant;
+//    QByteArray baValue;
+//    QString etatcourant;
+//    QString etatsuivant;
 
-    double MotorLeft = 0;
-    double MotorRight = 0;
+//    double MotorLeft = 0;
+//    double MotorRight = 0;
 
-    lstiDistance = m_pLidar->getDistanceList();
+//    lstiDistance = m_pLidar->getDistanceList();
 
-    qDebug() << "Lidar Liste Distance : " << lstiDistance;
-    qDebug() << "_____________________________________________________________";
+//    qDebug() << "Lidar Liste Distance : " << lstiDistance;
+//    qDebug() << "_____________________________________________________________";
 
-    for(int iIncrement=0; iIncrement < 136 ; iIncrement++)
-    {
-       MotorLeft += lstiDistance.at(iIncrement);
-       MotorRight += lstiDistance.at(iIncrement + 135);
-    }
+//    for(int iIncrement=0; iIncrement < 136 ; iIncrement++)
+//    {
+//       MotorLeft += lstiDistance.at(iIncrement);
+//       MotorRight += lstiDistance.at(iIncrement + 135);
+//    }
 
-    baValue[0] = 127;
-    baValue[1] = 127;
+//    baValue[0] = 127;
+//    baValue[1] = 127;
 
-    qDebug() << "Left : " << MotorLeft << " Right : " << MotorRight;
-    //m_pIAMoteur->MachineEtat();
+//    qDebug() << "Left : " << MotorLeft << " Right : " << MotorRight;
+//    //m_pIAMoteur->MachineEtat();
 
-}
+//}
+
 /*******************************************************************************/
 /********************************** SLOT ***************************************/
 /*******************************************************************************/
