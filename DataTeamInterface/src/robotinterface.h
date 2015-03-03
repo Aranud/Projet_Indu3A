@@ -48,7 +48,7 @@ private:
     QTimer* m_pTimer;
     bool test;
     eDirection m_eDirection;
-    IAMoteur m_pIAMoteur;
+    IAMoteur* m_pIAMoteur;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -57,7 +57,6 @@ public:
     void PushButonRight();
     void PushButonLeft();
     void PushButonFront();
-    void FrontMove();
 
 public slots:
     void slotOnGpsDataAvailable();

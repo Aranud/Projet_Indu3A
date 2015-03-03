@@ -4,9 +4,11 @@
  * @brief IAMoteur::IAMoteur
  * @param parent
  */
-IAMoteur::IAMoteur(QObject *parent) :
+IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, QObject *parent) :
     QObject(parent)
 {
+    m_pMotor = p_pMotor;
+    m_pLidar = p_pLidar;
 }
 
 /**
@@ -24,7 +26,7 @@ void IAMoteur::MachineEtat()
     QList<qint16> PxD;
 
     QByteArray baValue;
-    int etatcourant;
+    //int etatcourant;
 
     double MotorLeft = 0;
     double MotorRight = 0;

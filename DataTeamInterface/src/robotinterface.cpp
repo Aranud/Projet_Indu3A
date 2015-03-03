@@ -21,13 +21,14 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
     m_pMagneto = new Magneto(m_pProtocole);
+    m_pIAMoteur = new IAMoteur(m_pLidar,m_pMotor);
 
     m_pTimer = new QTimer();
     m_pTimer->setInterval(500);
 
     m_pGraphScene = new QGraphicsScene();
     m_pGraphScene->setSceneRect(0,0,790,490);
-    m_pPoint = new QPoint(790/2,465);
+    m_pPoint = new QPoint(790/2, 465);
     m_pGraphicView = new QGraphicsView;
     m_pGraphicView->setFixedSize(800, 500);
     m_pGraphicView->setScene(m_pGraphScene);
@@ -404,7 +405,7 @@ void RobotInterface::slotTimeOut()
      }
      else if(m_eDirection == eDirectionFront)
      {
-         //m_pIAMoteur->MachineEtat();
+         m_pIAMoteur->MachineEtat();
          return;
      }
      else
