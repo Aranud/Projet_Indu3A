@@ -20,6 +20,7 @@
 #include "QGraphicsView"
 #include "QGraphicsScene"
 #include "math.h"
+#include "iamoteur.h"
 
 class RobotInterface : public QObject
 {
@@ -47,6 +48,7 @@ private:
     QTimer* m_pTimer;
     bool test;
     eDirection m_eDirection;
+    IAMoteur m_pIAMoteur;
 
 public:
     RobotInterface(Ui::MainWindow* ui);
