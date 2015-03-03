@@ -296,7 +296,6 @@ void RobotInterface::FrontMove()
     //m_pIAMoteur->MachineEtat();
 
 }
-
 /*******************************************************************************/
 /********************************** SLOT ***************************************/
 /*******************************************************************************/
@@ -405,7 +404,7 @@ void RobotInterface::slotTimeOut()
      }
      else if(m_eDirection == eDirectionFront)
      {
-         FrontMove();
+         //m_pIAMoteur->MachineEtat();
          return;
      }
      else
