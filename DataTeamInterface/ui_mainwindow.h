@@ -346,7 +346,7 @@ public:
         label_24->setGeometry(QRect(20, 290, 47, 13));
         timeResult = new QLabel(centralWidget);
         timeResult->setObjectName(QStringLiteral("timeResult"));
-        timeResult->setGeometry(QRect(70, 290, 47, 13));
+        timeResult->setGeometry(QRect(70, 290, 71, 16));
         pbAvant = new QPushButton(centralWidget);
         pbAvant->setObjectName(QStringLiteral("pbAvant"));
         pbAvant->setGeometry(QRect(510, 190, 51, 23));
