@@ -26,7 +26,7 @@ void IAMoteur::MachineEtat()
     QList<qint16> PxD;
 
     QByteArray baValue;
-    //int etatcourant;
+    int etatcourant;
 
     double MotorLeft = 0;
     double MotorRight = 0;
@@ -64,11 +64,86 @@ void IAMoteur::MachineEtat()
     //qDebug() << " Difference = " << Difference;
 
     /*******************************************/
-    /***     INITIALISATION MACH A ETAT     ****/
+    /***            MACH A ETAT             ****/
     /*******************************************/
 
-    baValue[0]=127;
-    baValue[1]=127;
+    if(Difference == 0 && MotorLeft == 0 && MotorRight == 0) // Etat 1
+    {
+        baValue[0]=127; // Tout Droit
+        baValue[1]=127;
+    }
+    else
+    {
+        if(Difference < 0)  //Etat 2 Obstacle à droite + Important
+        {
+            if(MotorLeft < 10000 && MotorRight < 7000) //On tourne progréssivement
+            {
+                baValue[0]=90; // a droite, grand angle
+                baValue[1]=127;
+
+            }else //On tourne rapidement
+            if(MotorLeft < 10000 && MotorRight > 7000 && MotorRight < 10000) //On tourne rapidement
+            {
+                baValue[0]=50; // a droite, petit angle
+                baValue[1]=127;
+            }
+            else
+            if(MotorLeft > 10000 && MotorRight < 10000)
+            {
+                baValue[0]=10; // a droite, Quasiment sur place
+                baValue[1]=127;
+            }
+            else
+            if(MotorLeft > 10000 && MotorRight > 10000)
+            {
+                baValue[0]=-127; // a droite, Quasiment sur place
+                baValue[1]=-127;
+            }
+        }
+        else if(Difference > 0) //Etat 3 Obstacle à gauche + Important
+        {
+            if(MotorRight < 10000 && MotorLeft < 7000) //On tourne progréssivement
+            {
+                baValue[1]=90; // a gauche, grand angle
+                baValue[0]=127;
+
+            }else //On tourne rapidement
+            if(MotorRight < 10000 && MotorLeft > 7000 && MotorLeft < 10000) //On tourne rapidement
+            {
+                baValue[1]=50; // a gauche, petit angle
+                baValue[0]=127;
+            }
+            else
+            if(MotorRight > 10000 && MotorLeft < 10000)
+            {
+                baValue[1]=10; // a gauche, Quasiment sur place
+                baValue[0]=127;
+            }
+            else
+            if(MotorRight > 10000 && MotorLeft > 10000)
+            {
+                baValue[1]=-127; // a gauche, Quasiment sur place
+                baValue[0]=-127;
+            }
+
+        }
+        else if(Difference == 0 && MotorRight > 12000 && MotorLeft > 12000) //Trop proche d'un obstacle en face, on recule
+        {
+                baValue[0]=-127;
+                baValue[1]=-127;
+        }
+        else if(Difference == 0 && MotorRight <10000 && MotorLeft < 10000) //On avance tout droit
+        {
+                baValue[0]=127;
+                baValue[1]=127;
+        }
+    }
+
+
+
+
+    //baValue[0]=127;
+    //baValue[1]=127;
     m_pMotor->SendData(baValue);
 
     qDebug() << "_____________________________________________________________";
