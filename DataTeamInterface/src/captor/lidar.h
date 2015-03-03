@@ -10,7 +10,6 @@ class Lidar : public Captor
     Q_OBJECT
 private:
     QList<qint16> m_lstiDistance;
-    QList<qint16> m_lstiPoids;
     QList<qint16> m_lstiAlbedo;
 
 public:
@@ -19,9 +18,6 @@ public:
 
     QList<qint16> getDistanceList() const;
     void setDistanceList(const QList<qint16> &p_lstiDistance);
-
-    QList<qint16> getPoidsList() const;
-    void setPoidsList(const QList<qint16> &p_lstiPoids);
 
     QList<qint16> getAlbedoList() const;
     void setAlbedoList(const QList<qint16> &p_lstiAlbedo);

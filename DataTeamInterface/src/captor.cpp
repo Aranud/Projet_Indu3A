@@ -99,7 +99,7 @@ void Captor::slotOnDisconnection()
  */
 void Captor::slotOnDataReceivedFromServer(QByteArray p_baData)
 {
-    emit emitDataExtractedAvailable(m_pProtocole->ExtractData(p_baData));
+    emit emitDataExtractedAvailable(m_pProtocole->ExtractData(p_baData));      
 }
 
 /**

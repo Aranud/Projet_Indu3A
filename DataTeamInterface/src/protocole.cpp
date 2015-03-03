@@ -69,6 +69,8 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
     baDataToSend.append(cFillChar);
     baDataToSend.append(cFillChar);
 
+    qDebug() << "Data to Send" << baDataToSend.toHex();
+
     return baDataToSend;
 }
 
@@ -79,7 +81,7 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
  */
 QByteArray Protocole::ExtractData(QByteArray p_baData)
 {
-    int iSize = ReverseData(p_baData.mid(7, 4)).toHex().toInt(0, 16);
+    int iSize = p_baData.mid(7, 4).toHex().toInt(0, 16);
     return p_baData.mid(11, iSize);
 }
 

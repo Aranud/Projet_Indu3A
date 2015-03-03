@@ -119,61 +119,30 @@ void RobotInterface::PushButonFront()
 
 void RobotInterface::FrontMove()
 {
-    QList<qint16> lstiPoids;
     QList<qint16> lstiDistance;
-    QList<qint16> PxD;
 
     QByteArray baValue;
 
     double MotorLeft = 0;
     double MotorRight = 0;
-    double Difference;
-    signed int reference = -500;
 
     lstiDistance = m_pLidar->getDistanceList();
-    lstiPoids = m_pLidar->getPoidsList();
 
-    //PxD = lstiDistance * lstiPoids;
-
-    for(int i = 0 ; i < lstiPoids.length(); i++)
-    {
-        /*if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
-            PxD.append(reference);
-        else*/
-            PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
-    }
-
-<<<<<<< HEAD
-=======
-    qDebug() << "Lidar Liste PxD : " << PxD;
-    qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Poids : " << lstiPoids;
-    qDebug() << "_____________________________________________________________";
     qDebug() << "Lidar Liste Distance : " << lstiDistance;
     qDebug() << "_____________________________________________________________";
->>>>>>> origin/master
-    for(int iteML=0; iteML < 136 ; iteML++)
-       MotorLeft += PxD.at(iteML);
 
-    qDebug() << "__________________________******______________________________";
+    for(int iIncrement=0; iIncrement < 136 ; iIncrement++)
+    {
+       MotorLeft += lstiDistance.at(iIncrement);
+       MotorRight += lstiDistance.at(iIncrement + 136);
+    }
 
-    for(int iteMR=136; iteMR < 271 ; iteMR++)
-       MotorRight += PxD.at(iteMR);
+    baValue[0] = 127;
+    baValue[1] = 127;
 
-
-    Difference = MotorLeft - MotorRight;
-    //qDebug() << " Difference = " << Difference;
-
-
+    qDebug() << "Left : " << MotorLeft << " Right : " << MotorRight;
 
     m_pMotor->SendData(baValue);
-
-
-    //qDebug() << "_____________________________________________________________";
-    //qDebug() << " Motor Left = " << MotorLeft;
-    //qDebug() << " Motor Right = " << MotorRight;
-    //qDebug() << " Difference = " << Difference;
-
 }
 
 /*******************************************************************************/
