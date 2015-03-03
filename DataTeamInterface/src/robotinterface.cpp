@@ -119,148 +119,152 @@ void RobotInterface::PushButonFront()
 
 void RobotInterface::FrontMove()
 {
-    QList<qint16> lstiPoids;
-    QList<qint16> lstiDistance;
-    QList<qint16> PxD;
+//    QList<qint16> lstiPoids;
+//    QList<qint16> lstiDistance;
+//    QList<qint16> PxD;
 
-    QByteArray baValue;
-    QString etatcourant;
-    QString etatsuivant;
+//    QByteArray baValue;
+//    int etatcourant;
 
-    double MotorLeft = 0;
-    double MotorRight = 0;
-    double Difference;
-    signed int reference = -500;
-
-    lstiDistance = m_pLidar->getDistanceList();
-    lstiPoids = m_pLidar->getPoidsList();
-
-    //PxD = lstiDistance * lstiPoids;
-
-    for(int i = 0 ; i < lstiPoids.length(); i++)
-    {
-        /*if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
-            PxD.append(reference);
-        else*/
-            PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
-    }
-
-<<<<<<< HEAD
-=======
-    qDebug() << "Lidar Liste PxD : " << PxD;
-    qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Poids : " << lstiPoids;
-    qDebug() << "_____________________________________________________________";
-    qDebug() << "Lidar Liste Distance : " << lstiDistance;
-    qDebug() << "_____________________________________________________________";
->>>>>>> origin/master
-    for(int iteML=0; iteML < 136 ; iteML++)
-       MotorLeft += PxD.at(iteML);
-
-    qDebug() << "__________________________******______________________________";
-
-    for(int iteMR=136; iteMR < 271 ; iteMR++)
-       MotorRight += PxD.at(iteMR);
+//    double MotorLeft = 0;
+//    double MotorRight = 0;
+//    double Difference;
 
 
-    Difference = MotorLeft - MotorRight;
-    //qDebug() << " Difference = " << Difference;
+//    lstiDistance = m_pLidar->getDistanceList();
+//    lstiPoids = m_pLidar->getPoidsList();
 
-    /*******************************************/
-    /***     INITIALISATION MACH A ETAT     ****/
-    /*******************************************/
+//    //PxD = lstiDistance * lstiPoids;
 
-    //Etats de départ
-    if(  Difference < 200
-      && Difference > -220
-      && MotorLeft < 10150
-      && MotorLeft > 10130
-      && MotorRight < 9970
-      && MotorRight > 9950)
-    {
-        etatcourant = "0"; // Sans obstacles
-    }
-    else
-    if(  Difference > 200
-      && MotorLeft < 10130
-      && MotorRight < 9970
-      && MotorRight > 9950)
-    {
-        etatcourant = "Err";
-    }
-    else
-    if(  Difference < -220
-      && MotorLeft < 10130
-      && MotorRight < 9970
-      && MotorRight > 9950)
-    {
-        etatcourant = "1"; // Obstacle uniquement à gauche
-    }
-    else
-    if(  Difference > 200
-      && MotorRight < 9950
-      && MotorLeft < 10150
-      && MotorLeft > 10130)
-    {
-        etatcourant = "2"; // Obstacle uniquement à droite
-    }
-    else
-    if(  Difference < -220
-      && MotorRight < 9950
-      && MotorLeft < 10150
-      && MotorLeft > 10130)
-    {
-        etatcourant = "Err"; //Etat Erreur
-    }
-    else
-    if(  Difference > 200
-      && MotorRight < 9950
-      && MotorLeft < 10130)
-    {
-        etatcourant = "2"; //Double Obstacles plus concentré sur la gauche
-    }
-    else
-    if(  Difference < -220
-      && MotorRight < 9950
-      && MotorLeft < 10130)
-    {
-        etatcourant = "1"; //Double Obstacles plus concentré sur la droite
-    }
+//    for(int i = 0 ; i < lstiPoids.length(); i++)
+//    {
+//        /*if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
+//            PxD.append(reference);
+//        else*/
+//            PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
+//    }
+
+
+//    qDebug() << "Lidar Liste PxD : " << PxD;
+//    qDebug() << "_____________________________________________________________";
+//    qDebug() << "Lidar Liste Poids : " << lstiPoids;
+//    qDebug() << "_____________________________________________________________";
+//    qDebug() << "Lidar Liste Distance : " << lstiDistance;
+//    qDebug() << "_____________________________________________________________";
+
+//    for(int iteML=0; iteML < 136 ; iteML++)
+//       MotorLeft += PxD.at(iteML);
+
+//    qDebug() << "__________________________******______________________________";
+
+//    for(int iteMR=136; iteMR < 271 ; iteMR++)
+//       MotorRight += PxD.at(iteMR);
+
+
+//    Difference = MotorLeft - MotorRight;
+//    //qDebug() << " Difference = " << Difference;
+
+//    /*******************************************/
+//    /***     INITIALISATION MACH A ETAT     ****/
+//    /*******************************************/
+
+//    //Etats de départ
+//    if(  Difference < 200
+//      && Difference > -220
+//      && MotorLeft < 10150
+//      && MotorLeft > 10130
+//      && MotorRight < 9970
+//      && MotorRight > 9950)
+//    {
+//        etatcourant = 0; // Sans obstacles
+//    }
+//    else
+//    if(  Difference > 200
+//      && MotorLeft < 10130
+//      && MotorRight < 9970
+//      && MotorRight > 9950)
+//    {
+//        etatcourant = 9999;
+//    }
+//    else
+//    if(  Difference < -220
+//      && MotorLeft < 10130
+//      && MotorRight < 9970
+//      && MotorRight > 9950)
+//    {
+//        etatcourant = 1; // Obstacle uniquement à gauche
+//    }
+//    else
+//    if(  Difference > 200
+//      && MotorRight < 9950
+//      && MotorLeft < 10150
+//      && MotorLeft > 10130)
+//    {
+//        etatcourant = 2; // Obstacle uniquement à droite
+//    }
+//    else
+//    if(  Difference < -220
+//      && MotorRight < 9950
+//      && MotorLeft < 10150
+//      && MotorLeft > 10130)
+//    {
+//        etatcourant = 9999; //Etat Erreur
+//    }
+//    else
+//    if(  Difference > 200
+//      && MotorRight < 9950
+//      && MotorLeft < 10130)
+//    {
+//        etatcourant = 2; //Double Obstacles plus concentré sur la droite
+//    }
+//    else
+//    if(  Difference < -220
+//      && MotorRight < 9950
+//      && MotorLeft < 10130)
+//    {
+//        etatcourant = 1; //Double Obstacles plus concentré sur la gauche
+//    }
 
 
 
-    switch(etatcourant)
-    {
-        case("0"):
-                baValue[0] = 127;
-                bavalue[1] = 127;
-        break;
-        case("1"):
-            if(MotorRight < 9950 && MotorLeft < 10130)
-            {
-                baValue[0] = 70;
-                bavalue[1] = 127;
-            }else
-            if()
-            {
+//    switch( etatcourant )
+//    {
+//    case(0):
+//            baValue[0] = 127;
+//            baValue[1] = 127;
+//        break;
+//    case(1):
+//        if(MotorRight < 9950 && MotorLeft < 10130)
+//        {
+//            baValue[0] = 127;
+//            baValue[1] = 20;
+//        }else
+//        {
+//            baValue[0] = 127;
+//            baValue[1] = 90;
+//        }
+//        break;
+//    case(2):
+//        if(MotorRight < 9950 && MotorLeft < 10130)
+//        {
+//            baValue[0] = 20;
+//            baValue[1] = 127;
+//        }else
+//        {
+//            baValue[0] = 90;
+//            baValue[1] = 127;
+//        }
+//        break;
+//    case(9999):
+//        qDebug() << "Etat Erreur";
+//        break;
+//    }
+//    m_pMotor->SendData(baValue);
 
-            }
-
-        break;
-        case("2"):
-        break;
-        case("Err"):
-        break;
-    }
-
-
-    m_pMotor->SendData(baValue);
-
-
-    //qDebug() << "_____________________________________________________________";
-    //qDebug() << " Motor Left = " << MotorLeft;
-    //qDebug() << " Motor Right = " << MotorRight;
-    //qDebug() << " Difference = " << Difference;
+//    //qDebug() << "_____________________________________________________________";
+//    //qDebug() << " Motor Left = " << MotorLeft;
+//    //qDebug() << " Motor Right = " << MotorRight;
+//    //qDebug() << " Difference = " << Difference;
 
 }
 
