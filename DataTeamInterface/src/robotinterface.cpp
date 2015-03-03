@@ -121,6 +121,7 @@ void RobotInterface::PushButonFront()
 
 void RobotInterface::FrontMove()
 {
+<<<<<<< HEAD
 //    QList<qint16> lstiPoids;
 //    QList<qint16> lstiDistance;
 //    QList<qint16> PxD;
@@ -292,8 +293,10 @@ void RobotInterface::FrontMove()
     baValue[1] = 127;
 
     qDebug() << "Left : " << MotorLeft << " Right : " << MotorRight;
+=======
+    //m_pIAMoteur->MachineEtat();
+>>>>>>> origin/master
 
-    m_pMotor->SendData(baValue);
 }
 
 /*******************************************************************************/

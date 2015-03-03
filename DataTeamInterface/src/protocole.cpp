@@ -69,7 +69,7 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
     baDataToSend.append(cFillChar);
     baDataToSend.append(cFillChar);
 
-    qDebug() << "Data to Send" << baDataToSend.toHex();
+
 
     return baDataToSend;
 }
