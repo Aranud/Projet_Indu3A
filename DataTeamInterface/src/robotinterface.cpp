@@ -1,4 +1,5 @@
 #include "robotinterface.h"
+#define PI 3.14159265
 
 /**
  * @brief RobotInterface::RobotInterface
@@ -6,6 +7,7 @@
  */
 RobotInterface::RobotInterface(Ui::MainWindow* ui)
 {
+    test = true;
     m_pUi = ui;
     m_pProtocole = new Protocole();
     m_pGps = new GPS(m_pProtocole);
@@ -71,7 +73,7 @@ bool RobotInterface::connectRobot()
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
     m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
-//    m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+    //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
 
@@ -128,7 +130,7 @@ void RobotInterface::FrontMove()
     double MotorLeft = 0;
     double MotorRight = 0;
     double Difference;
-    signed int reference = -500;
+    //signed int reference = -500;
 
     lstiDistance = m_pLidar->getDistanceList();
     lstiPoids = m_pLidar->getPoidsList();
@@ -143,15 +145,12 @@ void RobotInterface::FrontMove()
             PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
     }
 
-<<<<<<< HEAD
-=======
     qDebug() << "Lidar Liste PxD : " << PxD;
     qDebug() << "_____________________________________________________________";
     qDebug() << "Lidar Liste Poids : " << lstiPoids;
     qDebug() << "_____________________________________________________________";
     qDebug() << "Lidar Liste Distance : " << lstiDistance;
     qDebug() << "_____________________________________________________________";
->>>>>>> origin/master
     for(int iteML=0; iteML < 136 ; iteML++)
        MotorLeft += PxD.at(iteML);
 
@@ -225,10 +224,20 @@ void RobotInterface::slotOnAcceleroDataAvailable()
  */
 void RobotInterface::slotOnLidarDataAvailable()
 {
-    //QList<qint16> lstDistance = m_pLidar->getDistanceList();
+    QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
-    //for( int i=0; i<270;i++)
-            //m_pGraphScene->addEllipse(cos(lstDistance.at(i)-135)*100 + m_pPoint->rx(), sin(lstDistance.at(i)-135)*100 + m_pPoint->ry(),1,1);
+    if(test)
+    {
+        QTime time;
+        time.start();
+        for(int i=0; i< 270;i++)
+            if( lstDistance.at(i)<15)
+                    m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * lstDistance.at(i)*10 , m_pPoint->ry() + sin((i+135) * PI/180) * lstDistance.at(i)*10,1,1);
+        test =false;
+        int mili = time.elapsed();
+        qDebug() << "Temps ::" <<mili;
+    }
+
 }
 
 /**
