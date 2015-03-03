@@ -285,7 +285,7 @@ void RobotInterface::FrontMove()
     for(int iIncrement=0; iIncrement < 136 ; iIncrement++)
     {
        MotorLeft += lstiDistance.at(iIncrement);
-       MotorRight += lstiDistance.at(iIncrement + 136);
+       MotorRight += lstiDistance.at(iIncrement + 135);
     }
 
     baValue[0] = 127;
@@ -349,14 +349,16 @@ void RobotInterface::slotOnLidarDataAvailable()
 
     if(test)
     {
+         test =false;
         QTime time;
         time.start();
-        for(int i=0; i< 270;i++)
-            if( lstDistance.at(i)<15)
-                    m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * lstDistance.at(i)*10 , m_pPoint->ry() + sin((i+135) * PI/180) * lstDistance.at(i)*10,1,1);
-        test =false;
-        int mili = time.elapsed();
-        qDebug() << "Temps ::" <<mili;
+        m_pGraphScene->clear();
+        m_pGraphScene->addRect(0+m_pPoint->rx()-15,0+m_pPoint->ry(),30,50);
+        for(int i=0; i< 270;i++){
+             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/10) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/10), 1, 1);
+            //qDebug() << "DISTANCE( " << i <<" ) = " << lstDistance.at(i);
+        }
+        test = true;
     }
 
 }

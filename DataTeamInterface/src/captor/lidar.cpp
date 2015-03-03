@@ -59,7 +59,7 @@ void Lidar::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 
         for(int iIncrement = 0; iIncrement < 271; iIncrement++)
         {
-            m_lstiDistance.append(ReverseData(p_baDataExtracted.mid(iIncrement * 2, 2)).toHex().toInt());
+            m_lstiDistance.append(p_baDataExtracted.mid(iIncrement * 2, 2).toHex().toInt());
             m_lstiAlbedo.append(QString::number(p_baDataExtracted.at(iIncrement + 542)).toInt());
         }
         emit emitDataAvailable();
