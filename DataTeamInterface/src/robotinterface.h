@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QTime>
 #include <QList>
 
 #include "protocole.h"
@@ -44,7 +45,7 @@ private:
     int m_iCompteur;
 
     QTimer* m_pTimer;
-
+    bool test;
     eDirection m_eDirection;
 
 public:

@@ -1,4 +1,5 @@
-#include "robotinterface.h"
+﻿#include "robotinterface.h"
+#define PI 3.14159265
 
 /**
  * @brief RobotInterface::RobotInterface
@@ -6,6 +7,7 @@
  */
 RobotInterface::RobotInterface(Ui::MainWindow* ui)
 {
+    test = true;
     m_pUi = ui;
     m_pProtocole = new Protocole();
     m_pGps = new GPS(m_pProtocole);
@@ -71,7 +73,7 @@ bool RobotInterface::connectRobot()
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
     m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
-//    m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+    //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
 
@@ -265,6 +267,145 @@ void RobotInterface::FrontMove()
 //    //qDebug() << " Motor Left = " << MotorLeft;
 //    //qDebug() << " Motor Right = " << MotorRight;
 //    //qDebug() << " Difference = " << Difference;
+    QList<qint16> lstiPoids;
+    QList<qint16> lstiDistance;
+    QList<qint16> PxD;
+
+    QByteArray baValue;
+    QString etatcourant;
+    QString etatsuivant;
+
+    double MotorLeft = 0;
+    double MotorRight = 0;
+    double Difference;
+    //signed int reference = -500;
+
+    lstiDistance = m_pLidar->getDistanceList();
+    lstiPoids = m_pLidar->getPoidsList();
+
+    //PxD = lstiDistance * lstiPoids;
+
+    for(int i = 0 ; i < lstiPoids.length(); i++)
+    {
+        /*if((lstiDistance.at(i) * lstiPoids.at(i)) < -500)
+            PxD.append(reference);
+        else*/
+            PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
+    }
+
+    qDebug() << "Lidar Liste PxD : " << PxD;
+    qDebug() << "_____________________________________________________________";
+    qDebug() << "Lidar Liste Poids : " << lstiPoids;
+    qDebug() << "_____________________________________________________________";
+    qDebug() << "Lidar Liste Distance : " << lstiDistance;
+    qDebug() << "_____________________________________________________________";
+    for(int iteML=0; iteML < 136 ; iteML++)
+       MotorLeft += PxD.at(iteML);
+
+    qDebug() << "__________________________******______________________________";
+
+    for(int iteMR=136; iteMR < 271 ; iteMR++)
+       MotorRight += PxD.at(iteMR);
+
+
+    Difference = MotorLeft - MotorRight;
+    //qDebug() << " Difference = " << Difference;
+
+    /*******************************************/
+    /***     INITIALISATION MACH A ETAT     ****/
+    /*******************************************/
+
+    //Etats de départ
+    if(  Difference < 200
+      && Difference > -220
+      && MotorLeft < 10150
+      && MotorLeft > 10130
+      && MotorRight < 9970
+      && MotorRight > 9950)
+    {
+        etatcourant = "0"; // Sans obstacles
+    }
+    else
+    if(  Difference > 200
+      && MotorLeft < 10130
+      && MotorRight < 9970
+      && MotorRight > 9950)
+    {
+        etatcourant = "Err";
+    }
+    else
+    if(  Difference < -220
+      && MotorLeft < 10130
+      && MotorRight < 9970
+      && MotorRight > 9950)
+    {
+        etatcourant = "1"; // Obstacle uniquement à gauche
+    }
+    else
+    if(  Difference > 200
+      && MotorRight < 9950
+      && MotorLeft < 10150
+      && MotorLeft > 10130)
+    {
+        etatcourant = "2"; // Obstacle uniquement à droite
+    }
+    else
+    if(  Difference < -220
+      && MotorRight < 9950
+      && MotorLeft < 10150
+      && MotorLeft > 10130)
+    {
+        etatcourant = "Err"; //Etat Erreur
+    }
+    else
+    if(  Difference > 200
+      && MotorRight < 9950
+      && MotorLeft < 10130)
+    {
+        etatcourant = "2"; //Double Obstacles plus concentré sur la gauche
+    }
+    else
+    if(  Difference < -220
+      && MotorRight < 9950
+      && MotorLeft < 10130)
+    {
+        etatcourant = "1"; //Double Obstacles plus concentré sur la droite
+    }
+
+
+
+    switch(etatcourant)
+    {
+        case("0"):
+                baValue[0] = 127;
+                bavalue[1] = 127;
+        break;
+        case("1"):
+            if(MotorRight < 9950 && MotorLeft < 10130)
+            {
+                baValue[0] = 70;
+                bavalue[1] = 127;
+            }else
+            if()
+            {
+
+            }
+
+        break;
+        case("2"):
+        break;
+        case("Err"):
+        break;
+    }
+
+
+    m_pMotor->SendData(baValue);
+
+
+    //qDebug() << "_____________________________________________________________";
+    //qDebug() << " Motor Left = " << MotorLeft;
+    //qDebug() << " Motor Right = " << MotorRight;
+    //qDebug() << " Difference = " << Difference;
 
 }
 
@@ -317,10 +458,20 @@ void RobotInterface::slotOnAcceleroDataAvailable()
  */
 void RobotInterface::slotOnLidarDataAvailable()
 {
-    //QList<qint16> lstDistance = m_pLidar->getDistanceList();
+    QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
-    //for( int i=0; i<270;i++)
-            //m_pGraphScene->addEllipse(cos(lstDistance.at(i)-135)*100 + m_pPoint->rx(), sin(lstDistance.at(i)-135)*100 + m_pPoint->ry(),1,1);
+    if(test)
+    {
+        QTime time;
+        time.start();
+        for(int i=0; i< 270;i++)
+            if( lstDistance.at(i)<15)
+                    m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * lstDistance.at(i)*10 , m_pPoint->ry() + sin((i+135) * PI/180) * lstDistance.at(i)*10,1,1);
+        test =false;
+        int mili = time.elapsed();
+        qDebug() << "Temps ::" <<mili;
+    }
+
 }
 
 /**
