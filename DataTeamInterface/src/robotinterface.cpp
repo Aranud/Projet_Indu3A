@@ -124,6 +124,8 @@ void RobotInterface::FrontMove()
     QList<qint16> PxD;
 
     QByteArray baValue;
+    QString etatcourant;
+    QString etatsuivant;
 
     double MotorLeft = 0;
     double MotorRight = 0;
@@ -164,6 +166,92 @@ void RobotInterface::FrontMove()
     Difference = MotorLeft - MotorRight;
     //qDebug() << " Difference = " << Difference;
 
+    /*******************************************/
+    /***     INITIALISATION MACH A ETAT     ****/
+    /*******************************************/
+
+    //Etats de départ
+    if(  Difference < 200
+      && Difference > -220
+      && MotorLeft < 10150
+      && MotorLeft > 10130
+      && MotorRight < 9970
+      && MotorRight > 9950)
+    {
+        etatcourant = "0"; // Sans obstacles
+    }
+    else
+    if(  Difference > 200
+      && MotorLeft < 10130
+      && MotorRight < 9970
+      && MotorRight > 9950)
+    {
+        etatcourant = "Err";
+    }
+    else
+    if(  Difference < -220
+      && MotorLeft < 10130
+      && MotorRight < 9970
+      && MotorRight > 9950)
+    {
+        etatcourant = "1"; // Obstacle uniquement à gauche
+    }
+    else
+    if(  Difference > 200
+      && MotorRight < 9950
+      && MotorLeft < 10150
+      && MotorLeft > 10130)
+    {
+        etatcourant = "2"; // Obstacle uniquement à droite
+    }
+    else
+    if(  Difference < -220
+      && MotorRight < 9950
+      && MotorLeft < 10150
+      && MotorLeft > 10130)
+    {
+        etatcourant = "Err"; //Etat Erreur
+    }
+    else
+    if(  Difference > 200
+      && MotorRight < 9950
+      && MotorLeft < 10130)
+    {
+        etatcourant = "2"; //Double Obstacles plus concentré sur la gauche
+    }
+    else
+    if(  Difference < -220
+      && MotorRight < 9950
+      && MotorLeft < 10130)
+    {
+        etatcourant = "1"; //Double Obstacles plus concentré sur la droite
+    }
+
+
+
+    switch(etatcourant)
+    {
+        case("0"):
+                baValue[0] = 127;
+                bavalue[1] = 127;
+        break;
+        case("1"):
+            if(MotorRight < 9950 && MotorLeft < 10130)
+            {
+                baValue[0] = 70;
+                bavalue[1] = 127;
+            }else
+            if()
+            {
+
+            }
+
+        break;
+        case("2"):
+        break;
+        case("Err"):
+        break;
+    }
 
 
     m_pMotor->SendData(baValue);
