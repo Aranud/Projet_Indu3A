@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.3.2
+** Created by: Qt User Interface Compiler version 5.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -94,8 +94,6 @@ public:
     QLabel *fr;
     QLabel *rl;
     QLabel *rr;
-    QFrame *line_7;
-    QFrame *line_8;
     QPushButton *pbDroite;
     QPushButton *pbGauche;
     QLabel *labelDemitour;
@@ -106,7 +104,17 @@ public:
     QPushButton *pbDt;
     QLabel *label_25;
     QLabel *label_26;
-    QLabel *label_27;
+    QLabel *label_22;
+    QLabel *label_28;
+    QLabel *odoXResult;
+    QLabel *odoYResult;
+    QLabel *fr_2;
+    QLabel *fl_2;
+    QLabel *rl_2;
+    QLabel *rr_2;
+    QFrame *line_8;
+    QPushButton *pushButton_4;
+    QPushButton *pushButton_5;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -286,7 +294,7 @@ public:
         line_5->setFrameShadow(QFrame::Sunken);
         label_20 = new QLabel(centralWidget);
         label_20->setObjectName(QStringLiteral("label_20"));
-        label_20->setGeometry(QRect(660, 20, 47, 13));
+        label_20->setGeometry(QRect(660, 0, 47, 13));
         label_21 = new QLabel(centralWidget);
         label_21->setObjectName(QStringLiteral("label_21"));
         label_21->setGeometry(QRect(630, 40, 31, 16));
@@ -312,35 +320,25 @@ public:
         label_23->setGeometry(QRect(500, 100, 47, 13));
         fl = new QLabel(centralWidget);
         fl->setObjectName(QStringLiteral("fl"));
-        fl->setGeometry(QRect(450, 120, 47, 16));
+        fl->setGeometry(QRect(450, 120, 16, 16));
         fr = new QLabel(centralWidget);
         fr->setObjectName(QStringLiteral("fr"));
-        fr->setGeometry(QRect(520, 120, 47, 16));
+        fr->setGeometry(QRect(520, 120, 16, 16));
         rl = new QLabel(centralWidget);
         rl->setObjectName(QStringLiteral("rl"));
-        rl->setGeometry(QRect(450, 150, 47, 16));
+        rl->setGeometry(QRect(450, 150, 16, 16));
         rr = new QLabel(centralWidget);
         rr->setObjectName(QStringLiteral("rr"));
-        rr->setGeometry(QRect(520, 150, 47, 16));
-        line_7 = new QFrame(centralWidget);
-        line_7->setObjectName(QStringLiteral("line_7"));
-        line_7->setGeometry(QRect(570, 90, 20, 91));
-        line_7->setFrameShape(QFrame::VLine);
-        line_7->setFrameShadow(QFrame::Sunken);
-        line_8 = new QFrame(centralWidget);
-        line_8->setObjectName(QStringLiteral("line_8"));
-        line_8->setGeometry(QRect(440, 170, 301, 21));
-        line_8->setFrameShape(QFrame::HLine);
-        line_8->setFrameShadow(QFrame::Sunken);
+        rr->setGeometry(QRect(520, 150, 16, 16));
         pbDroite = new QPushButton(centralWidget);
         pbDroite->setObjectName(QStringLiteral("pbDroite"));
-        pbDroite->setGeometry(QRect(570, 220, 51, 23));
+        pbDroite->setGeometry(QRect(570, 250, 51, 23));
         pbGauche = new QPushButton(centralWidget);
         pbGauche->setObjectName(QStringLiteral("pbGauche"));
-        pbGauche->setGeometry(QRect(450, 220, 51, 23));
+        pbGauche->setGeometry(QRect(450, 250, 51, 23));
         labelDemitour = new QLabel(centralWidget);
         labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
-        labelDemitour->setGeometry(QRect(600, 250, 131, 20));
+        labelDemitour->setGeometry(QRect(600, 280, 131, 20));
         label_24 = new QLabel(centralWidget);
         label_24->setObjectName(QStringLiteral("label_24"));
         label_24->setGeometry(QRect(20, 290, 47, 13));
@@ -349,24 +347,57 @@ public:
         timeResult->setGeometry(QRect(70, 290, 71, 16));
         pbAvant = new QPushButton(centralWidget);
         pbAvant->setObjectName(QStringLiteral("pbAvant"));
-        pbAvant->setGeometry(QRect(510, 190, 51, 23));
+        pbAvant->setGeometry(QRect(510, 220, 51, 23));
         pbArriere = new QPushButton(centralWidget);
         pbArriere->setObjectName(QStringLiteral("pbArriere"));
-        pbArriere->setGeometry(QRect(510, 250, 51, 23));
+        pbArriere->setGeometry(QRect(510, 280, 51, 23));
         pbDt = new QPushButton(centralWidget);
         pbDt->setObjectName(QStringLiteral("pbDt"));
-        pbDt->setGeometry(QRect(510, 220, 51, 23));
+        pbDt->setGeometry(QRect(510, 250, 51, 23));
         label_25 = new QLabel(centralWidget);
         label_25->setObjectName(QStringLiteral("label_25"));
-        label_25->setGeometry(QRect(450, 190, 51, 16));
+        label_25->setGeometry(QRect(450, 220, 51, 16));
         label_26 = new QLabel(centralWidget);
         label_26->setObjectName(QStringLiteral("label_26"));
-        label_26->setGeometry(QRect(570, 250, 51, 21));
-        label_27 = new QLabel(centralWidget);
-        label_27->setObjectName(QStringLiteral("label_27"));
-        label_27->setGeometry(QRect(630, 100, 47, 13));
+        label_26->setGeometry(QRect(570, 280, 51, 21));
+        label_22 = new QLabel(centralWidget);
+        label_22->setObjectName(QStringLiteral("label_22"));
+        label_22->setGeometry(QRect(600, 130, 21, 16));
+        label_28 = new QLabel(centralWidget);
+        label_28->setObjectName(QStringLiteral("label_28"));
+        label_28->setGeometry(QRect(660, 130, 21, 16));
+        odoXResult = new QLabel(centralWidget);
+        odoXResult->setObjectName(QStringLiteral("odoXResult"));
+        odoXResult->setGeometry(QRect(610, 130, 51, 20));
+        odoYResult = new QLabel(centralWidget);
+        odoYResult->setObjectName(QStringLiteral("odoYResult"));
+        odoYResult->setGeometry(QRect(670, 130, 51, 20));
+        fr_2 = new QLabel(centralWidget);
+        fr_2->setObjectName(QStringLiteral("fr_2"));
+        fr_2->setGeometry(QRect(540, 120, 31, 16));
+        fl_2 = new QLabel(centralWidget);
+        fl_2->setObjectName(QStringLiteral("fl_2"));
+        fl_2->setGeometry(QRect(470, 120, 31, 16));
+        rl_2 = new QLabel(centralWidget);
+        rl_2->setObjectName(QStringLiteral("rl_2"));
+        rl_2->setGeometry(QRect(470, 150, 31, 16));
+        rr_2 = new QLabel(centralWidget);
+        rr_2->setObjectName(QStringLiteral("rr_2"));
+        rr_2->setGeometry(QRect(540, 150, 31, 16));
+        line_8 = new QFrame(centralWidget);
+        line_8->setObjectName(QStringLiteral("line_8"));
+        line_8->setGeometry(QRect(440, 180, 301, 20));
+        line_8->setFrameShape(QFrame::HLine);
+        line_8->setFrameShadow(QFrame::Sunken);
+        pushButton_4 = new QPushButton(centralWidget);
+        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        pushButton_4->setGeometry(QRect(650, 200, 75, 23));
+        pushButton_5 = new QPushButton(centralWidget);
+        pushButton_5->setObjectName(QStringLiteral("pushButton_5"));
+        pushButton_5->setGeometry(QRect(650, 220, 75, 23));
         MainWindow->setCentralWidget(centralWidget);
-        line_7->raise();
+        line_8->raise();
+        line->raise();
         line_5->raise();
         line_4->raise();
         leServerAddress->raise();
@@ -402,7 +433,6 @@ public:
         label_10->raise();
         label_11->raise();
         label_12->raise();
-        line->raise();
         line_2->raise();
         label->raise();
         label_13->raise();
@@ -431,7 +461,6 @@ public:
         fr->raise();
         rl->raise();
         rr->raise();
-        line_8->raise();
         pbDroite->raise();
         pbGauche->raise();
         labelDemitour->raise();
@@ -442,7 +471,16 @@ public:
         pbDt->raise();
         label_25->raise();
         label_26->raise();
-        label_27->raise();
+        label_22->raise();
+        label_28->raise();
+        odoXResult->raise();
+        odoYResult->raise();
+        fr_2->raise();
+        fl_2->raise();
+        rl_2->raise();
+        rr_2->raise();
+        pushButton_4->raise();
+        pushButton_5->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 739, 21));
@@ -482,7 +520,7 @@ public:
         gyroPort->setText(QApplication::translate("MainWindow", "3340", 0));
         actuatorPort->setText(QApplication::translate("MainWindow", "3345", 0));
         remotePort->setText(QApplication::translate("MainWindow", "3338", 0));
-        magnetoPort->setText(QApplication::translate("MainWindow", "3341", 0));
+        magnetoPort->setText(QString());
         label_2->setText(QApplication::translate("MainWindow", "Ip", 0));
         label_3->setText(QApplication::translate("MainWindow", "GPS", 0));
         label_4->setText(QApplication::translate("MainWindow", "Lidar", 0));
@@ -529,7 +567,16 @@ public:
         pbDt->setText(QApplication::translate("MainWindow", "DT", 0));
         label_25->setText(QApplication::translate("MainWindow", "Contr\303\264le", 0));
         label_26->setText(QApplication::translate("MainWindow", "etat:", 0));
-        label_27->setText(QApplication::translate("MainWindow", "Magneto", 0));
+        label_22->setText(QApplication::translate("MainWindow", "x:", 0));
+        label_28->setText(QApplication::translate("MainWindow", "y:", 0));
+        odoXResult->setText(QString());
+        odoYResult->setText(QString());
+        fr_2->setText(QApplication::translate("MainWindow", "0", 0));
+        fl_2->setText(QApplication::translate("MainWindow", "0", 0));
+        rl_2->setText(QApplication::translate("MainWindow", "0", 0));
+        rr_2->setText(QApplication::translate("MainWindow", "0", 0));
+        pushButton_4->setText(QApplication::translate("MainWindow", "Bordure", 0));
+        pushButton_5->setText(QApplication::translate("MainWindow", "Rigole", 0));
     } // retranslateUi
 
 };
