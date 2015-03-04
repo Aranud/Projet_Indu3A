@@ -41,12 +41,14 @@ private:
     //Magneto *m_pMagneto;
     Odo *m_pOdo;
     Motor *m_pMotor;
+    bool m_pRr,m_pRl,m_pFr,m_pFl;
     //Remote *m_pRemote;
     Magneto* m_pMagneto;
     int m_iCompteur;
 
     QTimer* m_pTimer;
-    bool test;
+    bool draw;
+
     eDirection m_eDirection;
     IAMoteur* m_pIAMoteur;
 

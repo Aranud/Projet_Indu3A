@@ -7,7 +7,7 @@
  */
 RobotInterface::RobotInterface(Ui::MainWindow* ui)
 {
-    test = true;
+
     m_pUi = ui;
     m_pProtocole = new Protocole();
     m_pGps = new GPS(m_pProtocole);
@@ -20,12 +20,15 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pOdo = new Odo(m_pProtocole);
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
-    m_pMagneto = new Magneto(m_pProtocole);
+    rr = rl = fr = fl = false;
+
+
     m_pIAMoteur = new IAMoteur(m_pLidar,m_pMotor);
 
     m_pTimer = new QTimer();
     m_pTimer->setInterval(500);
 
+    draw = true;
     m_pGraphScene = new QGraphicsScene();
     m_pGraphScene->setSceneRect(0,0,790,490);
     m_pPoint = new QPoint(790/2, 465);
@@ -44,8 +47,9 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     connect(m_pLidar, SIGNAL(emitDataAvailable()), this, SLOT(slotOnLidarDataAvailable()));
     connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
     connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnOdoDataAvailable()));
-//    connect(m_pRemote, SIGNAL(emitDataAvailable()), this, SLOT(slotOnRemoteDataAvailable()));
+
     connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
+    //connect(m_pRemote, SIGNAL(emitDataAvailable()), this, SLOT(slotOnRemoteDataAvailable()));
 }
 
 /**
@@ -172,9 +176,9 @@ void RobotInterface::slotOnLidarDataAvailable()
 {
     QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
-    if(test)
+    if(draw)
     {
-         test =false;
+         draw =false;
         QTime time;
         time.start();
         m_pGraphScene->clear();
@@ -183,7 +187,7 @@ void RobotInterface::slotOnLidarDataAvailable()
              m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/10) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/10), 1, 1);
             //qDebug() << "DISTANCE( " << i <<" ) = " << lstDistance.at(i);
         }
-        test = true;
+        draw = true;
     }
 
 }
@@ -193,10 +197,18 @@ void RobotInterface::slotOnLidarDataAvailable()
  */
 void RobotInterface::slotOnOdoDataAvailable()
 {
-    m_pUi->fl->setText(QString::number(m_pOdo->getFrontLeft()));
-    m_pUi->fr->setText(QString::number(m_pOdo->getFrontRight()));
-    m_pUi->rl->setText(QString::number(m_pOdo->getRearLeft()));
-    m_pUi->rr->setText(QString::number(m_pOdo->getRearRight()));
+//    if(m_pOdo->getFrontLeft() && m_pFl)
+//        ;
+//    if(m_pOdo->getFrontRight() && m_pFr)
+//        ;
+//    if(m_pOdo->getRearLeft() && m_pRl)
+//        ;
+//    if(m_pOdo->getRearRight() && m_pRr)
+//        ;
+//    m_pUi->fl->setText();
+//    m_pUi->fr->setText();
+//    m_pUi->rl->setText();
+//    m_pUi->rr->setText();
 }
 
 /**
