@@ -36,4 +36,16 @@ typedef enum eDirection
 
 }E_Direction;
 
+typedef enum eEtatIAMotor
+{
+    eEtatIAMotorNone,
+    eEtatIAMotorAvant,
+    eEtatIAMotorGauche,
+    eEtatIAMotorDroite,
+    eEtatIAMotorArriere,
+    eEtatIAMotorVirageGauche,
+    eEtatIAMotorVirageDroite
+
+}E_EtatIAMotor;
+
 #endif // GLOBAL_H

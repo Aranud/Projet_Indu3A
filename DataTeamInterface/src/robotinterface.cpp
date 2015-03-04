@@ -229,7 +229,7 @@ void RobotInterface::slotTimeOut()
      }
      else if(m_eDirection == eDirectionFront)
      {
-         m_pIAMoteur->MachineEtat();
+         m_pIAMoteur->EtatParcelle();
          return;
      }
      else
