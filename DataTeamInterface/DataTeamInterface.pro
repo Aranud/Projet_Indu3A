@@ -55,7 +55,7 @@ HEADERS  += src/mainwindow.h \
     src/captor/motor.h \
     iamoteur.h
 
-FORMS    += src/mainwindow.ui
+FORMS    += mainwindow.ui\
 
 RESOURCES += \
     res/ressources.qrc

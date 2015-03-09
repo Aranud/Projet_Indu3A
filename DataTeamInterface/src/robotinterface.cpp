@@ -20,7 +20,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pOdo = new Odo(m_pProtocole);
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
-    rr = rl = fr = fl = false;
+    m_pRr = m_pRl = m_pFr = m_pFl = false;
 
 
     m_pIAMoteur = new IAMoteur(m_pLidar,m_pMotor);
@@ -197,18 +197,33 @@ void RobotInterface::slotOnLidarDataAvailable()
  */
 void RobotInterface::slotOnOdoDataAvailable()
 {
-//    if(m_pOdo->getFrontLeft() && m_pFl)
-//        ;
-//    if(m_pOdo->getFrontRight() && m_pFr)
-//        ;
-//    if(m_pOdo->getRearLeft() && m_pRl)
-//        ;
-//    if(m_pOdo->getRearRight() && m_pRr)
-//        ;
-//    m_pUi->fl->setText();
-//    m_pUi->fr->setText();
-//    m_pUi->rl->setText();
-//    m_pUi->rr->setText();
+    if(m_pOdo->getFrontLeft() && !m_pFl)
+    {
+        m_pUi->fl_2->setText(QString::number(m_pUi->fl_2->text().toInt() +1));
+        m_pUi->fl->setText(QString::number(m_pOdo->getFrontLeft()));
+        m_pFl = !m_pFl;
+    }
+
+    if(m_pOdo->getFrontRight() && !m_pFr)
+    {
+        m_pUi->fr_2->setText( QString::number(m_pUi->fr_2->text().toInt()+1));
+        m_pUi->fl->setText(QString::number(m_pOdo->getFrontRight()));
+         m_pFr = !m_pFr;
+    }
+
+    if(m_pOdo->getRearLeft() && !m_pRl)
+    {
+        m_pUi->rl_2->setText(QString::number( m_pUi->rl_2->text().toInt()+1));
+        m_pUi->fl->setText(QString::number(m_pOdo->getRearLeft()));
+        m_pRl = !m_pRl;
+    }
+
+    if(m_pOdo->getRearRight() && !m_pRr)
+    {
+        m_pUi->rr_2->setText(QString::number( m_pUi->rr_2->text().toInt()+1));
+        m_pUi->fl->setText(QString::number(m_pOdo->getRearRight()));
+        m_pRr = !m_pRr;
+    }
 }
 
 /**
