@@ -22,6 +22,8 @@ public:
     void EtatParcelle();
     void MachineAEtat();
 
+    void MonTest();
+
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
 

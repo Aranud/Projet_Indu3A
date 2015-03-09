@@ -108,23 +108,10 @@ void Odo::setFrontLeft(bool p_bFrontLeft)
  */
 void Odo::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    qDebug() << "Odo Data Extracted : " << p_baDataExtracted.toHex();
-    qDebug() << "Odo Data Extracted Lenght : " << p_baDataExtracted.length();
-
     m_bFrontRight = p_baDataExtracted.at(0);
     m_bRearRight = p_baDataExtracted.at(1);
     m_bRearLeft = p_baDataExtracted.at(2);
     m_bFrontLeft = p_baDataExtracted.at(3);
-
-//    m_bFrontRight = p_baDataExtracted.mid(0, 2).toHex().toInt();
-//    m_bRearRight = p_baDataExtracted.mid(2, 2).toHex().toInt();
-//    m_bRearLeft = p_baDataExtracted.mid(4, 2).toHex().toInt();
-//    m_bFrontLeft = p_baDataExtracted.mid(6, 2).toHex().toInt();
-
-    qDebug() << "Result From Od : " << m_bFrontRight << " | "
-                                    << m_bRearRight << " | "
-                                    << m_bRearLeft << " | "
-                                    << m_bFrontLeft;
 
     emit emitDataAvailable();
 }

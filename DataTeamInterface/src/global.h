@@ -44,7 +44,8 @@ typedef enum eEtatIAMotor
     eEtatIAMotorDroite,
     eEtatIAMotorArriere,
     eEtatIAMotorVirageGauche,
-    eEtatIAMotorVirageDroite
+    eEtatIAMotorVirageDroite,
+    eEtatIAMotorSortie
 
 }E_EtatIAMotor;
 
