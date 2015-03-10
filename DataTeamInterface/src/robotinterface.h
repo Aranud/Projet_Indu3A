@@ -28,7 +28,6 @@ class RobotInterface : public QObject
 
 private:
     Ui::MainWindow* m_pUi;
-    QGraphicsView* m_pGraphicView;
     QGraphicsScene* m_pGraphScene;
     QPoint* m_pPoint;
     Protocole* m_pProtocole;

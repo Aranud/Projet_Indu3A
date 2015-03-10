@@ -30,13 +30,11 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     draw = true;
     m_pGraphScene = new QGraphicsScene();
-    m_pGraphScene->setSceneRect(0,0,790,490);
-    m_pPoint = new QPoint(790/2, 465);
-    m_pGraphicView = new QGraphicsView;
-    m_pGraphicView->setFixedSize(800, 500);
-    m_pGraphicView->setScene(m_pGraphScene);
-    m_pGraphScene->addRect(0+m_pPoint->rx()-15,0+m_pPoint->ry(),30,50);
-    m_pGraphicView->show();
+    m_pGraphScene->setSceneRect(0,0,690,190);
+    m_pPoint = new QPoint(690/2, 180);
+    m_pUi->graphicsView->setScene(m_pGraphScene);
+    m_pGraphScene->addRect(0+m_pPoint->rx()-14,0+m_pPoint->ry(),28,40);
+    //m_pUi->graphicsView->show();
 
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
 
@@ -47,8 +45,6 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     connect(m_pLidar, SIGNAL(emitDataAvailable()), this, SLOT(slotOnLidarDataAvailable()));
     connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
     connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnOdoDataAvailable()));
-
-    connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
     //connect(m_pRemote, SIGNAL(emitDataAvailable()), this, SLOT(slotOnRemoteDataAvailable()));
 }
 
@@ -57,7 +53,6 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
  */
 RobotInterface::~RobotInterface()
 {
-
 }
 
 /*******************************************************************************/
@@ -182,9 +177,9 @@ void RobotInterface::slotOnLidarDataAvailable()
         QTime time;
         time.start();
         m_pGraphScene->clear();
-        m_pGraphScene->addRect(0+m_pPoint->rx()-15,0+m_pPoint->ry(),30,50);
+        m_pGraphScene->addRect(0+m_pPoint->rx()-14,0+m_pPoint->ry(),28,40);
         for(int i=0; i< 270;i++){
-             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/10) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/10), 1, 1);
+             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/5) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/5), 2, 2);
             //qDebug() << "DISTANCE( " << i <<" ) = " << lstDistance.at(i);
         }
         draw = true;

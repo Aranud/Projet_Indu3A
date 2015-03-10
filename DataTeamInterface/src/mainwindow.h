@@ -29,6 +29,8 @@ private:
     Protocole* m_pProtocole;
     RobotInterface* m_pRobot;
 
+
+
     bool m_bIsConnectionEtablished;
 
 public slots:

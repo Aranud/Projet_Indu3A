@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
  */
 MainWindow::~MainWindow()
 {
+    if(m_pRobot)
+        delete m_pRobot;
     delete ui;
 }
 

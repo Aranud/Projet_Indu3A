@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>739</width>
-    <height>365</height>
+    <height>577</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1116,6 +1116,16 @@
      <string>Rigole</string>
     </property>
    </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>320</y>
+      <width>701</width>
+      <height>201</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>line_8</zorder>
    <zorder>line</zorder>
    <zorder>line_5</zorder>
@@ -1201,6 +1211,7 @@
    <zorder>rr_2</zorder>
    <zorder>pushButton_4</zorder>
    <zorder>pushButton_5</zorder>
+   <zorder>graphicsView</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
