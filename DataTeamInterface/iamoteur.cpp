@@ -197,8 +197,8 @@ void IAMoteur::MonTest()
 
     lstiDistance = m_pLidar->getDistanceList();
 
-    int iDistance = 1000;
-    int iDegree = 0;
+    int iDistanceDroite, iDistanceGauche, iDistanceRef = 1000;
+    int iDegreeDroite, iDegreeGauche, iDegreeRef = 0;
 
     if(m_eEtatIAMotor == eEtatIAMotorSortie)
     {
@@ -209,12 +209,12 @@ void IAMoteur::MonTest()
         for(int iIncrement = 0; iIncrement < 90; iIncrement++)
         {
             // Test le cote droit de Oz
-            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistance)
+            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceRef)
             {
-                iDistance = lstiDistance.at(225 - iIncrement);
-                iDegree = iIncrement;
+                iDistanceRef = lstiDistance.at(225 - iIncrement);
+                iDegreeRef = iIncrement;
 
-                if(iDistance < 200)
+                if(iDistanceRef < 200)
                     return;
             }
         }
@@ -224,34 +224,12 @@ void IAMoteur::MonTest()
         return;
     }
 
-//    if(m_eEtatIAMotor == eEtatIAMotorEntree)
-//    {
-//        baValue[0] = 127;
-//        baValue[1] = 32;
-//        m_pMotor->SendData(baValue);
-
-//        for(int iIncrement = 0; iIncrement < 90; iIncrement++)
-//        {
-//            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistance)
-//            {
-//                iDistance = lstiDistance.at(225 - iIncrement);
-//                iDegree = iIncrement;
-
-//                if(iDistance < 150)
-//                    return;
-//            }
-//        }
-
-//        m_eEtatIAMotor = eEtatIAMotorNone;
-//        return;
-//    }
-
     if(m_eEtatIAMotor == eEtatIAMotorVirageDroite)
     {
         baValue[0] = 127;
         baValue[1] = 32;
         m_pMotor->SendData(baValue);
-
+/*
         for(int iIncrement = 0; iIncrement < 90; iIncrement++)
         {
             if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistance)
@@ -272,10 +250,39 @@ void IAMoteur::MonTest()
                 }
             }
         }
-        qDebug() << "Virage !!";
+*/
+        for(int iIncrement = 0; iIncrement < 90; iIncrement++)
+        {
+            if(lstiDistance.at(iIncrement + 45) != 0 && lstiDistance.at(iIncrement + 45) < iDistanceRef)
+            {
+                iDistanceDroite = lstiDistance.at(iIncrement + 45);
+                iDegreeDroite = iIncrement;
+            }
+
+            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceRef)
+            {
+                iDistanceGauche = lstiDistance.at(225 - iIncrement);
+                iDegreeGauche = iIncrement;
+            }
+        }
+
+        if(iDistanceGauche < 250)
+        {
+            baValue[0] = 127;
+            baValue[1] = 64;
+            m_pMotor->SendData(baValue);
+            qDebug() << "Virage Douceur !!";
+        }
+        else
+            qDebug() << "Virage !!";
+
+        if(iDistanceDroite < 400)   // On retrouve un point a droite
+        {
+            m_eEtatIAMotor = eEtatIAMotorNone;
+            qDebug() << "Fin Virage";
+        }
         return;
     }
-
     InterieurRigole();
 }
 
@@ -312,24 +319,26 @@ void IAMoteur::InterieurRigole()
     else
         iDegreeRef = iDegreeDroite;
 
-    if(iDistanceRef >= 500)            // Si le point le plus proche est très éloigné
+    if(iDistanceRef >= 600)            // Si le point le plus proche est très éloigné
     {
         baValue[0] = 127;
         baValue[1] = 127;
         m_eEtatIAMotor = eEtatIAMotorSortie;
         qDebug() << "Sortie Actif";
     }
-    else if(iDistanceRef > 150)
+    else if(iDistanceRef > 250)
     {
         if(iDegreeRef > 70 && iDegreeRef == iDegreeGauche)
         {
             baValue[0] = 127;
             baValue[1] = 96;
+            qDebug() << "Avant Leger Droite";
         }
         else if (iDegreeRef > 70 && iDegreeRef == iDegreeDroite)
         {
             baValue[0] = 96;
             baValue[1] = 127;
+            qDebug() << "Avant Leger Gauche";
         }
         else
         {
@@ -361,7 +370,11 @@ void IAMoteur::InterieurRigole()
         qDebug() << "Correction Gauche";
     }
     else
+    {
+        baValue[0] = 127;
+        baValue[1] = 127;
         qDebug() << "Ne Rien Faire A L'Interieur???";
+    }
 
     m_pMotor->SendData(baValue);
 }
