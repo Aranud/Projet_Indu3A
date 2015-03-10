@@ -23,6 +23,8 @@ public:
     void MachineAEtat();
 
     void MonTest();
+    void InterieurRigole();
+    void Virage();
 
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
