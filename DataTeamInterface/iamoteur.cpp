@@ -10,6 +10,8 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, QObject *parent) :
     m_pMotor = p_pMotor;
     m_pLidar = p_pLidar;
     m_eEtatIAMotor = eEtatIAMotorNone;
+    m_eActionRobot = eActionRobotRigole;
+    m_eActionRobotPrecVirage = eActionRobotNone;
 }
 
 /**
@@ -47,251 +49,30 @@ void IAMoteur::setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor)
 /*******************************************************************************/
 
 /**
- * @brief IAMoteur::EtatParcelle
+ * @brief IAMoteur::MachineAEtat
  */
-void IAMoteur::EtatParcelle()
-{
-    MonTest();
-
-//    QList<qint16> lstiPoids;
-//    QList<qint16> lstiDistance;
-//    QList<qint16> PxD;
-
-//    QByteArray baValue;
-
-//    double MotorLeft = 0;
-//    double MotorRight = 0;
-//    double Difference;
-
-
-//    lstiDistance = m_pLidar->getDistanceList();
-//    lstiPoids = m_pLidar->getPoidsList();
-
-//    for(int i = 0 ; i < lstiPoids.length(); i++)
-//    {
-//            if(lstiDistance.at(i) < 500)
-//                PxD.append(lstiDistance.at(i) * lstiPoids.at(i));
-//            else
-//                PxD.append(0);
-//    }
-
-//    for(int iIncrement = 0; iIncrement < 136; iIncrement++)
-//    {
-//        MotorLeft += PxD.at(iIncrement);
-//        MotorRight += PxD.at(iIncrement + 135);
-//    }
-
-//    Difference = MotorLeft - MotorRight;
-
-//    if(qMax(MotorLeft, MotorRight) == MotorLeft) // Difference > 0
-//    {
-//        if(qAbs(Difference) < 20000)
-//        {
-//            if(MaxReadedValueMotor == 0)
-//            {
-//                baValue[0] = MotorLeft/MotorLeft * 127;
-//                baValue[1] = (MotorRight/MotorLeft * 127) + 50;
-////                qDebug() << " First time Etat 1 avec Diff < 20 000 et baValue[0] = " << baValue[0];
-////                qDebug() << " , baValue[1] = " << baValue[1];
-////                qDebug() << " , MaxReadedValueMotor = " << MaxReadedValueMotor;
-////                qDebug() << "==========================";
-//            }
-//            else
-//            {
-//                if(qMax(MaxReadedValueMotor, MotorLeft)==MotorLeft)
-//                {
-//                    MaxReadedValueMotor = MotorLeft;
-
-//                }
-
-//                baValue[0] = MotorLeft/MotorLeft * 127;
-//                baValue[1] = (MotorRight/MotorRight * 127) - 50;
-////                qDebug() << " Etat 1 avec Diff < 20 000 et baValue[0] = " << baValue[0];
-////                qDebug() << " , baValue[1] = " << baValue[1];
-////                qDebug() << " , MaxReadedValueMotor = " << MaxReadedValueMotor;
-////                qDebug() << "==========================";
-//            }
-
-
-//        }
-//        else
-//        {
-////            qDebug() << " Etat 1 avec Diff > 20 000";
-////            qDebug() << "==========================";
-//            baValue[0] = -127;
-//            baValue[1] = -127;
-//        }
-
-//    }
-//    else
-//    if(qMax(qAbs(MotorLeft), qAbs(MotorRight)) == MotorRight)// Difference < 0
-//    {
-//        if(qAbs(Difference) < 20000)
-//        {
-//            if(MaxReadedValueMotor == 0)
-//            {
-//                baValue[0] = MotorLeft/MotorRight * 127 + 50;
-//                baValue[1] = (MotorRight/MotorRight * 127);
-////                qDebug() << " First time Etat 2 avec Diff < 20 000 et baValue[0] = " << baValue[0];
-////                qDebug() << " , baValue[1] = " << baValue[1];
-////                qDebug() << " , MaxReadedValueMotor = " << MaxReadedValueMotor;
-////                qDebug() << "==========================";
-//            }
-//            else
-//            {
-//                if(qMax(MaxReadedValueMotor, MotorRight)==MotorRight)
-//                {
-//                    MaxReadedValueMotor = MotorRight;
-
-//                }
-
-//                baValue[0] = MotorLeft/MotorLeft * 127 - 50;
-//                baValue[1] = (MotorRight/MotorRight * 127);
-////                qDebug() << " Etat 2 avec Diff < 20 000 et baValue[0] = " << baValue[0];
-////                qDebug() << " , baValue[1] = " << baValue[1];
-////                qDebug() << " , MaxReadedValueMotor = " << MaxReadedValueMotor;
-////                qDebug() << "==========================";
-//            }
-//        }
-//        else
-//        {
-////            qDebug() << " Etat 2 avec Diff > 20 000";
-////            qDebug() << "==========================";
-//            baValue[0] = -127;
-//            baValue[1] = -127;
-//        }
-
-//    }
-//    else
-//    {
-//        if(qAbs(Difference) < 10000)
-//        {
-//            baValue[0] = 127;
-//            baValue[1] = 127;
-//        }
-//        else
-//        {
-//            baValue[0] = -127;
-//            baValue[1] = -127;
-//        }
-//    }
-
-//    m_pMotor->SendData(baValue);
-
-////    qDebug() << "_____________________________________________________________";
-////    qDebug() << " Motor Left = " << MotorLeft;
-////    qDebug() << " Motor Right = " << MotorRight;
-////    qDebug() << " Difference = " << Difference;
-
-}
-
 void IAMoteur::MachineAEtat()
 {
-
+    switch(m_eActionRobot)
+    {
+        case eActionRobotRigole : InterieurRigole(); break;
+        case eActionRobotGrandVirageDroite : VirageDroite(); break;
+        case eActionRobotGrandVirageGauche : VirageGauche(); break;
+        case eActionRobotPetitVirageDroite : break;
+        case eActionRobotPetitVirageGauche : break;
+        default :  break;
+    }
 }
 
-void IAMoteur::MonTest()
-{
-    QList<qint16> lstiDistance;
-    QByteArray baValue;
-
-    lstiDistance = m_pLidar->getDistanceList();
-
-    int iDistanceDroite, iDistanceGauche, iDistanceRef = 1000;
-    int iDegreeDroite, iDegreeGauche, iDegreeRef = 0;
-
-    if(m_eEtatIAMotor == eEtatIAMotorSortie)
-    {
-        baValue[0] = 127;
-        baValue[1] = 127;
-        m_pMotor->SendData(baValue);
-
-        for(int iIncrement = 0; iIncrement < 90; iIncrement++)
-        {
-            // Test le cote droit de Oz
-            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceRef)
-            {
-                iDistanceRef = lstiDistance.at(225 - iIncrement);
-                iDegreeRef = iIncrement;
-
-                if(iDistanceRef < 200)
-                    return;
-            }
-        }
-
-        qDebug() << "Sortie en cours";
-        m_eEtatIAMotor = eEtatIAMotorVirageDroite;
-        return;
-    }
-
-    if(m_eEtatIAMotor == eEtatIAMotorVirageDroite)
-    {
-        baValue[0] = 127;
-        baValue[1] = 32;
-        m_pMotor->SendData(baValue);
-/*
-        for(int iIncrement = 0; iIncrement < 90; iIncrement++)
-        {
-            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistance)
-            {
-                iDistance = lstiDistance.at(225 - iIncrement);
-                iDegree = iIncrement;
-
-                if(iDistance < 200)
-                {
-                    //m_eEtatIAMotor = eEtatIAMotorEntree;
-                    m_eEtatIAMotor = eEtatIAMotorNone;
-                    qDebug() << "Fin Virage";
-
-                    baValue[0] = 127;
-                    baValue[1] = 32;
-                    m_pMotor->SendData(baValue);
-                    break;
-                }
-            }
-        }
-*/
-        for(int iIncrement = 0; iIncrement < 90; iIncrement++)
-        {
-            if(lstiDistance.at(iIncrement + 45) != 0 && lstiDistance.at(iIncrement + 45) < iDistanceRef)
-            {
-                iDistanceDroite = lstiDistance.at(iIncrement + 45);
-                iDegreeDroite = iIncrement;
-            }
-
-            if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceRef)
-            {
-                iDistanceGauche = lstiDistance.at(225 - iIncrement);
-                iDegreeGauche = iIncrement;
-            }
-        }
-
-        if(iDistanceGauche < 250)
-        {
-            baValue[0] = 127;
-            baValue[1] = 64;
-            m_pMotor->SendData(baValue);
-            qDebug() << "Virage Douceur !!";
-        }
-        else
-            qDebug() << "Virage !!";
-
-        if(iDistanceDroite < 400)   // On retrouve un point a droite
-        {
-            m_eEtatIAMotor = eEtatIAMotorNone;
-            qDebug() << "Fin Virage";
-        }
-        return;
-    }
-    InterieurRigole();
-}
-
+/**
+ * @brief IAMoteur::InterieurRigole
+ */
 void IAMoteur::InterieurRigole()
 {
     QList<qint16> lstiDistance;
     QByteArray baValue;
-    int iDistanceDroite, iDistanceGauche, iDistanceRef = 1000;
-    int iDegreeDroite, iDegreeGauche, iDegreeRef = 0;
+    int iDistanceDroite = 1000, iDistanceGauche = 1000, iDistanceRef = 1000;
+    int iDegreeDroite = 0, iDegreeGauche = 0, iDegreeRef = 0;
 
     lstiDistance = m_pLidar->getDistanceList();
 
@@ -323,10 +104,22 @@ void IAMoteur::InterieurRigole()
     {
         baValue[0] = 127;
         baValue[1] = 127;
+
+        if(m_eActionRobotPrecVirage == eActionRobotNone || m_eActionRobotPrecVirage == eActionRobotGrandVirageGauche)
+        {
+            m_eActionRobot = eActionRobotGrandVirageDroite;
+            m_eActionRobotPrecVirage = eActionRobotGrandVirageDroite;
+        }
+        else if (m_eActionRobotPrecVirage == eActionRobotGrandVirageDroite)
+        {
+            m_eActionRobot = eActionRobotGrandVirageGauche;
+            m_eActionRobotPrecVirage = eActionRobotGrandVirageGauche;
+        }
+
         m_eEtatIAMotor = eEtatIAMotorSortie;
         qDebug() << "Sortie Actif";
     }
-    else if(iDistanceRef > 250)
+    else if(iDistanceRef > 180)
     {
         if(iDegreeRef > 70 && iDegreeRef == iDegreeGauche)
         {
@@ -353,6 +146,8 @@ void IAMoteur::InterieurRigole()
         baValue[0] = 127;
 
         if(iDegreeRef < 45)
+            baValue[1] = 96;
+        else if(iDegreeRef < 60)
             baValue[1] = 63;
         else
             baValue[1] = 0;
@@ -362,7 +157,10 @@ void IAMoteur::InterieurRigole()
     else if(m_eEtatIAMotor == eEtatIAMotorGauche)
     {
         baValue[1] = 127;
+
         if(iDegreeRef < 45)
+            baValue[0] = 96;
+        else if(iDegreeRef < 60)
             baValue[0] = 63;
         else
             baValue[0] = 0;
@@ -379,7 +177,170 @@ void IAMoteur::InterieurRigole()
     m_pMotor->SendData(baValue);
 }
 
-void IAMoteur::Virage()
+/**
+ * @brief IAMoteur::VirageDroite
+ */
+void IAMoteur::VirageDroite()
 {
+    QList<qint16> lstiDistance;
+    QByteArray baValue;
 
+    lstiDistance = m_pLidar->getDistanceList();
+
+    int iDistanceDroite = 1000, iDistanceGauche = 1000, iDistanceRef = 1000;
+    int iDegreeDroite = 0, iDegreeGauche = 0, iDegreeRef = 0;
+
+    for(int iIncrement = 0; iIncrement < 90; iIncrement++)
+    {
+        if(lstiDistance.at(iIncrement + 45) != 0 && lstiDistance.at(iIncrement + 45) < iDistanceGauche)
+        {
+            iDistanceGauche = lstiDistance.at(iIncrement + 45);
+            iDegreeGauche = iIncrement;
+        }
+
+        if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceDroite)
+        {
+            iDistanceDroite = lstiDistance.at(225 - iIncrement);
+            iDegreeDroite = iIncrement;
+        }
+    }
+
+    if(m_eEtatIAMotor == eEtatIAMotorArriere)
+    {
+        baValue[0] = -127;
+        baValue[1] = -127;
+        m_pMotor->SendData(baValue);
+
+        if(iDistanceDroite > 200)
+            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+
+    }
+    else if(m_eEtatIAMotor == eEtatIAMotorSortie)
+    {
+        baValue[0] = 127;
+        baValue[1] = 127;
+        m_pMotor->SendData(baValue);
+
+        if(iDistanceDroite > 200)
+        {
+            qDebug() << "Sortie en cours";
+            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+        }
+    }
+    else if(m_eEtatIAMotor == eEtatIAMotorVirageDroite)
+    {
+        baValue[0] = 127;
+        baValue[1] = 32;
+        m_pMotor->SendData(baValue);
+/*
+        if(iDistanceDroite < 200)
+        {
+            baValue[0] = 32;
+            baValue[1] = 127;
+            m_pMotor->SendData(baValue);
+            qDebug() << "Contre braque !!";
+        }
+        else if(iDistanceDroite < 250)
+        {
+            baValue[0] = 127;
+            baValue[1] = 64;
+            m_pMotor->SendData(baValue);
+            qDebug() << "Virage Douceur !!";
+        }
+        else
+            qDebug() << "Virage !!";
+
+        if(iDistanceGauche < 350 && iDegreeGauche < 45)   // On retrouve un point a droite
+        {
+            m_eEtatIAMotor = eEtatIAMotorNone;
+            m_eActionRobot = eActionRobotRigole;
+            qDebug() << "Fin Virage";
+        }*/
+
+        if(iDistanceDroite < 350)
+            m_eEtatIAMotor = eEtatIAMotorArriere;
+    }
+}
+
+/**
+ * @brief IAMoteur::VirageGauche
+ */
+void IAMoteur::VirageGauche()
+{
+    QList<qint16> lstiDistance;
+    QByteArray baValue;
+
+    lstiDistance = m_pLidar->getDistanceList();
+
+    int iDistanceDroite = 1000, iDistanceGauche = 1000, iDistanceRef = 1000;
+    int iDegreeDroite = 0, iDegreeGauche = 0, iDegreeRef = 0;
+
+    for(int iIncrement = 0; iIncrement < 90; iIncrement++)
+    {
+        if(lstiDistance.at(iIncrement + 45) != 0 && lstiDistance.at(iIncrement + 45) < iDistanceGauche)
+        {
+            iDistanceGauche = lstiDistance.at(iIncrement + 45);
+            iDegreeGauche = iIncrement;
+        }
+
+        if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceDroite)
+        {
+            iDistanceDroite = lstiDistance.at(225 - iIncrement);
+            iDegreeDroite = iIncrement;
+        }
+    }
+
+    if(m_eEtatIAMotor == eEtatIAMotorArriere)
+    {
+        baValue[0] = -127;
+        baValue[1] = -127;
+        m_pMotor->SendData(baValue);
+
+        if(iDistanceDroite > 200)
+            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+
+    }
+    else if(m_eEtatIAMotor == eEtatIAMotorSortie)
+    {
+        baValue[0] = 127;
+        baValue[1] = 127;
+        m_pMotor->SendData(baValue);
+
+        if(iDistanceDroite > 200)
+        {
+            qDebug() << "Sortie en cours";
+            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+        }
+    }
+    else if(m_eEtatIAMotor == eEtatIAMotorVirageDroite)
+    {
+        baValue[1] = 127;
+        baValue[0] = 32;
+        m_pMotor->SendData(baValue);
+
+        if(iDistanceGauche < 200)
+        {
+            baValue[1] = 32;
+            baValue[0] = 127;
+            m_pMotor->SendData(baValue);
+            qDebug() << "Contre braque !!";
+        }
+        else if(iDistanceGauche < 250)
+        {
+            baValue[1] = 127;
+            baValue[0] = 64;
+            m_pMotor->SendData(baValue);
+            qDebug() << "Virage Douceur !!";
+        }
+        else
+            qDebug() << "Virage !!";
+
+        if(iDistanceDroite < 350 && iDegreeDroite < 45)   // On retrouve un point a droite
+        {
+            m_eEtatIAMotor = eEtatIAMotorNone;
+            m_eActionRobot = eActionRobotRigole;
+            qDebug() << "Fin Virage";
+        }
+        return;
+    }
 }
