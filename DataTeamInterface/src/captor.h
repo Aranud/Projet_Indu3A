@@ -13,8 +13,10 @@ protected:
     TCPConnection* m_pTCPConnection;
     Protocole* m_pProtocole;
     eIDCommand m_eIDCommand;
-
     bool m_bIsConnectionEtablished;
+
+private:
+    bool m_IsConnected;
 
 public:
     explicit Captor();
@@ -24,6 +26,9 @@ public:
     void DisconnectCaptor();
     bool SendData(QByteArray p_pDataToSend);
     QByteArray ReverseData(QByteArray p_baData);
+
+    bool IsConnected();
+    void setIsConnected(bool IsConnected);
 
 signals:
     void emitDataExtractedAvailable(QByteArray);

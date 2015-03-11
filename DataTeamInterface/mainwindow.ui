@@ -444,9 +444,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>190</y>
+      <y>180</y>
       <width>441</width>
-      <height>16</height>
+      <height>20</height>
      </rect>
     </property>
     <property name="orientation">
@@ -726,7 +726,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pbLevel1">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -739,7 +739,7 @@
      <string>1</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pbLevel2">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -752,7 +752,7 @@
      <string>2</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="pbLevel3">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -951,7 +951,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>220</y>
+      <y>200</y>
       <width>51</width>
       <height>16</height>
      </rect>
@@ -1090,7 +1090,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="pbBordure">
     <property name="geometry">
      <rect>
       <x>650</x>
@@ -1103,7 +1103,7 @@
      <string>Bordure</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="pbRigole">
     <property name="geometry">
      <rect>
       <x>650</x>
@@ -1182,9 +1182,9 @@
    <zorder>label_20</zorder>
    <zorder>label_21</zorder>
    <zorder>actuatorResult</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>pushButton_3</zorder>
+   <zorder>pbLevel1</zorder>
+   <zorder>pbLevel2</zorder>
+   <zorder>pbLevel3</zorder>
    <zorder>line_6</zorder>
    <zorder>label_23</zorder>
    <zorder>fl</zorder>
@@ -1209,8 +1209,8 @@
    <zorder>fl_2</zorder>
    <zorder>rl_2</zorder>
    <zorder>rr_2</zorder>
-   <zorder>pushButton_4</zorder>
-   <zorder>pushButton_5</zorder>
+   <zorder>pbBordure</zorder>
+   <zorder>pbRigole</zorder>
    <zorder>graphicsView</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
