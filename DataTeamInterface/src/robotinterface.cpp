@@ -26,7 +26,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     m_lstCaptors.append(m_pGps);
     m_lstCaptors.append(m_pGyro);
-    m_lstCaptors.append(m_pJoystick);
+    //m_lstCaptors.append(m_pJoystick);
     m_lstCaptors.append(m_pActuator);
     m_lstCaptors.append(m_pAccelero);
     m_lstCaptors.append(m_pLidar);
@@ -51,14 +51,32 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
 
-    connect(m_pGps, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGpsDataAvailable()));
-    connect(m_pGyro, SIGNAL(emitDataAvailable()), this, SLOT(slotOnGyroDataAvailable()));
-    connect(m_pActuator, SIGNAL(emitDataAvailable()), this, SLOT(slotOnActuatorDataAvailable()));
-    connect(m_pAccelero, SIGNAL(emitDataAvailable()), this, SLOT(slotOnAcceleroDataAvailable()));
-    connect(m_pLidar, SIGNAL(emitDataAvailable()), this, SLOT(slotOnLidarDataAvailable()));
-    connect(m_pMagneto, SIGNAL(emitDataAvailable()), this, SLOT(slotOnMagnetoDataAvailable()));
-    connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnOdoDataAvailable()));
-    //connect(m_pRemote, SIGNAL(emitDataAvailable()), this, SLOT(slotOnRemoteDataAvailable()));
+    m_pSignalConnectionMapper = new QSignalMapper(this);
+    m_pSignalCaptorMapper = new QSignalMapper(this);
+
+    foreach (Captor* captor, m_lstCaptors)
+    {
+        connect(captor, SIGNAL(emitConnected()), m_pSignalConnectionMapper, SLOT(map()));
+        m_pSignalConnectionMapper->setMapping(captor, (int)captor->getEIDCommand());
+
+        connect(captor, SIGNAL(emitDataExtractedAvailable(QByteArray)), m_pSignalCaptorMapper, SLOT(map()));
+        m_pSignalCaptorMapper->setMapping(captor, (int)captor->getEIDCommand());
+    }
+
+    connect(m_pSignalConnectionMapper, SIGNAL(mapped(int)), this, SLOT(slotOnConectedCaptorReady(int)));
+    connect(m_pSignalCaptorMapper, SIGNAL(mapped(int)), this, SLOT(slotOnCaptorSignals(int)));
+
+    m_pUi->pbSendData->setEnabled(false);
+    m_pUi->pbAvant->setEnabled(false);
+    m_pUi->pbArriere->setEnabled(false);
+    m_pUi->pbGauche->setEnabled(false);
+    m_pUi->pbDroite->setEnabled(false);
+    m_pUi->pbDt->setEnabled(false);
+    m_pUi->pbBordure->setEnabled(false);
+    m_pUi->pbRigole->setEnabled(false);
+    m_pUi->pbLevel1->setEnabled(false);
+    m_pUi->pbLevel2->setEnabled(false);
+    m_pUi->pbLevel3->setEnabled(false);
 }
 
 /**
@@ -80,51 +98,14 @@ bool RobotInterface::connectRobot()
 {
     m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
     m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
- //   m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+    // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
     m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
     m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
-<<<<<<< HEAD
     //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
-
-
-    bool enabled;
-    bool isConnectedCaptor = true;
-
-    foreach (Captor captor, m_lstCaptors) {
-        if(!captor.IsConnected()){
-            isConnectedCaptor = false;
-            qDebug()<<"FALSE CAPTOR";
-        }
-        else
-            qDebug()<<"TRUE CAPTOR";
-    }
-
-    if(isConnectedCaptor)
-    {
-        enabled =true;
-        m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_ENABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
-    }
-    else{
-        enabled =false;
-        m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_DISABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
-    }
-    m_pUi->pbSendData->setEnabled(enabled);
-    m_pUi->pbAvant->setEnabled(enabled);
-    m_pUi->pbArriere->setEnabled(enabled);
-    m_pUi->pbGauche->setEnabled(enabled);
-    m_pUi->pbDroite->setEnabled(enabled);
-    m_pUi->pbDt->setEnabled(enabled);
-    m_pUi->pbBordure->setEnabled(enabled);
-    m_pUi->pbRigole->setEnabled(enabled);
-    m_pUi->pbLevel1->setEnabled(enabled);
-    m_pUi->pbLevel2->setEnabled(enabled);
-    m_pUi->pbLevel3->setEnabled(enabled);
-=======
->>>>>>> origin/master
 
     return true;
 }
@@ -168,15 +149,10 @@ void RobotInterface::PushButonFront()
         m_pTimer->start();
 }
 
-
-/*******************************************************************************/
-/********************************** SLOT ***************************************/
-/*******************************************************************************/
-
 /**
- * @brief RobotInterface::slotOnGpsDataAvailable
+ * @brief RobotInterface::onGpsDataAvailable
  */
-void RobotInterface::slotOnGpsDataAvailable()
+void RobotInterface::onGpsDataAvailable()
 {
     m_pUi->altitudeResult->setText(QString::number(m_pGps->getAltitude()));
     m_pUi->longitudeResult->setText(QString::number(m_pGps->getLongitude()));
@@ -186,9 +162,9 @@ void RobotInterface::slotOnGpsDataAvailable()
 }
 
 /**
- * @brief RobotInterface::slotOnGyroDataAvailable
+ * @brief RobotInterface::onGyroDataAvailable
  */
-void RobotInterface::slotOnGyroDataAvailable()
+void RobotInterface::onGyroDataAvailable()
 {
     m_pUi->gyroXResult->setText(QString::number(m_pGyro->getXGyro()));
     m_pUi->gyroYResult->setText(QString::number(m_pGyro->getYGyro()));
@@ -196,17 +172,17 @@ void RobotInterface::slotOnGyroDataAvailable()
 }
 
 /**
- * @brief RobotInterface::slotOnActuatorDataAvailable
+ * @brief RobotInterface::onActuatorDataAvailable
  */
-void RobotInterface::slotOnActuatorDataAvailable()
+void RobotInterface::onActuatorDataAvailable()
 {
     m_pUi->actuatorResult->setText(QString::number(m_pActuator->getActuator()));
 }
 
 /**
- * @brief RobotInterface::slotOnAcceleroDataAvailable
+ * @brief RobotInterface::onAcceleroDataAvailable
  */
-void RobotInterface::slotOnAcceleroDataAvailable()
+void RobotInterface::onAcceleroDataAvailable()
 {
     m_pUi->acceleroXResult->setText(QString::number(m_pAccelero->getXAccelero()));
     m_pUi->acceleroYResult->setText(QString::number(m_pAccelero->getYAccelero()));
@@ -214,9 +190,9 @@ void RobotInterface::slotOnAcceleroDataAvailable()
 }
 
 /**
- * @brief RobotInterface::slotOnLidarDataAvailable
+ * @brief RobotInterface::onLidarDataAvailable
  */
-void RobotInterface::slotOnLidarDataAvailable()
+void RobotInterface::onLidarDataAvailable()
 {
     QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
@@ -237,9 +213,9 @@ void RobotInterface::slotOnLidarDataAvailable()
 }
 
 /**
- * @brief RobotInterface::slotOnOdoDataAvailable
+ * @brief RobotInterface::onOdoDataAvailable
  */
-void RobotInterface::slotOnOdoDataAvailable()
+void RobotInterface::onOdoDataAvailable()
 {
     m_pUi->fl->setText(QString::number(m_pFl = m_pOdo->getFrontLeft()));
     m_pUi->fr->setText(QString::number(m_pFr =m_pOdo->getFrontRight()));
@@ -272,19 +248,34 @@ void RobotInterface::slotOnOdoDataAvailable()
 }
 
 /**
- * @brief RobotInterface::slotOnRemoteDataAvailable
+ * @brief RobotInterface::onRemoteDataAvailable
  */
-void RobotInterface::slotOnRemoteDataAvailable()
+void RobotInterface::onRemoteDataAvailable()
 {
 }
 
 /**
- * @brief RobotInterface::slotOnMagnetoDataAvailable
+ * @brief RobotInterface::onMotorDataAvailable
  */
-void RobotInterface::slotOnMagnetoDataAvailable()
+void RobotInterface::onMotorDataAvailable()
+{
+
+}
+
+/**
+ * @brief RobotInterface::onMagnetoDataAvailable
+ */
+void RobotInterface::onMagnetoDataAvailable()
 {
 }
 
+
+/*******************************************************************************/
+/********************************** SLOT ***************************************/
+/*******************************************************************************/
+/**
+ * @brief RobotInterface::slotTimeOut
+ */
 void RobotInterface::slotTimeOut()
 {
      QByteArray baValue;
@@ -317,5 +308,73 @@ void RobotInterface::slotTimeOut()
      }
 
      m_pMotor->SendData(baValue);
+
+}
+
+/**
+ * @brief RobotInterface::slotOnCaptorSignals
+ */
+void RobotInterface::slotOnCaptorSignals(int p_iValue)
+{
+    switch(p_iValue){
+    case eIDCommandGyro:
+        onGyroDataAvailable();
+        break;
+    case eIDCommmandAccelero:
+        onAcceleroDataAvailable();
+        break;
+    case eIDCommmandActuator:
+        onActuatorDataAvailable();
+        break;
+    case eIDCommmandGPS:
+        onGpsDataAvailable();
+        break;
+    case eIDCommmandLidar:
+        onLidarDataAvailable();
+        break;
+    case eIDCommmandMagneto:
+        onMagnetoDataAvailable();
+        break;
+    case eIDCommmandMotors:
+        onMotorDataAvailable();
+        break;
+    case eIDCommmandOdo:
+        onOdoDataAvailable();
+        break;
+    case eIDCommmandRemote:
+        onRemoteDataAvailable();
+        break;
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief RobotInterface::slotOnConectedCaptorReady
+ */
+void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
+{
+
+    switch(p_iValue){
+    case eIDCommmandMotors:
+        m_pUi->pbSendData->setEnabled(true);
+        m_pUi->pbAvant->setEnabled(true);
+        m_pUi->pbArriere->setEnabled(true);
+        m_pUi->pbGauche->setEnabled(true);
+        m_pUi->pbDroite->setEnabled(true);
+        m_pUi->pbDt->setEnabled(true);
+        break;
+
+    case eIDCommmandLidar:
+        m_pUi->pbRigole->setEnabled(true);
+        m_pUi->pbBordure->setEnabled(true);
+        m_pUi->pbLevel1->setEnabled(true);
+        m_pUi->pbLevel2->setEnabled(true);
+        m_pUi->pbLevel3->setEnabled(true);
+        break;
+    default:
+        break;
+    }
+
 
 }

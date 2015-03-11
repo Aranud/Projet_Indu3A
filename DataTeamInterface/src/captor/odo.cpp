@@ -112,6 +112,5 @@ void Odo::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
     m_bRearRight = p_baDataExtracted.at(1);
     m_bRearLeft = p_baDataExtracted.at(2);
     m_bFrontLeft = p_baDataExtracted.at(3);
-    qDebug() << p_baDataExtracted.toHex()<<"\n";
     emit emitDataAvailable();
 }

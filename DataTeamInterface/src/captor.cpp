@@ -5,7 +5,7 @@
  * @param parent
  */
 
-bool Captor::IsConnected()
+bool Captor::getIsConnected()
 {
     return m_IsConnected;
 }
@@ -15,6 +15,16 @@ void Captor::setIsConnected(bool IsConnected)
     m_IsConnected = IsConnected;
 }
 
+
+eIDCommand Captor::getEIDCommand()
+{
+    return m_eIDCommand;
+}
+
+void Captor::setEIDCommand(eIDCommand &eIDCommand)
+{
+    m_eIDCommand = eIDCommand;
+}
 Captor::Captor()
 {
     m_eIDCommand = eIDCommandNone;
@@ -94,6 +104,7 @@ QByteArray Captor::ReverseData(QByteArray p_baData)
 void Captor::slotOnConnection()
 {
     m_bIsConnectionEtablished = true;
+    emit emitConnected();
 }
 
 /**

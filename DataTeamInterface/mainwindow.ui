@@ -680,7 +680,7 @@
       <x>610</x>
       <y>0</y>
       <width>20</width>
-      <height>91</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="orientation">
@@ -781,8 +781,8 @@
    <widget class="QLabel" name="label_23">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>100</y>
+      <x>520</x>
+      <y>90</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -795,7 +795,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>120</y>
+      <y>110</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -808,7 +808,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>120</y>
+      <y>110</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -821,7 +821,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>150</y>
+      <y>130</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -834,7 +834,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>150</y>
+      <y>130</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -976,9 +976,9 @@
    <widget class="QLabel" name="label_22">
     <property name="geometry">
      <rect>
-      <x>600</x>
-      <y>130</y>
-      <width>21</width>
+      <x>450</x>
+      <y>150</y>
+      <width>16</width>
       <height>16</height>
      </rect>
     </property>
@@ -989,9 +989,9 @@
    <widget class="QLabel" name="label_28">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>130</y>
-      <width>21</width>
+      <x>520</x>
+      <y>150</y>
+      <width>16</width>
       <height>16</height>
      </rect>
     </property>
@@ -1002,10 +1002,10 @@
    <widget class="QLabel" name="odoXResult">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>130</y>
-      <width>51</width>
-      <height>20</height>
+      <x>470</x>
+      <y>150</y>
+      <width>31</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
@@ -1015,10 +1015,10 @@
    <widget class="QLabel" name="odoYResult">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>130</y>
-      <width>51</width>
-      <height>20</height>
+      <x>540</x>
+      <y>150</y>
+      <width>31</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
@@ -1029,7 +1029,7 @@
     <property name="geometry">
      <rect>
       <x>540</x>
-      <y>120</y>
+      <y>110</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -1042,7 +1042,7 @@
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>120</y>
+      <y>110</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -1055,7 +1055,7 @@
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>150</y>
+      <y>130</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -1068,7 +1068,7 @@
     <property name="geometry">
      <rect>
       <x>540</x>
-      <y>150</y>
+      <y>130</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -1126,9 +1126,100 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLabel" name="label_27">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>90</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Magneto</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_29">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>110</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_30">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>130</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>y:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_31">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>150</y>
+      <width>16</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>z:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="magnetoXResult">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>110</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="odoYResult_3">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>130</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="odoYResult_4">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>150</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>line_5</zorder>
    <zorder>line_8</zorder>
    <zorder>line</zorder>
-   <zorder>line_5</zorder>
    <zorder>line_4</zorder>
    <zorder>leServerAddress</zorder>
    <zorder>gpsPort</zorder>
@@ -1212,6 +1303,13 @@
    <zorder>pbBordure</zorder>
    <zorder>pbRigole</zorder>
    <zorder>graphicsView</zorder>
+   <zorder>label_27</zorder>
+   <zorder>label_29</zorder>
+   <zorder>label_30</zorder>
+   <zorder>label_31</zorder>
+   <zorder>magnetoXResult</zorder>
+   <zorder>odoYResult_3</zorder>
+   <zorder>odoYResult_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

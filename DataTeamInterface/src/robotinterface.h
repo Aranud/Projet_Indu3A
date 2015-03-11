@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QList>
+#include <QSignalMapper>
 
 #include "protocole.h"
 #include "gps.h"
@@ -34,6 +35,9 @@ private:
 
     QList<Captor*> m_lstCaptors;
 
+     QSignalMapper* m_pSignalConnectionMapper;
+     QSignalMapper* m_pSignalCaptorMapper;
+
     GPS *m_pGps;
     Gyro *m_pGyro;
     Joystick* m_pJoystick;
@@ -42,9 +46,11 @@ private:
     Lidar *m_pLidar;
     Odo *m_pOdo;
     Motor *m_pMotor;
+     Magneto* m_pMagneto;
+
     bool m_pRr,m_pRl,m_pFr,m_pFl,m_pRr2,m_pRl2,m_pFr2,m_pFl2;
     //Remote *m_pRemote;
-    Magneto* m_pMagneto;
+
     int m_iCompteur;
 
     QTimer* m_pTimer;
@@ -52,6 +58,16 @@ private:
 
     eDirection m_eDirection;
     IAMoteur* m_pIAMoteur;
+
+    void onGpsDataAvailable();
+    void onGyroDataAvailable();
+    void onActuatorDataAvailable();
+    void onAcceleroDataAvailable();
+    void onLidarDataAvailable();
+    void onMagnetoDataAvailable();
+    void onOdoDataAvailable();
+    void onRemoteDataAvailable();
+    void onMotorDataAvailable();
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -61,16 +77,13 @@ public:
     void PushButonLeft();
     void PushButonFront();
 
-public slots:
-    void slotOnGpsDataAvailable();
-    void slotOnGyroDataAvailable();
-    void slotOnActuatorDataAvailable();
-    void slotOnAcceleroDataAvailable();
-    void slotOnLidarDataAvailable();
-    void slotOnMagnetoDataAvailable();
-    void slotOnOdoDataAvailable();
-    void slotOnRemoteDataAvailable();
+signals:
+    void emitCaptorConnected(int);
+
+public slots:   
     void slotTimeOut();
+    void slotOnCaptorSignals(int p_iValue);
+    void slotOnConectedCaptorReady(int p_iValue);
 };
 
 #endif // ROBOTINTERFACE_H

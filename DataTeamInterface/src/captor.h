@@ -27,12 +27,17 @@ public:
     bool SendData(QByteArray p_pDataToSend);
     QByteArray ReverseData(QByteArray p_baData);
 
-    bool IsConnected();
+    bool getIsConnected();
     void setIsConnected(bool IsConnected);
+
+    eIDCommand getEIDCommand() ;
+    void setEIDCommand(eIDCommand &eIDCommand);
 
 signals:
     void emitDataExtractedAvailable(QByteArray);
     void emitDataAvailable();
+    void emitConnected();
+
 public slots:
 
 protected slots:
