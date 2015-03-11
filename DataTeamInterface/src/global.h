@@ -36,6 +36,16 @@ typedef enum eDirection
 
 }E_Direction;
 
+typedef enum eActionRobot
+{
+    eActionRobotNone,
+    eActionRobotRigole,
+    eActionRobotGrandVirageDroite,
+    eActionRobotGrandVirageGauche,
+    eActionRobotPetitVirageGauche,
+    eActionRobotPetitVirageDroite,
+}E_ActionRobot;
+
 typedef enum eEtatIAMotor
 {
     eEtatIAMotorNone,
@@ -45,7 +55,8 @@ typedef enum eEtatIAMotor
     eEtatIAMotorArriere,
     eEtatIAMotorVirageGauche,
     eEtatIAMotorVirageDroite,
-    eEtatIAMotorSortie
+    eEtatIAMotorSortie,
+    eEtatIAMotorEntree
 
 }E_EtatIAMotor;
 

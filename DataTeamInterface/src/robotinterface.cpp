@@ -15,7 +15,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     m_pGps = new GPS(m_pProtocole);
     m_pGyro = new Gyro(m_pProtocole);
-    m_pJoystick = new Joystick(m_pProtocole);
+  //  m_pJoystick = new Joystick(m_pProtocole);
     m_pActuator = new Actuator(m_pProtocole);
     m_pAccelero = new Accelero(m_pProtocole);
     m_pLidar = new Lidar(m_pProtocole);
@@ -80,13 +80,14 @@ bool RobotInterface::connectRobot()
 {
     m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
     m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
-    m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+ //   m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
     m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
     m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
+<<<<<<< HEAD
     //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
 
 
@@ -122,6 +123,8 @@ bool RobotInterface::connectRobot()
     m_pUi->pbLevel1->setEnabled(enabled);
     m_pUi->pbLevel2->setEnabled(enabled);
     m_pUi->pbLevel3->setEnabled(enabled);
+=======
+>>>>>>> origin/master
 
     return true;
 }
@@ -298,7 +301,7 @@ void RobotInterface::slotTimeOut()
      }
      else if(m_eDirection == eDirectionFront)
      {
-         m_pIAMoteur->EtatParcelle();
+         m_pIAMoteur->MachineAEtat();
          return;
      }
      else
