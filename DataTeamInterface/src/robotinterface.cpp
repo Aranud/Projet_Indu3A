@@ -10,6 +10,9 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     m_pUi = ui;
     m_pProtocole = new Protocole();
+
+    m_lstCaptors.clear();
+
     m_pGps = new GPS(m_pProtocole);
     m_pGyro = new Gyro(m_pProtocole);
   //  m_pJoystick = new Joystick(m_pProtocole);
@@ -20,8 +23,18 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pOdo = new Odo(m_pProtocole);
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
-    m_pRr = m_pRl = m_pFr = m_pFl = false;
 
+    m_lstCaptors.append(m_pGps);
+    m_lstCaptors.append(m_pGyro);
+    m_lstCaptors.append(m_pJoystick);
+    m_lstCaptors.append(m_pActuator);
+    m_lstCaptors.append(m_pAccelero);
+    m_lstCaptors.append(m_pLidar);
+    m_lstCaptors.append(m_pMagneto);
+    m_lstCaptors.append(m_pOdo);
+    m_lstCaptors.append(m_pMotor);
+
+    m_pRr = m_pRl = m_pFr = m_pFl = false;
 
     m_pIAMoteur = new IAMoteur(m_pLidar,m_pMotor);
 
@@ -73,8 +86,45 @@ bool RobotInterface::connectRobot()
     m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
     m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
     m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
-    //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
     m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
+<<<<<<< HEAD
+    //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+
+
+    bool enabled;
+    bool isConnectedCaptor = true;
+
+    foreach (Captor captor, m_lstCaptors) {
+        if(!captor.IsConnected()){
+            isConnectedCaptor = false;
+            qDebug()<<"FALSE CAPTOR";
+        }
+        else
+            qDebug()<<"TRUE CAPTOR";
+    }
+
+    if(isConnectedCaptor)
+    {
+        enabled =true;
+        m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_ENABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
+    }
+    else{
+        enabled =false;
+        m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_DISABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
+    }
+    m_pUi->pbSendData->setEnabled(enabled);
+    m_pUi->pbAvant->setEnabled(enabled);
+    m_pUi->pbArriere->setEnabled(enabled);
+    m_pUi->pbGauche->setEnabled(enabled);
+    m_pUi->pbDroite->setEnabled(enabled);
+    m_pUi->pbDt->setEnabled(enabled);
+    m_pUi->pbBordure->setEnabled(enabled);
+    m_pUi->pbRigole->setEnabled(enabled);
+    m_pUi->pbLevel1->setEnabled(enabled);
+    m_pUi->pbLevel2->setEnabled(enabled);
+    m_pUi->pbLevel3->setEnabled(enabled);
+=======
+>>>>>>> origin/master
 
     return true;
 }
@@ -191,32 +241,33 @@ void RobotInterface::slotOnLidarDataAvailable()
  */
 void RobotInterface::slotOnOdoDataAvailable()
 {
-    if(m_pOdo->getFrontLeft() && !m_pFl)
+    m_pUi->fl->setText(QString::number(m_pFl = m_pOdo->getFrontLeft()));
+    m_pUi->fr->setText(QString::number(m_pFr =m_pOdo->getFrontRight()));
+    m_pUi->rl->setText(QString::number(m_pRl =m_pOdo->getRearLeft()));
+    m_pUi->rr->setText(QString::number(m_pRr =m_pOdo->getRearRight()));
+
+    if(m_pFl != m_pFl2)
     {
         m_pUi->fl_2->setText(QString::number(m_pUi->fl_2->text().toInt() +1));
-        m_pUi->fl->setText(QString::number(m_pOdo->getFrontLeft()));
-        m_pFl = !m_pFl;
+        m_pFl2 = m_pFl;
     }
 
-    if(m_pOdo->getFrontRight() && !m_pFr)
+    if(m_pFr != m_pFr2)
     {
         m_pUi->fr_2->setText( QString::number(m_pUi->fr_2->text().toInt()+1));
-        m_pUi->fl->setText(QString::number(m_pOdo->getFrontRight()));
-         m_pFr = !m_pFr;
+        m_pFr2 = m_pFr;
     }
 
-    if(m_pOdo->getRearLeft() && !m_pRl)
+    if(m_pRl != m_pRl2)
     {
         m_pUi->rl_2->setText(QString::number( m_pUi->rl_2->text().toInt()+1));
-        m_pUi->fl->setText(QString::number(m_pOdo->getRearLeft()));
-        m_pRl = !m_pRl;
+        m_pRl2 = m_pRl;
     }
 
-    if(m_pOdo->getRearRight() && !m_pRr)
+    if(m_pRr != m_pRr2)
     {
         m_pUi->rr_2->setText(QString::number( m_pUi->rr_2->text().toInt()+1));
-        m_pUi->fl->setText(QString::number(m_pOdo->getRearRight()));
-        m_pRr = !m_pRr;
+        m_pRr2 = m_pRr;
     }
 }
 

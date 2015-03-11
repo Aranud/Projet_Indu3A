@@ -4,6 +4,17 @@
  * @brief Captor::Captor
  * @param parent
  */
+
+bool Captor::IsConnected()
+{
+    return m_IsConnected;
+}
+
+void Captor::setIsConnected(bool IsConnected)
+{
+    m_IsConnected = IsConnected;
+}
+
 Captor::Captor()
 {
     m_eIDCommand = eIDCommandNone;

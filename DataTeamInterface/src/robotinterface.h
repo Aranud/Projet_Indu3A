@@ -31,16 +31,18 @@ private:
     QGraphicsScene* m_pGraphScene;
     QPoint* m_pPoint;
     Protocole* m_pProtocole;
+
+    QList<Captor*> m_lstCaptors;
+
     GPS *m_pGps;
     Gyro *m_pGyro;
     Joystick* m_pJoystick;
     Actuator *m_pActuator;
     Accelero *m_pAccelero;
     Lidar *m_pLidar;
-    //Magneto *m_pMagneto;
     Odo *m_pOdo;
     Motor *m_pMotor;
-    bool m_pRr,m_pRl,m_pFr,m_pFl;
+    bool m_pRr,m_pRl,m_pFr,m_pFl,m_pRr2,m_pRl2,m_pFr2,m_pFl2;
     //Remote *m_pRemote;
     Magneto* m_pMagneto;
     int m_iCompteur;

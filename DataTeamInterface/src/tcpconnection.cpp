@@ -73,7 +73,7 @@ bool TCPConnection::DisconnectFromServer()
  */
 bool TCPConnection::SendData(QByteArray p_baData)
 {
-    if(p_baData.isEmpty())
+    if(p_baData.isEmpty() || !m_bIsConnectionEtablished)
         return false;
 
     m_pTcpSocket->write(p_baData);
