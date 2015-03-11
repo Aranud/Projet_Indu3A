@@ -240,13 +240,15 @@ void RobotInterface::slotTimeOut()
 
      if(m_eDirection == eDirectionLeft)
      {
-         baValue[0] = 0;
+         baValue[0] = 32;
          baValue[1] = 127;
+         m_iCompteur++;
      }
      else if(m_eDirection == eDirectionRight)
      {
          baValue[0] = 127;
-         baValue[1] = 0;
+         baValue[1] = 32;
+         m_iCompteur++;
      }
      else if(m_eDirection == eDirectionFront)
      {
@@ -255,8 +257,8 @@ void RobotInterface::slotTimeOut()
      }
      else
          return;
-/*
-     if(m_iCompteur >= 13)
+
+     if(m_iCompteur >= 11)
      {
         m_iCompteur = 0;
         m_pTimer->stop();
@@ -265,6 +267,4 @@ void RobotInterface::slotTimeOut()
 
      m_pMotor->SendData(baValue);
 
-     m_iCompteur++;
-*/
 }

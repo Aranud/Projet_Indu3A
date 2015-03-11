@@ -12,6 +12,9 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, QObject *parent) :
     m_eEtatIAMotor = eEtatIAMotorNone;
     m_eActionRobot = eActionRobotRigole;
     m_eActionRobotPrecVirage = eActionRobotNone;
+    viragePart = 0;
+    ite_Datasend = 0;
+    NbRigole = 0;
 }
 
 /**
@@ -58,6 +61,7 @@ void IAMoteur::MachineAEtat()
         case eActionRobotRigole : InterieurRigole(); break;
         case eActionRobotGrandVirageDroite : VirageDroite(); break;
         case eActionRobotGrandVirageGauche : VirageGauche(); break;
+        case eActionRobotRigoleExterieure : ExterieurRigole(); break;
         case eActionRobotPetitVirageDroite : break;
         case eActionRobotPetitVirageGauche : break;
         default :  break;
@@ -69,6 +73,7 @@ void IAMoteur::MachineAEtat()
  */
 void IAMoteur::InterieurRigole()
 {
+    NbRigole++;
     QList<qint16> lstiDistance;
     QByteArray baValue;
     int iDistanceDroite = 1000, iDistanceGauche = 1000, iDistanceRef = 1000;
@@ -205,15 +210,31 @@ void IAMoteur::VirageDroite()
         }
     }
 
+    iDistanceRef = qMin(iDistanceDroite, iDistanceGauche);
+
     if(m_eEtatIAMotor == eEtatIAMotorArriere)
     {
         baValue[0] = -127;
         baValue[1] = -127;
         m_pMotor->SendData(baValue);
 
-        if(iDistanceDroite > 200)
-            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+        ite_Datasend++;
 
+        if(iDistanceDroite < 500 && ite_Datasend == 3)
+        {
+            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+            ite_Datasend = 0;
+            viragePart = 2;
+        }else
+        if(ite_Datasend >= 3 && iDistanceDroite > 500)
+        {
+//            baValue[0] = 127;
+//            baValue[1] = 127;
+//            m_pMotor->SendData(baValue);
+            ite_Datasend = 0;
+            viragePart = 2;
+            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+        }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorSortie)
     {
@@ -225,6 +246,7 @@ void IAMoteur::VirageDroite()
         {
             qDebug() << "Sortie en cours";
             m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+            ite_Datasend = 0;
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorVirageDroite)
@@ -232,8 +254,8 @@ void IAMoteur::VirageDroite()
         baValue[0] = 127;
         baValue[1] = 32;
         m_pMotor->SendData(baValue);
-/*
-        if(iDistanceDroite < 200)
+
+/*        if(iDistanceDroite < 200)
         {
             baValue[0] = 32;
             baValue[1] = 127;
@@ -257,8 +279,26 @@ void IAMoteur::VirageDroite()
             qDebug() << "Fin Virage";
         }*/
 
-        if(iDistanceDroite < 350)
+        ite_Datasend++;
+        if(ite_Datasend >= 10 && viragePart == 0)
+        {
             m_eEtatIAMotor = eEtatIAMotorArriere;
+            ite_Datasend = 0;
+            viragePart = 1;
+        }else
+        if(ite_Datasend >= 10 && iDistanceGauche == 1000 && viragePart == 2)
+        {
+            m_eEtatIAMotor = eEtatIAMotorNone;
+            m_eActionRobot = eActionRobotRigoleExterieure;
+            viragePart = 0;
+        }else
+        if(ite_Datasend >= 10 && viragePart == 2)
+        {
+            m_eEtatIAMotor = eEtatIAMotorNone;
+            m_eActionRobot = eActionRobotRigole;
+            viragePart = 0;
+            qDebug() << "Fin Virage";
+        }
     }
 }
 
@@ -292,55 +332,158 @@ void IAMoteur::VirageGauche()
 
     if(m_eEtatIAMotor == eEtatIAMotorArriere)
     {
-        baValue[0] = -127;
         baValue[1] = -127;
+        baValue[0] = -127;
         m_pMotor->SendData(baValue);
 
-        if(iDistanceDroite > 200)
-            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+        ite_Datasend++;
+        if(iDistanceGauche < 450 && ite_Datasend >= 3)
+        {
+            m_eEtatIAMotor = eEtatIAMotorVirageGauche;
+            ite_Datasend = 0;
+            viragePart = 2;
+        }
 
     }
     else if(m_eEtatIAMotor == eEtatIAMotorSortie)
     {
-        baValue[0] = 127;
         baValue[1] = 127;
+        baValue[0] = 127;
         m_pMotor->SendData(baValue);
 
-        if(iDistanceDroite > 200)
+        if(iDistanceGauche > 200)
         {
             qDebug() << "Sortie en cours";
-            m_eEtatIAMotor = eEtatIAMotorVirageDroite;
+            m_eEtatIAMotor = eEtatIAMotorVirageGauche;
+            ite_Datasend = 0;
         }
     }
-    else if(m_eEtatIAMotor == eEtatIAMotorVirageDroite)
+    else if(m_eEtatIAMotor == eEtatIAMotorVirageGauche)
     {
         baValue[1] = 127;
         baValue[0] = 32;
         m_pMotor->SendData(baValue);
 
-        if(iDistanceGauche < 200)
+/*        if(iDistanceDroite < 200)
         {
-            baValue[1] = 32;
-            baValue[0] = 127;
+            baValue[0] = 32;
+            baValue[1] = 127;
             m_pMotor->SendData(baValue);
             qDebug() << "Contre braque !!";
         }
-        else if(iDistanceGauche < 250)
+        else if(iDistanceDroite < 250)
         {
-            baValue[1] = 127;
-            baValue[0] = 64;
+            baValue[0] = 127;
+            baValue[1] = 64;
             m_pMotor->SendData(baValue);
             qDebug() << "Virage Douceur !!";
         }
         else
             qDebug() << "Virage !!";
 
-        if(iDistanceDroite < 350 && iDegreeDroite < 45)   // On retrouve un point a droite
+        if(iDistanceGauche < 350 && iDegreeGauche < 45)   // On retrouve un point a droite
         {
             m_eEtatIAMotor = eEtatIAMotorNone;
             m_eActionRobot = eActionRobotRigole;
             qDebug() << "Fin Virage";
+        }*/
+
+        ite_Datasend++;
+        if(ite_Datasend >= 10 && viragePart == 0)
+        {
+            m_eEtatIAMotor = eEtatIAMotorArriere;
+            ite_Datasend = 0;
+            viragePart = 1;
         }
-        return;
+        if(ite_Datasend >= 10 && viragePart == 2)
+        {
+            m_eEtatIAMotor = eEtatIAMotorNone;
+            m_eActionRobot = eActionRobotRigole;
+            viragePart = 0;
+            qDebug() << "Fin Virage";
+        }
     }
+}
+
+/**
+ * @brief IAMoteur::ExterieurRigole
+ */
+void IAMoteur::ExterieurRigole()
+{
+    NbRigole++;
+    QList<qint16> lstiDistance;
+    QByteArray baValue;
+
+    lstiDistance = m_pLidar->getDistanceList();
+
+    int iDistanceDroite = 1000, iDistanceGauche = 1000, iDistanceRef = 1000;
+    int iDegreeDroite = 0, iDegreeGauche = 0, iDegreeRef = 0;
+
+    for(int iIncrement = 0; iIncrement < 90; iIncrement++)
+    {
+        if(lstiDistance.at(iIncrement + 45) != 0 && lstiDistance.at(iIncrement + 45) < iDistanceGauche)
+        {
+            iDistanceGauche = lstiDistance.at(iIncrement + 45);
+            iDegreeGauche = iIncrement;
+        }
+
+        if(lstiDistance.at(225 - iIncrement) != 0 && lstiDistance.at(225 - iIncrement) < iDistanceDroite)
+        {
+            iDistanceDroite = lstiDistance.at(225 - iIncrement);
+            iDegreeDroite = iIncrement;
+        }
+    }
+
+    iDistanceRef = qMin(iDistanceDroite, iDistanceGauche);
+
+    if(iDistanceRef >= 600)            // Si le point le plus proche est très éloigné
+    {
+        baValue[0] = 127;
+        baValue[1] = 127;
+
+        m_eActionRobot = m_eActionRobotPrecVirage;
+
+        m_eEtatIAMotor = eEtatIAMotorSortie;
+        qDebug() << "Sortie Actif";
+    }
+
+    if(iDistanceRef > 200)
+    {
+        if(iDistanceRef == iDistanceGauche)
+        {
+            baValue[0] = 96;
+            baValue[1] = 127;
+            qDebug() << "Avant leger gauche";
+        }else
+        {
+            baValue[1] = 96;
+            baValue[0] = 127;
+            qDebug() << "Avant leger droite";
+        }
+
+    }else
+    if(iDistanceRef < 200)
+    {
+        if(iDistanceRef == iDistanceGauche)
+        {
+            baValue[0] = 127;
+            baValue[1] = 96;
+            qDebug() << "Avant leger droite";
+        }else
+        {
+            baValue[1] = 127;
+            baValue[0] = 96;
+            qDebug() << "Avant leger gauche";
+        }
+
+    }else
+    if(iDistanceRef == 200)
+    {
+        baValue[0] = 127;
+        baValue[1] = 127;
+        qDebug() << "Ne Rien Faire A L'exterieur";
+    }
+    m_pMotor->SendData(baValue);
+
+
 }

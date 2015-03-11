@@ -44,6 +44,8 @@ typedef enum eActionRobot
     eActionRobotGrandVirageGauche,
     eActionRobotPetitVirageGauche,
     eActionRobotPetitVirageDroite,
+    eActionRobotRigoleExterieure,
+    //eActionRobotSauteRigole,
 }E_ActionRobot;
 
 typedef enum eEtatIAMotor

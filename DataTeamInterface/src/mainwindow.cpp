@@ -98,15 +98,14 @@ void MainWindow::on_pbDroite_clicked()
 {
     ui->labelDemitour->setText("Demi tour in process");
     m_pRobot->PushButonRight();
-    ui->labelDemitour->setText("Unused");
-
+    //ui->labelDemitour->setText("Unused");
 }
 
 void MainWindow::on_pbGauche_clicked()
 {
     ui->labelDemitour->setText("Demi tour in process");
     m_pRobot->PushButonLeft();
-    ui->labelDemitour->setText("Unused");
+    //ui->labelDemitour->setText("Unused");
 }
 
 void MainWindow::on_pbAvant_clicked()

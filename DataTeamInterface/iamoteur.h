@@ -13,9 +13,19 @@ private:
     Lidar *m_pLidar;
     Motor *m_pMotor;
     double MaxReadedValueMotor;
+
     eEtatIAMotor m_eEtatIAMotor;
     eActionRobot m_eActionRobot;
     eActionRobot m_eActionRobotPrecVirage;
+
+    int ite_Datasend;
+    int viragePart;
+
+    void MonTest();
+    void InterieurRigole();
+    void VirageDroite();
+    void VirageGauche();
+    void ExterieurRigole();
 
 public:
     explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor,  QObject *parent = 0);
@@ -23,11 +33,6 @@ public:
 
     void EtatParcelle();
     void MachineAEtat();
-
-    void MonTest();
-    void InterieurRigole();
-    void VirageDroite();
-    void VirageGauche();
 
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
