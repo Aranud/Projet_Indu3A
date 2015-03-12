@@ -122,8 +122,8 @@ public:
     QLabel *label_30;
     QLabel *label_31;
     QLabel *magnetoXResult;
-    QLabel *odoYResult_3;
-    QLabel *odoYResult_4;
+    QLabel *magnetoYResult;
+    QLabel *magnetoZResult;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -421,13 +421,13 @@ public:
         label_31->setGeometry(QRect(630, 150, 16, 16));
         magnetoXResult = new QLabel(centralWidget);
         magnetoXResult->setObjectName(QStringLiteral("magnetoXResult"));
-        magnetoXResult->setGeometry(QRect(640, 110, 31, 16));
-        odoYResult_3 = new QLabel(centralWidget);
-        odoYResult_3->setObjectName(QStringLiteral("odoYResult_3"));
-        odoYResult_3->setGeometry(QRect(640, 130, 31, 16));
-        odoYResult_4 = new QLabel(centralWidget);
-        odoYResult_4->setObjectName(QStringLiteral("odoYResult_4"));
-        odoYResult_4->setGeometry(QRect(640, 150, 31, 16));
+        magnetoXResult->setGeometry(QRect(640, 110, 61, 16));
+        magnetoYResult = new QLabel(centralWidget);
+        magnetoYResult->setObjectName(QStringLiteral("magnetoYResult"));
+        magnetoYResult->setGeometry(QRect(640, 130, 61, 16));
+        magnetoZResult = new QLabel(centralWidget);
+        magnetoZResult->setObjectName(QStringLiteral("magnetoZResult"));
+        magnetoZResult->setGeometry(QRect(640, 150, 61, 16));
         MainWindow->setCentralWidget(centralWidget);
         line_5->raise();
         line_8->raise();
@@ -520,8 +520,8 @@ public:
         label_30->raise();
         label_31->raise();
         magnetoXResult->raise();
-        odoYResult_3->raise();
-        odoYResult_4->raise();
+        magnetoYResult->raise();
+        magnetoZResult->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 739, 21));
@@ -543,8 +543,8 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         leServerAddress->setText(QApplication::translate("MainWindow", "127.0.0.1", 0));
         gpsPort->setText(QApplication::translate("MainWindow", "3334", 0));
-        pbSendData->setText(QApplication::translate("MainWindow", "SendData", 0));
-        pbConnection->setText(QApplication::translate("MainWindow", "Connection", 0));
+        pbSendData->setText(QApplication::translate("MainWindow", "Envoyer", 0));
+        pbConnection->setText(QApplication::translate("MainWindow", "Connexion", 0));
         img->setText(QString());
         altitude->setText(QApplication::translate("MainWindow", "alt", 0));
         longitude->setText(QApplication::translate("MainWindow", "long", 0));
@@ -561,7 +561,7 @@ public:
         gyroPort->setText(QApplication::translate("MainWindow", "3340", 0));
         actuatorPort->setText(QApplication::translate("MainWindow", "3345", 0));
         remotePort->setText(QApplication::translate("MainWindow", "3338", 0));
-        magnetoPort->setText(QString());
+        magnetoPort->setText(QApplication::translate("MainWindow", "3341", 0));
         label_2->setText(QApplication::translate("MainWindow", "Ip", 0));
         label_3->setText(QApplication::translate("MainWindow", "GPS", 0));
         label_4->setText(QApplication::translate("MainWindow", "Lidar", 0));
@@ -572,7 +572,7 @@ public:
         label_9->setText(QApplication::translate("MainWindow", "Odo", 0));
         label_10->setText(QApplication::translate("MainWindow", "Motor", 0));
         label_11->setText(QApplication::translate("MainWindow", "Remote", 0));
-        label_12->setText(QApplication::translate("MainWindow", "Data ", 0));
+        label_12->setText(QApplication::translate("MainWindow", "Donn\303\251e", 0));
         label->setText(QApplication::translate("MainWindow", "X:", 0));
         label_13->setText(QApplication::translate("MainWindow", "Y:", 0));
         label_14->setText(QApplication::translate("MainWindow", "Z:", 0));
@@ -623,8 +623,8 @@ public:
         label_30->setText(QApplication::translate("MainWindow", "y:", 0));
         label_31->setText(QApplication::translate("MainWindow", "z:", 0));
         magnetoXResult->setText(QString());
-        odoYResult_3->setText(QString());
-        odoYResult_4->setText(QString());
+        magnetoYResult->setText(QString());
+        magnetoZResult->setText(QString());
     } // retranslateUi
 
 };

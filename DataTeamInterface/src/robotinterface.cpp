@@ -24,15 +24,16 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
 
+    m_lstCaptors.append(m_pMotor);
     m_lstCaptors.append(m_pGps);
     m_lstCaptors.append(m_pGyro);
     //m_lstCaptors.append(m_pJoystick);
     m_lstCaptors.append(m_pActuator);
     m_lstCaptors.append(m_pAccelero);
-    m_lstCaptors.append(m_pLidar);
     m_lstCaptors.append(m_pMagneto);
     m_lstCaptors.append(m_pOdo);
-    m_lstCaptors.append(m_pMotor);
+    m_lstCaptors.append(m_pLidar);
+
 
     m_pRr = m_pRl = m_pFr = m_pFl = false;
 
@@ -96,16 +97,31 @@ RobotInterface::~RobotInterface()
  */
 bool RobotInterface::connectRobot()
 {
-    m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
-    m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
-    // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
-    m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
-    m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
-    m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
-    m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
-    m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
-    m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
-    //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+     if(m_pUi->pbConnection->text() == "Connexion")
+     {
+        m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
+        m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
+        // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+        m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
+        m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
+        m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
+        m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+        m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
+        m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
+        //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+     }
+     else{
+         m_pGps->DisconnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
+         m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
+         // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+         m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
+         m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
+         m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
+         m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+         m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
+         m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
+         //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+     }
 
     return true;
 }
@@ -217,33 +233,34 @@ void RobotInterface::onLidarDataAvailable()
  */
 void RobotInterface::onOdoDataAvailable()
 {
-    m_pUi->fl->setText(QString::number(m_pFl = m_pOdo->getFrontLeft()));
-    m_pUi->fr->setText(QString::number(m_pFr =m_pOdo->getFrontRight()));
-    m_pUi->rl->setText(QString::number(m_pRl =m_pOdo->getRearLeft()));
-    m_pUi->rr->setText(QString::number(m_pRr =m_pOdo->getRearRight()));
+    bool bFl,bFr,bRl,bRr;
+    m_pUi->fl->setText(QString::number(bFl = m_pOdo->getFrontLeft()));
+    m_pUi->fr->setText(QString::number(bFr =m_pOdo->getFrontRight()));
+    m_pUi->rl->setText(QString::number(bRl =m_pOdo->getRearLeft()));
+    m_pUi->rr->setText(QString::number(bRr =m_pOdo->getRearRight()));
 
-    if(m_pFl != m_pFl2)
+    if(bFl != m_bFl)
     {
         m_pUi->fl_2->setText(QString::number(m_pUi->fl_2->text().toInt() +1));
-        m_pFl2 = m_pFl;
+        m_bFl = bFl;
     }
 
-    if(m_pFr != m_pFr2)
+    if(bFr != m_bFr)
     {
         m_pUi->fr_2->setText( QString::number(m_pUi->fr_2->text().toInt()+1));
-        m_pFr2 = m_pFr;
+        m_bFr = bFr;
     }
 
-    if(m_pRl != m_pRl2)
+    if(bRl != m_bRl)
     {
         m_pUi->rl_2->setText(QString::number( m_pUi->rl_2->text().toInt()+1));
-        m_pRl2 = m_pRl;
+        m_bRl = bRl;
     }
 
-    if(m_pRr != m_pRr2)
+    if(bRr != m_bRr)
     {
         m_pUi->rr_2->setText(QString::number( m_pUi->rr_2->text().toInt()+1));
-        m_pRr2 = m_pRr;
+        m_bRr = bRr;
     }
 }
 
@@ -267,6 +284,11 @@ void RobotInterface::onMotorDataAvailable()
  */
 void RobotInterface::onMagnetoDataAvailable()
 {
+
+    m_pUi->magnetoXResult->setText(QString::number(m_pMagneto->getXMagneto()) );
+    m_pUi->magnetoYResult->setText(QString::number(m_pMagneto->getYMagneto()) );
+    m_pUi->magnetoZResult->setText(QString::number(m_pMagneto->getZMagneto()) );
+
 }
 
 
@@ -368,11 +390,16 @@ void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
     case eIDCommmandLidar:
         m_pUi->pbRigole->setEnabled(true);
         m_pUi->pbBordure->setEnabled(true);
-        m_pUi->pbLevel1->setEnabled(true);
-        m_pUi->pbLevel2->setEnabled(true);
-        m_pUi->pbLevel3->setEnabled(true);
+
+        if(m_pMotor->getIsConnected()){
+            m_pUi->pbLevel1->setEnabled(true);
+            m_pUi->pbLevel2->setEnabled(true);
+            m_pUi->pbLevel3->setEnabled(true);
+        }
         break;
     default:
+        if(m_pUi->pbConnection->text() == "Connexion")
+            m_pUi->pbConnection->setText("Deconnexion");
         break;
     }
 

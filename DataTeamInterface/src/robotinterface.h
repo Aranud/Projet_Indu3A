@@ -48,7 +48,7 @@ private:
     Motor *m_pMotor;
      Magneto* m_pMagneto;
 
-    bool m_pRr,m_pRl,m_pFr,m_pFl,m_pRr2,m_pRl2,m_pFr2,m_pFl2;
+    bool m_bRr,m_bRl,m_bFr,m_bFl;
     //Remote *m_pRemote;
 
     int m_iCompteur;

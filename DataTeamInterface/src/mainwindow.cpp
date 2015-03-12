@@ -82,7 +82,12 @@ void MainWindow::slotOnJoystickTouch(QByteArray p_baData)
  */
 void MainWindow::on_pbConnection_clicked()
 {
-   m_pRobot->connectRobot();
+    if(ui->pbConnection->text() == "Connexion")
+        m_pRobot->connectRobot();
+    else{
+        ui->pbConnection->setText("Deconnexion");
+        m_pRobot->desconect();
+    }
 }
 
 /**

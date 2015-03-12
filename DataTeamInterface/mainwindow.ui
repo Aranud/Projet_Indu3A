@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>SendData</string>
+     <string>Envoyer</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbConnection">
@@ -63,7 +63,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Connection</string>
+     <string>Connexion</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="leDataToSend">
@@ -294,7 +294,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>3341</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -437,7 +437,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Data </string>
+     <string>Donnée</string>
     </property>
    </widget>
    <widget class="Line" name="line">
@@ -1183,7 +1183,7 @@
      <rect>
       <x>640</x>
       <y>110</y>
-      <width>31</width>
+      <width>61</width>
       <height>16</height>
      </rect>
     </property>
@@ -1191,12 +1191,12 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="odoYResult_3">
+   <widget class="QLabel" name="magnetoYResult">
     <property name="geometry">
      <rect>
       <x>640</x>
       <y>130</y>
-      <width>31</width>
+      <width>61</width>
       <height>16</height>
      </rect>
     </property>
@@ -1204,12 +1204,12 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="odoYResult_4">
+   <widget class="QLabel" name="magnetoZResult">
     <property name="geometry">
      <rect>
       <x>640</x>
       <y>150</y>
-      <width>31</width>
+      <width>61</width>
       <height>16</height>
      </rect>
     </property>
@@ -1308,8 +1308,8 @@
    <zorder>label_30</zorder>
    <zorder>label_31</zorder>
    <zorder>magnetoXResult</zorder>
-   <zorder>odoYResult_3</zorder>
-   <zorder>odoYResult_4</zorder>
+   <zorder>magnetoYResult</zorder>
+   <zorder>magnetoZResult</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
