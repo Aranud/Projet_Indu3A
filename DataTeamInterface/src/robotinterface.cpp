@@ -35,7 +35,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_lstCaptors.append(m_pLidar);
 
 
-    m_pRr = m_pRl = m_pFr = m_pFl = false;
+    m_bRr = m_bRl = m_bFr = m_bFl = false;
 
     m_pIAMoteur = new IAMoteur(m_pLidar,m_pMotor);
 
@@ -111,17 +111,23 @@ bool RobotInterface::connectRobot()
         //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
      }
      else{
-         m_pGps->DisconnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
-         m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
-         // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
-         m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
-         m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
-         m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
-         m_pMotor->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
-         m_pOdo->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->odoPort->text().toInt());
-         m_pAccelero->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->acceleroPort->text().toInt());
-         //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
+         foreach (Captor* captor, m_lstCaptors)
+            captor->DisconnectCaptor();
+         m_pUi->pbConnection->setText("Connexion");
+         m_pGraphScene->clear();
+         m_pUi->pbSendData->setEnabled(false);
+         m_pUi->pbAvant->setEnabled(false);
+         m_pUi->pbArriere->setEnabled(false);
+         m_pUi->pbGauche->setEnabled(false);
+         m_pUi->pbDroite->setEnabled(false);
+         m_pUi->pbDt->setEnabled(false);
+         m_pUi->pbBordure->setEnabled(false);
+         m_pUi->pbRigole->setEnabled(false);
+         m_pUi->pbLevel1->setEnabled(false);
+         m_pUi->pbLevel2->setEnabled(false);
+         m_pUi->pbLevel3->setEnabled(false);
      }
+
 
     return true;
 }
