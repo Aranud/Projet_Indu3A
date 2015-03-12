@@ -18,14 +18,20 @@ private:
     eActionRobot m_eActionRobot;
     eActionRobot m_eActionRobotPrecVirage;
 
+    structDataIA m_structDataIA;
+
     int ite_Datasend;
     int viragePart;
+    int NbRigole;
 
     void MonTest();
     void InterieurRigole();
     void VirageDroite();
     void VirageGauche();
     void ExterieurRigole();
+
+    void DataResult();
+    void ControlMotor(int p_iMotorLeft, int p_iMotorRight);
 
 public:
     explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor,  QObject *parent = 0);

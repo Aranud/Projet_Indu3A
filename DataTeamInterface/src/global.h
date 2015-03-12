@@ -62,4 +62,16 @@ typedef enum eEtatIAMotor
 
 }E_EtatIAMotor;
 
+typedef struct structDataIA
+{
+    int iDistanceDroite;
+    int iDistanceGauche;
+    int iDistanceRef;
+    int iDegreeDroite;
+    int iDegreeGauche;
+    int iDegreeRef;
+    int iLargerRigol;
+
+}struct_DataIA;
+
 #endif // GLOBAL_H
