@@ -6,6 +6,11 @@
 #include "motor.h"
 #include "global.h"
 
+#define START_LIDAR_VISIBILITY_RANGE 45
+#define END_LIDAR_VISIBILITY_RANGE 225
+#define DEFAULT_DISTANCE_VALUE 1000
+#define DEFAULT_DEGREE_VALUE 0
+
 class IAMoteur : public QObject
 {
     Q_OBJECT
@@ -20,18 +25,17 @@ private:
 
     structDataIA m_structDataIA;
 
-    int ite_Datasend;
-    int viragePart;
-    int NbRigole;
+    int m_iDataSendCount;
+    int m_iViragePartCount;
+    int m_iRigoleCount;
 
     void MonTest();
     void InterieurRigole();
-    void VirageDroite();
-    void VirageGauche();
+    void Virage();
     void ExterieurRigole();
 
     void DataResult();
-    void ControlMotor(int p_iMotorLeft, int p_iMotorRight);
+    void ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse);
 
 public:
     explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor,  QObject *parent = 0);
