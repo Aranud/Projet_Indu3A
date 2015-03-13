@@ -47,8 +47,6 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pGraphScene->setSceneRect(0,0,690,190);
     m_pPoint = new QPoint(690/2, 180);
     m_pUi->graphicsView->setScene(m_pGraphScene);
-    m_pGraphScene->addRect(0+m_pPoint->rx()-14,0+m_pPoint->ry(),28,40);
-    //m_pUi->graphicsView->show();
 
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
 
@@ -111,10 +109,14 @@ bool RobotInterface::connectRobot()
         //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
      }
      else{
+         if(m_pTimer->isActive())
+            m_pTimer->stop();
+
          foreach (Captor* captor, m_lstCaptors)
             captor->DisconnectCaptor();
          m_pUi->pbConnection->setText("Connexion");
          m_pGraphScene->clear();
+
          m_pUi->pbSendData->setEnabled(false);
          m_pUi->pbAvant->setEnabled(false);
          m_pUi->pbArriere->setEnabled(false);
