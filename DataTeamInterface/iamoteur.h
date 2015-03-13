@@ -4,6 +4,7 @@
 #include <QObject>
 #include "lidar.h"
 #include "motor.h"
+#include "odo.h"
 #include "global.h"
 
 #define START_LIDAR_VISIBILITY_RANGE 45
@@ -17,6 +18,8 @@ class IAMoteur : public QObject
 private:
     Lidar *m_pLidar;
     Motor *m_pMotor;
+    Odo *m_pOdo;
+
     double MaxReadedValueMotor;
 
     eEtatIAMotor m_eEtatIAMotor;
@@ -29,6 +32,9 @@ private:
     int m_iViragePartCount;
     int m_iRigoleCount;
 
+    bool m_bIsRillExit;
+    bool m_bSauteRigoleFini;
+
     void MonTest();
     void InterieurRigole();
     void Virage();
@@ -38,7 +44,7 @@ private:
     void ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse);
 
 public:
-    explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor,  QObject *parent = 0);
+    explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor, Odo *p_pOdo, QObject *parent = 0);
     ~IAMoteur();
 
     void EtatParcelle();

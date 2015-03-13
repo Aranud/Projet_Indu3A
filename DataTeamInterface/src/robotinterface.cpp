@@ -37,7 +37,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     m_bRr = m_bRl = m_bFr = m_bFl = false;
 
-    m_pIAMoteur = new IAMoteur(m_pLidar,m_pMotor);
+    m_pIAMoteur = new IAMoteur(m_pLidar, m_pMotor, m_pOdo);
 
     m_pTimer = new QTimer();
     m_pTimer->setInterval(500);

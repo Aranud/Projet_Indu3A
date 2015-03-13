@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #define DEFAUT_NAME "NAIO01"
+#include "QObject"
 
 typedef enum eIDCommand
 {
@@ -45,7 +46,6 @@ typedef enum eActionRobot
     eActionRobotPetitVirageGauche,
     eActionRobotPetitVirageDroite,
     eActionRobotRigoleExterieure,
-    //eActionRobotSauteRigole,
 }E_ActionRobot;
 
 typedef enum eEtatIAMotor
@@ -59,9 +59,19 @@ typedef enum eEtatIAMotor
     eEtatIAMotorVirageDroite,
     eEtatIAMotorVirage,
     eEtatIAMotorSortie,
-    eEtatIAMotorEntree
+    eEtatIAMotorSortieExterieur,
+    eEtatIAMotorSauteRigole,
+    eEtatIAMotorEntree,
 
 }E_EtatIAMotor;
+
+typedef enum eEtatPartVirage
+{
+    eEtatPartVirage0,
+    eEtatPartVirage1,
+    eEtatPartVirage2
+
+}E_EtatPartVirage;
 
 typedef struct structDataIA
 {
@@ -71,7 +81,8 @@ typedef struct structDataIA
     int iDegreeDroite;
     int iDegreeGauche;
     int iDegreeRef;
-    int iLargerRigol;
+    QList<double> lstdLargerRigole;
+    double dLargerRigoleMoyenne;
 
 }struct_DataIA;
 
