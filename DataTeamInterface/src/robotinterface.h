@@ -20,7 +20,6 @@
 #include "ui_mainwindow.h"
 #include "QGraphicsView"
 #include "QGraphicsScene"
-#include "math.h"
 #include "iamoteur.h"
 
 class RobotInterface : public QObject

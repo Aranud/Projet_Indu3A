@@ -1,5 +1,5 @@
 ﻿#include "robotinterface.h"
-#define PI 3.14159265
+
 
 /**
  * @brief RobotInterface::RobotInterface
@@ -83,6 +83,8 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
  */
 RobotInterface::~RobotInterface()
 {
+    foreach (Captor* captor, m_lstCaptors)
+       captor->DisconnectCaptor();
 }
 
 /*******************************************************************************/
@@ -128,6 +130,9 @@ bool RobotInterface::connectRobot()
          m_pUi->pbLevel1->setEnabled(false);
          m_pUi->pbLevel2->setEnabled(false);
          m_pUi->pbLevel3->setEnabled(false);
+
+
+         m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_DISABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
      }
 
 
@@ -229,7 +234,6 @@ void RobotInterface::onLidarDataAvailable()
         m_pGraphScene->addRect(0+m_pPoint->rx()-14,0+m_pPoint->ry(),28,40);
         for(int i=0; i< 270;i++){
              m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/5) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/5), 2, 2);
-            //qDebug() << "DISTANCE( " << i <<" ) = " << lstDistance.at(i);
         }
         draw = true;
     }
@@ -411,5 +415,11 @@ void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
         break;
     }
 
+    foreach (Captor* captor, m_lstCaptors) {
 
+        if(captor->getIsConnected())
+            m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_ENABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
+        else
+            m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_DISABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
+    }
 }
