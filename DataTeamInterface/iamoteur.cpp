@@ -88,7 +88,7 @@ void IAMoteur::InterieurRigole()
     else
         m_eEtatIAMotor = eEtatIAMotorGauche;
 
-    qDebug() << "Distance Ref : " << m_structDataIA.iDistanceRef;
+    //qDebug() << "Distance Ref : " << m_structDataIA.iDistanceRef;
 
     if(m_structDataIA.iDistanceRef >= 600)      // Si le point le plus proche est très éloigné
     {
@@ -356,7 +356,7 @@ void IAMoteur::DataResult()
         if(lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) != 0 && lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) < m_structDataIA.iDistanceDroite)
         {
             m_structDataIA.iDistanceDroite = lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement);
-            m_structDataIA.iDegreeDroite = iIncrement;
+            m_structDataIA.iDegreeDroite = 180 - iIncrement;
             //Point le plus proche a droite
         }
     }
@@ -374,9 +374,11 @@ void IAMoteur::DataResult()
 
     if(m_eActionRobot == eActionRobotRigole)
     {
-        double largeur = (cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite)
-                        + (cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche);
+        double largeur = (cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche)
+                                          - (cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite);
 
+        qDebug() << "droite " << m_structDataIA.iDegreeDroite << "  "<<cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite;
+        qDebug() << "gauche " <<m_structDataIA.iDegreeGauche << "  "<<cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche;
         if(m_structDataIA.lstdLargerRigole.length() < 50)
             m_structDataIA.lstdLargerRigole.append(largeur);
         else
