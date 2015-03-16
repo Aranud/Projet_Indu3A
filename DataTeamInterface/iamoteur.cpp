@@ -14,7 +14,6 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, Odo *p_pOdo, QObject *paren
     m_eActionRobot = eActionRobotRigole;
     m_eActionRobotPrecVirage = eActionRobotNone;
 
-    m_iViragePartCount = 0;
     m_iDataSendCount = 0;
     m_iRigoleCount = 0;
 
@@ -81,16 +80,19 @@ void IAMoteur::MachineAEtat()
  */
 void IAMoteur::InterieurRigole()
 {
-
     m_iRigoleCount++;
+
+    /* Si distance ref = gauche --> Oz derive a droite (vis-versa)*/
     if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
         m_eEtatIAMotor = eEtatIAMotorDroite;
     else
         m_eEtatIAMotor = eEtatIAMotorGauche;
 
-    if(m_structDataIA.iDistanceRef >= 500)      // Si le point le plus proche est très éloigné
+    qDebug() << "Distance Ref : " << m_structDataIA.iDistanceRef;
+
+    if(m_structDataIA.iDistanceRef >= 600)      // Si le point le plus proche est très éloigné
     {
-        ControlMotor(127, 127, false);
+        //ControlMotor(127, 127, false);
 
         if(m_eActionRobotPrecVirage == eActionRobotNone || m_eActionRobotPrecVirage == eActionRobotGrandVirageGauche)
         {
@@ -110,13 +112,20 @@ void IAMoteur::InterieurRigole()
     else if(m_structDataIA.iDistanceRef > 200)
     {
         if(m_structDataIA.iDegreeRef > 70 && m_structDataIA.iDegreeRef == m_structDataIA.iDegreeGauche)
+        {
+            qDebug() << "Avant Leger Droit";
             ControlMotor(127, 96, false);
+        }
         else if (m_structDataIA.iDegreeRef > 70 && m_structDataIA.iDegreeRef == m_structDataIA.iDegreeDroite)
+        {
+            qDebug() << "Avant Leger Droit";
             ControlMotor(96, 127, false);
+        }
         else
+        {
+            qDebug() << "Avant";
             ControlMotor(127, 127, false);
-
-        qDebug() << "Avant";
+        }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorDroite)
     {
@@ -126,6 +135,8 @@ void IAMoteur::InterieurRigole()
             ControlMotor(127, 63, false);
         else if(m_structDataIA.iDegreeRef < 60)
             ControlMotor(127, 32, false);
+        else
+            ControlMotor(127, 0, false);
 
         qDebug() << "Correction Droite";
     }
@@ -137,6 +148,8 @@ void IAMoteur::InterieurRigole()
             ControlMotor(63, 127, false);
         else if(m_structDataIA.iDegreeRef < 60)
             ControlMotor(32, 127, false);
+        else
+            ControlMotor(0, 127, false);
 
         qDebug() << "Correction Gauche";
     }
@@ -160,10 +173,9 @@ void IAMoteur::ExterieurRigole()
     {
         ControlMotor(127, 127, false);
         m_eActionRobot = m_eActionRobotPrecVirage;
-        m_eEtatIAMotor = eEtatIAMotorVirage;
+        m_eEtatIAMotor = eEtatIAMotorDebutVirage;
         m_bIsRillExit = true;
-        qDebug() << "Sortie Actif";
-
+        qDebug() << "Sortie Actif Exterieur Rigole";
     }
 
     if(m_structDataIA.iDistanceRef > 200)
@@ -218,11 +230,11 @@ void IAMoteur::Virage()
 //            m_iDataSendCount++;
 //            if(m_iDataSendCount > 8)
 //            {
-//                m_eEtatIAMotor = eEtatIAMotorVirage;
+//                m_eEtatIAMotor = eEtatIAMotorDebutVirage;
 //                m_iDataSendCount = 0;
 //            }
 
-            m_eEtatIAMotor = eEtatIAMotorVirage;
+            m_eEtatIAMotor = eEtatIAMotorDebutVirage;
             m_iDataSendCount = 0;
             m_bIsRillExit = false;
         }
@@ -232,95 +244,84 @@ void IAMoteur::Virage()
                 m_iDataSendCount++;
         }
     }
-//    else if(m_eEtatIAMotor == eEtatIAMotorSortieExterieur)
-//    {
-//        if(iDistanceSide < 250)
-//        {
-//            ControlMotor(127, 127, bInverse);
-//            m_iDataSendCount = 0;
-//        }
-//        else
-//             ControlMotor(127, 32, bInverse);
 
-//        m_iDataSendCount++;
-
-//        if(m_iDataSendCount > 9) // Angle de 90 ° effectué
-//        {
-//            m_iDataSendCount = 0;
-//            m_eEtatIAMotor = eEtatIAMotorSauteRigole;
-//        }
-//    }
     if(m_eEtatIAMotor == eEtatIAMotorSortie)
     {
         ControlMotor(127, 127, bInverse);
 
         if(iDistanceSide > 200)
         {
-            m_eEtatIAMotor = eEtatIAMotorVirage;
+            m_eEtatIAMotor = eEtatIAMotorDebutVirage;
             m_iDataSendCount = 0;
             qDebug() << "Sortie en cours";
         }
     }
+    else if(m_eEtatIAMotor == eEtatIAMotorSaute)
+    {
+        ControlMotor(127, 127, bInverse);
 
+        m_iDataSendCount++;
+
+        if(m_iDataSendCount > 1 || (iDegreeSide <= 10 && iDistanceSide <= 500))
+        {
+            m_eEtatIAMotor = eEtatIAMotorFinVirage;
+            m_iDataSendCount = 0;
+        }
+    }
     else if(m_eEtatIAMotor == eEtatIAMotorArriere)
     {
         ControlMotor(-53, -53, bInverse);
 
         m_iDataSendCount++;
 
-        if((iDistanceSide < 500 && m_iDataSendCount > 7) || (iDistanceSide > 500 && m_iDataSendCount > 10))
+        if((m_iDataSendCount > 7) || (iDistanceSide < 500 && m_iDataSendCount > 7)
+                || (iDistanceSide > 500 && m_iDataSendCount > 10))
         {
-            m_eEtatIAMotor = eEtatIAMotorVirage;
+            m_eEtatIAMotor = eEtatIAMotorFinVirage;
             m_iDataSendCount = 0;
-            m_iViragePartCount = 2;
-        }
-        if(m_iViragePartCount == 3 && m_iDataSendCount > 7)
-        {
-            m_eEtatIAMotor = eEtatIAMotorVirage;
-            m_iDataSendCount = 0;
-            m_iViragePartCount = 2;
         }
     }
-    else if(m_eEtatIAMotor == eEtatIAMotorVirage)
+    else if(m_eEtatIAMotor == eEtatIAMotorDebutVirage)
     {
         ControlMotor(127, 32, bInverse);
 
         m_iDataSendCount++;
-        if(m_iDataSendCount >= 4 && iDegreeSide <= 30 && iDistanceSide <= 350 && m_iViragePartCount == 0 && !m_bIsRillExit)
+        if(m_iDataSendCount >= 4 && iDegreeSide <= 30 && iDistanceSide <= 350)
         {
-            if(m_bIsRillExit)
-                m_eEtatIAMotor = eEtatIAMotorSauteRigole;
-            else
+//            if(m_bIsRillExit)
+//                m_eEtatIAMotor = eEtatIAMotorSauteRigole;
+//            else
+                m_eEtatIAMotor = eEtatIAMotorSaute;
+
+            m_iDataSendCount = 0;
+        }
+        else if(m_iDataSendCount >= 10)
+        {
+//            if(m_bIsRillExit)
+//                m_eEtatIAMotor = eEtatIAMotorSauteRigole;
+//            else
                 m_eEtatIAMotor = eEtatIAMotorArriere;
 
             m_iDataSendCount = 0;
-            m_iViragePartCount = 1;
         }
-        else if(m_iDataSendCount >= 10 && m_iViragePartCount == 0)
-        {
-            if(m_bIsRillExit)
-                m_eEtatIAMotor = eEtatIAMotorSauteRigole;
-            else
-                m_eEtatIAMotor = eEtatIAMotorArriere;
+    }
+    else if(m_eEtatIAMotor == eEtatIAMotorFinVirage)
+    {
+        ControlMotor(127, 32, bInverse);
+        m_iDataSendCount++;
 
-            m_iDataSendCount = 0;
-            m_iViragePartCount = 3;
-
-        }
-        else if(m_iDataSendCount >= 10 && m_iViragePartCount == 2 && iDistanceOpposite == 1000)
+        if(m_iDataSendCount >= 10 && iDistanceOpposite == 1000)
         {
             m_eEtatIAMotor = eEtatIAMotorNone;
             m_eActionRobot = eActionRobotRigoleExterieure;
             m_iDataSendCount = 0;
-            m_iViragePartCount = 0;
             qDebug() << "Fin Virage, Rigole Exterieur";
         }
-        else if(m_iDataSendCount >= 10 && m_iViragePartCount == 2)
+        else if(m_iDataSendCount >= 10)
         {
             m_eEtatIAMotor = eEtatIAMotorNone;
             m_eActionRobot = eActionRobotRigole;
             m_iDataSendCount = 0;
-            m_iViragePartCount = 0;
             qDebug() << "Fin Virage, Rigole Interieur";
         }
     }
@@ -336,10 +337,12 @@ void IAMoteur::DataResult()
     m_structDataIA.iDistanceDroite = DEFAULT_DISTANCE_VALUE;
     m_structDataIA.iDistanceGauche = DEFAULT_DISTANCE_VALUE;
     m_structDataIA.iDistanceRef = DEFAULT_DISTANCE_VALUE;
+    m_structDataIA.iDegreeFront = DEFAULT_DISTANCE_VALUE;
 
     m_structDataIA.iDegreeDroite = DEFAULT_DEGREE_VALUE;
     m_structDataIA.iDegreeGauche = DEFAULT_DEGREE_VALUE;
     m_structDataIA.iDegreeRef = DEFAULT_DEGREE_VALUE;
+    m_structDataIA.iDegreeFront = DEFAULT_DEGREE_VALUE;
 
     for(int iIncrement = 0; iIncrement < 90; iIncrement++)
     {
@@ -356,42 +359,16 @@ void IAMoteur::DataResult()
         }
     }
 
-    m_structDataIA.iDistanceRef = qMin(m_structDataIA.iDistanceDroite, m_structDataIA.iDistanceGauche);
-
-    if(m_eActionRobot == eActionRobotRigole)
+    for(int iIncrement = 0; iIncrement < 50; iIncrement++)
     {
-        if(m_structDataIA.lstdLargerRigole.length() < 50)
-            m_structDataIA.lstdLargerRigole.append(m_structDataIA.iDistanceDroite + m_structDataIA.iDistanceGauche);
-        else
+        if(lstiDistance.at(95 + iIncrement) != 0 && lstiDistance.at(95 - iIncrement) < m_structDataIA.iDistanceFront)
         {
-            double dValueMax = 0, dValueMin = 1000, dValueRef = 0;
-
-            foreach(double dValue, m_structDataIA.lstdLargerRigole)
-            {
-                if(qMin(dValue, dValueMax) == dValue)
-                {
-                    dValueMin = dValue;
-                }
-                if(qMax(dValue, dValueMax) == dValue)
-                {
-                    dValueMax = dValue;
-                }
-            }
-
-            dValueRef = qBound(dValueMin, m_structDataIA.dLargerRigoleMoyenne, dValueMax);
-            double dNewValue = m_structDataIA.iDistanceDroite + m_structDataIA.iDistanceGauche;
-
-            if(qBound(dValueRef, m_structDataIA.dLargerRigoleMoyenne, dNewValue) == dNewValue)
-                m_structDataIA.lstdLargerRigole.replace(m_structDataIA.lstdLargerRigole.indexOf(dValueRef), dNewValue);
+            m_structDataIA.iDistanceFront = lstiDistance.at(95 - iIncrement);
+            m_structDataIA.iDegreeFront = iIncrement;
         }
-
-        foreach(double dValue, m_structDataIA.lstdLargerRigole)
-            m_structDataIA.dLargerRigoleMoyenne += dValue;
-
-        m_structDataIA.dLargerRigoleMoyenne /= m_structDataIA.lstdLargerRigole.length();
-
-        qDebug() << "Largeur Rigole " << m_structDataIA.dLargerRigoleMoyenne;
     }
+
+    m_structDataIA.iDistanceRef = qMin(m_structDataIA.iDistanceDroite, m_structDataIA.iDistanceGauche);
 
     if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
         m_structDataIA.iDegreeRef = m_structDataIA.iDegreeGauche;

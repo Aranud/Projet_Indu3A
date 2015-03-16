@@ -55,12 +55,12 @@ typedef enum eEtatIAMotor
     eEtatIAMotorGauche,
     eEtatIAMotorDroite,
     eEtatIAMotorArriere,
-    eEtatIAMotorVirageGauche,
-    eEtatIAMotorVirageDroite,
-    eEtatIAMotorVirage,
+    eEtatIAMotorDebutVirage,
+    eEtatIAMotorFinVirage,
     eEtatIAMotorSortie,
     eEtatIAMotorSortieExterieur,
     eEtatIAMotorSauteRigole,
+    eEtatIAMotorSaute,
     eEtatIAMotorEntree,
 
 }E_EtatIAMotor;
@@ -78,11 +78,13 @@ typedef struct structDataIA
     int iDistanceDroite;
     int iDistanceGauche;
     int iDistanceRef;
+    int iDistanceFront;
     int iDegreeDroite;
     int iDegreeGauche;
     int iDegreeRef;
-    QList<double> lstdLargerRigole;
-    double dLargerRigoleMoyenne;
+    int iDegreeFront;
+//    QList<double> lstdLargerRigole;
+//    double dLargerRigoleMoyenne;
 
 }struct_DataIA;
 
