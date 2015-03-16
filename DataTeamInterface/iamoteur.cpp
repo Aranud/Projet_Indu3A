@@ -375,7 +375,7 @@ void IAMoteur::DataResult()
     if(m_eActionRobot == eActionRobotRigole)
     {
         double largeur = (cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite)
-                        -(cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche);
+                        + (cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche);
 
         if(m_structDataIA.lstdLargerRigole.length() < 50)
             m_structDataIA.lstdLargerRigole.append(largeur);
@@ -407,6 +407,16 @@ void IAMoteur::DataResult()
             if(qBound(dValueRef, m_structDataIA.dLargerRigoleMoyenne, dNewValue) == dNewValue)
                 m_structDataIA.lstdLargerRigole.replace(m_structDataIA.lstdLargerRigole.indexOf(dValueRef), dNewValue);
         }
+
+        if(m_structDataIA.lstdLargerRigole.length() > 0)
+        {
+            foreach(double dValue, m_structDataIA.lstdLargerRigole)
+                m_structDataIA.dLargerRigoleMoyenne += dValue;
+
+            m_structDataIA.dLargerRigoleMoyenne /= m_structDataIA.lstdLargerRigole.length();
+
+            qDebug() << "Largeur Rigole " << m_structDataIA.dLargerRigoleMoyenne;
+        }
     }
 
     m_structDataIA.iDistanceRef = qMin(m_structDataIA.iDistanceDroite, m_structDataIA.iDistanceGauche);
@@ -415,6 +425,8 @@ void IAMoteur::DataResult()
         m_structDataIA.iDegreeRef = m_structDataIA.iDegreeGauche;
     else
         m_structDataIA.iDegreeRef = m_structDataIA.iDegreeDroite;
+
+    qDebug() << "";
 }
 
 /**

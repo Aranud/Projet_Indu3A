@@ -86,8 +86,8 @@ typedef struct structDataIA
     int iDegreeGauche;
     int iDegreeRef;
     int iDegreeFront;
-//    QList<double> lstdLargerRigole;
-//    double dLargerRigoleMoyenne;
+    QList<double> lstdLargerRigole;
+    double dLargerRigoleMoyenne;
 
 }struct_DataIA;
 
