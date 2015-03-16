@@ -350,12 +350,14 @@ void IAMoteur::DataResult()
         {
             m_structDataIA.iDistanceGauche = lstiDistance.at(START_LIDAR_VISIBILITY_RANGE + iIncrement);
             m_structDataIA.iDegreeGauche = iIncrement;
+            //Point le plus proche a gauche
         }
 
         if(lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) != 0 && lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) < m_structDataIA.iDistanceDroite)
         {
             m_structDataIA.iDistanceDroite = lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement);
             m_structDataIA.iDegreeDroite = iIncrement;
+            //Point le plus proche a droite
         }
     }
 
@@ -365,6 +367,45 @@ void IAMoteur::DataResult()
         {
             m_structDataIA.iDistanceFront = lstiDistance.at(95 - iIncrement);
             m_structDataIA.iDegreeFront = iIncrement;
+        }
+    }
+
+    m_structDataIA.iDistanceRef = qMin(m_structDataIA.iDistanceDroite, m_structDataIA.iDistanceGauche);
+
+    double largeur = (cos(m_structDataIA.iDegreeDroite * PI/180)     * m_structDataIA.iDistanceDroite)
+                                    -  (cos(m_structDataIA.iDegreeGauche * PI/180) * m_structDataIA.iDistanceGauche);
+
+    if(m_eActionRobot == eActionRobotRigole)
+    {
+        if(m_structDataIA.lstdLargerRigole.length() < 50)
+            m_structDataIA.lstdLargerRigole.append(largeur);
+        else
+        {
+            double dValueMax = 0, dValueMin = 1000, dValueRef = 0;
+
+            foreach(double dValue, m_structDataIA.lstdLargerRigole)
+            {
+                if(qMin(dValue, dValueMax) == dValue)
+                {
+                    dValueMin = dValue;
+                }
+                if(qMax(dValue, dValueMax) == dValue)
+                {
+                    dValueMax = dValue;
+                }
+            }
+
+            dValueRef = qBound(dValueMin, m_structDataIA.dLargerRigoleMoyenne, dValueMax);
+
+            if(dValueRef == dValueMin)
+                dValueRef = dValueMax;
+            else
+                dValueRef = dValueMin;
+
+            double dNewValue = largeur;
+
+            if(qBound(dValueRef, m_structDataIA.dLargerRigoleMoyenne, dNewValue) == dNewValue)
+                m_structDataIA.lstdLargerRigole.replace(m_structDataIA.lstdLargerRigole.indexOf(dValueRef), dNewValue);
         }
     }
 

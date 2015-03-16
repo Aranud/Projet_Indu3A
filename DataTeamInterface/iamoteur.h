@@ -29,7 +29,6 @@ private:
     structDataIA m_structDataIA;
 
     int m_iDataSendCount;
-    int m_iViragePartCount;
     int m_iRigoleCount;
 
     bool m_bIsRillExit;

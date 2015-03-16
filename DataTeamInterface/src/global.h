@@ -3,6 +3,9 @@
 
 #define DEFAUT_NAME "NAIO01"
 #include "QObject"
+#include <math.h>
+#define PI 3.14159265
+
 
 typedef enum eIDCommand
 {
