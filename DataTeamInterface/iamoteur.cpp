@@ -372,11 +372,11 @@ void IAMoteur::DataResult()
 
     m_structDataIA.iDistanceRef = qMin(m_structDataIA.iDistanceDroite, m_structDataIA.iDistanceGauche);
 
-    double largeur = (cos(m_structDataIA.iDegreeDroite * PI/180)     * m_structDataIA.iDistanceDroite)
-                                    -  (cos(m_structDataIA.iDegreeGauche * PI/180) * m_structDataIA.iDistanceGauche);
-
     if(m_eActionRobot == eActionRobotRigole)
     {
+        double largeur = (cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite)
+                        -(cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche);
+
         if(m_structDataIA.lstdLargerRigole.length() < 50)
             m_structDataIA.lstdLargerRigole.append(largeur);
         else
