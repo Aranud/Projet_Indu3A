@@ -132,7 +132,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(739, 577);
+        MainWindow->resize(738, 616);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         leServerAddress = new QLineEdit(centralWidget);
@@ -406,7 +406,7 @@ public:
         pbRigole->setGeometry(QRect(650, 220, 75, 23));
         graphicsView = new QGraphicsView(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(20, 320, 701, 201));
+        graphicsView->setGeometry(QRect(20, 320, 701, 241));
         label_27 = new QLabel(centralWidget);
         label_27->setObjectName(QStringLiteral("label_27"));
         label_27->setGeometry(QRect(660, 90, 47, 13));
@@ -524,7 +524,7 @@ public:
         magnetoZResult->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 739, 21));
+        menuBar->setGeometry(QRect(0, 0, 738, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
