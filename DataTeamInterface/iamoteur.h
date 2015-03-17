@@ -28,11 +28,18 @@ private:
 
     structDataIA m_structDataIA;
 
-    int m_iDataSendCount;
     int m_iRigoleCount;
 
-    bool m_bIsRillExit;
     bool m_bSauteRigoleFini;
+    bool m_bRr, m_bRl, m_bFr, m_bFl;
+    int m_iRr, m_iRl, m_iFr, m_iFl;
+
+    bool IsHalfTurnRight();
+    bool IsLastHalfTurnRight();
+    bool IsHalfTurnLeft();
+    bool IsLastHalfTurnLeft();
+    bool IsBackEnough();
+    void ResetOdoValue();
 
     void MonTest();
     void InterieurRigole();
@@ -52,9 +59,11 @@ public:
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
 
+
 signals:
 
 public slots:
+    void onDataFromOdoReady();
 
 };
 

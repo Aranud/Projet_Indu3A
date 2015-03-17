@@ -14,11 +14,16 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, Odo *p_pOdo, QObject *paren
     m_eActionRobot = eActionRobotRigole;
     m_eActionRobotPrecVirage = eActionRobotNone;
 
-    m_iDataSendCount = 0;
     m_iRigoleCount = 0;
 
-    m_bIsRillExit = false;
+    m_iFl = 0;
+    m_iFr = 0;
+    m_iRl = 0;
+    m_iRr = 0;
+
     m_bSauteRigoleFini = false;
+
+    connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(onDataFromOdoReady()));
 }
 
 /**
@@ -76,6 +81,72 @@ void IAMoteur::MachineAEtat()
 }
 
 /**
+ * @brief IAMoteur::IsHalfTurnRight
+ * @return
+ */
+bool IAMoteur::IsHalfTurnRight()
+{
+    //m_bFlagHalfTurnRightOK = true;
+    if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr > 25/* && m_iRl > 27*/)
+        return true;
+    else
+        return false;
+}
+bool IAMoteur::IsLastHalfTurnRight()
+{
+    //m_bFlagHalfTurnRightOK = true;
+    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr > 22 /*&& m_iRl > 23*/)
+        return true;
+    else
+        return false;
+}
+
+/**
+ * @brief IAMoteur::IsHalfTurnLeft
+ * @return
+ */
+bool IAMoteur::IsHalfTurnLeft()
+{
+    //m_bFlagHalfTurnLeftOK = true;
+    if(/*m_iRr > 26 &&*/ m_iFl > 25/* && m_iFr > 27 && m_iRl > 19*/)
+        return true;
+    else
+        return false;
+}
+bool IAMoteur::IsLastHalfTurnLeft()
+{
+    //m_bFlagHalfTurnLeftOK = true;
+    if(/*m_iRr > 22 && */m_iFl > 16/* && m_iFr > 21 && m_iRl > 14*/)
+        return true;
+    else
+        return false;
+}
+
+/**
+ * @brief IAMoteur::IsBackEnough
+ * @return
+ */
+bool IAMoteur::IsBackEnough()
+{
+    //m_bFlagHalfTurnLeftOK = true;
+    if(m_iRr >= 10 && m_iFl >= 9 && m_iFr >= 10 && m_iRl >= 9)
+        return true;
+    else
+        return false;
+}
+
+/**
+ * @brief IAMoteur::ResetOdoValue
+ */
+void IAMoteur::ResetOdoValue()
+{
+    m_iRr = 0;
+    m_iFl = 0;
+    m_iFr = 0;
+    m_iRl = 0;
+}
+
+/**
  * @brief IAMoteur::InterieurRigole
  */
 void IAMoteur::InterieurRigole()
@@ -92,7 +163,7 @@ void IAMoteur::InterieurRigole()
 
     if(m_structDataIA.iDistanceRef >= 600)      // Si le point le plus proche est très éloigné
     {
-        //ControlMotor(127, 127, false);
+        ControlMotor(92, 92, false);
 
         if(m_eActionRobotPrecVirage == eActionRobotNone || m_eActionRobotPrecVirage == eActionRobotGrandVirageGauche)
         {
@@ -174,8 +245,7 @@ void IAMoteur::ExterieurRigole()
         ControlMotor(127, 127, false);
         m_eActionRobot = m_eActionRobotPrecVirage;
         m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-        m_bIsRillExit = true;
-        qDebug() << "Sortie Actif Exterieur Rigole";
+
     }
 
     if(m_structDataIA.iDistanceRef > 200)
@@ -206,7 +276,7 @@ void IAMoteur::Virage()
     int iDistanceSide = m_structDataIA.iDistanceDroite;
     int iDistanceOpposite = m_structDataIA.iDistanceGauche;
     int iDegreeSide = m_structDataIA.iDegreeDroite;
-    int iDegreeOpposite = m_structDataIA.iDegreeGauche;
+    //int iDegreeOpposite = m_structDataIA.iDegreeGauche;
 
     if(m_eActionRobot == eActionRobotGrandVirageGauche)
     {
@@ -214,36 +284,28 @@ void IAMoteur::Virage()
         iDistanceSide = m_structDataIA.iDistanceGauche;
         iDistanceOpposite = m_structDataIA.iDistanceDroite;
         iDegreeSide = m_structDataIA.iDegreeGauche;
-        iDegreeOpposite = m_structDataIA.iDegreeDroite;
+        //iDegreeOpposite = m_structDataIA.iDegreeDroite;
     }
 
-    if(m_eEtatIAMotor == eEtatIAMotorSauteRigole)
-    {
-        if(m_iDataSendCount >= (4 * m_iRigoleCount) && m_bSauteRigoleFini == false) // Angle de 90 ° effectué
-        {
-            m_bSauteRigoleFini = true;
-            m_iDataSendCount = 0;
-        }
-        else if(m_bSauteRigoleFini == true)
-        {
-//            ControlMotor(127, 32, bInverse);
-//            m_iDataSendCount++;
-//            if(m_iDataSendCount > 8)
-//            {
-//                m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-//                m_iDataSendCount = 0;
-//            }
+//    if(m_eEtatIAMotor == eEtatIAMotorSauteRigole)
+//    {
+//        if(/*m_iDataSendCount >= (4 * m_iRigoleCount) &&*/ m_bSauteRigoleFini == false) // Angle de 90 ° effectué
+//        {
+//            m_bSauteRigoleFini = true;
+//            //m_iDataSendCount = 0;
+//        }
+//        else if(m_bSauteRigoleFini == true)
+//        {
+//            m_eEtatIAMotor = eEtatIAMotorDebutVirage;
+//            //m_iDataSendCount = 0;
 
-            m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-            m_iDataSendCount = 0;
-            m_bIsRillExit = false;
-        }
-        else
-        {
-                ControlMotor(127, 127, bInverse);
-                m_iDataSendCount++;
-        }
-    }
+//        }
+//        else
+//        {
+//                ControlMotor(127, 127, bInverse);
+//                //m_iDataSendCount++;
+//        }
+//    }
 
     if(m_eEtatIAMotor == eEtatIAMotorSortie)
     {
@@ -252,76 +314,63 @@ void IAMoteur::Virage()
         if(iDistanceSide > 200)
         {
             m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-            m_iDataSendCount = 0;
-            qDebug() << "Sortie en cours";
+//            qDebug() << "Sortie en cours";
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorSaute)
     {
         ControlMotor(127, 127, bInverse);
 
-        m_iDataSendCount++;
-
-        if(m_iDataSendCount > 1 || (iDegreeSide <= 10 && iDistanceSide <= 500))
-        {
-            m_eEtatIAMotor = eEtatIAMotorFinVirage;
-            m_iDataSendCount = 0;
-        }
+ //       if(/*m_iFl > 1 && m_iFr > 1 &&*/ iDegreeSide <= 10 && iDistanceSide <= 500)
+ //       {
+        m_eEtatIAMotor = eEtatIAMotorFinVirage;
+        ResetOdoValue();
+        qDebug() << "Fin Saut";
+  //      }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorArriere)
     {
         ControlMotor(-53, -53, bInverse);
 
-        m_iDataSendCount++;
-
-        if((m_iDataSendCount > 7) || (iDistanceSide < 500 && m_iDataSendCount > 7)
-                || (iDistanceSide > 500 && m_iDataSendCount > 10))
+        if(IsBackEnough())
         {
             m_eEtatIAMotor = eEtatIAMotorFinVirage;
-            m_iDataSendCount = 0;
+            ResetOdoValue();
+            qDebug() << "Fin Arriere";
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorDebutVirage)
     {
         ControlMotor(127, 32, bInverse);
 
-        m_iDataSendCount++;
-        if(m_iDataSendCount >= 4 && iDegreeSide <= 30 && iDistanceSide <= 350)
+        if(m_iFl > 5 && m_iFr > 5 && iDegreeSide <= 30 && iDistanceSide <= 350)
         {
-//            if(m_bIsRillExit)
-//                m_eEtatIAMotor = eEtatIAMotorSauteRigole;
-//            else
-                m_eEtatIAMotor = eEtatIAMotorSaute;
-
-            m_iDataSendCount = 0;
+            ResetOdoValue();
+            m_eEtatIAMotor = eEtatIAMotorSaute;
         }
-        else if(m_iDataSendCount >= 10)
-        {
-//            if(m_bIsRillExit)
-//                m_eEtatIAMotor = eEtatIAMotorSauteRigole;
-//            else
-                m_eEtatIAMotor = eEtatIAMotorArriere;
 
-            m_iDataSendCount = 0;
+        else if(IsHalfTurnRight() || IsHalfTurnLeft())
+        {
+            ResetOdoValue();
+            m_eEtatIAMotor = eEtatIAMotorArriere;
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorFinVirage)
     {
         ControlMotor(127, 32, bInverse);
-        m_iDataSendCount++;
 
-        if(m_iDataSendCount >= 10 && iDistanceOpposite == 1000)
+        if((IsLastHalfTurnRight() || IsLastHalfTurnLeft()) && iDistanceOpposite == 1000)
         {
             m_eEtatIAMotor = eEtatIAMotorNone;
             m_eActionRobot = eActionRobotRigoleExterieure;
-            m_iDataSendCount = 0;
+            ResetOdoValue();
             qDebug() << "Fin Virage, Rigole Exterieur";
         }
-        else if(m_iDataSendCount >= 10)
+        else if(IsLastHalfTurnRight() || IsLastHalfTurnLeft())
         {
             m_eEtatIAMotor = eEtatIAMotorNone;
             m_eActionRobot = eActionRobotRigole;
-            m_iDataSendCount = 0;
+            ResetOdoValue();
             qDebug() << "Fin Virage, Rigole Interieur";
         }
     }
@@ -356,7 +405,7 @@ void IAMoteur::DataResult()
         if(lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) != 0 && lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) < m_structDataIA.iDistanceDroite)
         {
             m_structDataIA.iDistanceDroite = lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement);
-            m_structDataIA.iDegreeDroite = 180 - iIncrement;
+            m_structDataIA.iDegreeDroite = iIncrement;
             //Point le plus proche a droite
         }
     }
@@ -377,8 +426,8 @@ void IAMoteur::DataResult()
         double largeur = (cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche)
                                           - (cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite);
 
-        qDebug() << "droite " << m_structDataIA.iDegreeDroite << "  "<<cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite;
-        qDebug() << "gauche " <<m_structDataIA.iDegreeGauche << "  "<<cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche;
+//        qDebug() << "droite " << m_structDataIA.iDegreeDroite << "  "<<cos(m_structDataIA.iDegreeDroite * PI / 180) * m_structDataIA.iDistanceDroite;
+//        qDebug() << "gauche " <<m_structDataIA.iDegreeGauche << "  "<<cos(m_structDataIA.iDegreeGauche * PI / 180) * m_structDataIA.iDistanceGauche;
         if(m_structDataIA.lstdLargerRigole.length() < 50)
             m_structDataIA.lstdLargerRigole.append(largeur);
         else
@@ -417,7 +466,7 @@ void IAMoteur::DataResult()
 
             m_structDataIA.dLargerRigoleMoyenne /= m_structDataIA.lstdLargerRigole.length();
 
-            qDebug() << "Largeur Rigole " << m_structDataIA.dLargerRigoleMoyenne;
+//            qDebug() << "Largeur Rigole " << m_structDataIA.dLargerRigoleMoyenne;
         }
     }
 
@@ -427,8 +476,6 @@ void IAMoteur::DataResult()
         m_structDataIA.iDegreeRef = m_structDataIA.iDegreeGauche;
     else
         m_structDataIA.iDegreeRef = m_structDataIA.iDegreeDroite;
-
-    qDebug() << "";
 }
 
 /**
@@ -454,3 +501,51 @@ void IAMoteur::ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse
 
     m_pMotor->SendData(baDataToSend);
 }
+
+/*******************************************************************************/
+/*********************************** SLOT **************************************/
+/*******************************************************************************/
+
+/**
+ * @brief IAMoteur::onDataFromOdoReady
+ */
+void IAMoteur::onDataFromOdoReady()
+{
+    if(m_eActionRobot == eActionRobotGrandVirageDroite || m_eActionRobot == eActionRobotGrandVirageGauche)
+    {
+        bool bFl, bFr, bRl, bRr;
+        bFl = m_pOdo->getFrontLeft();
+        bFr = m_pOdo->getFrontRight();
+        bRl = m_pOdo->getRearLeft();
+        bRr = m_pOdo->getRearRight();
+
+        if(bFl != m_bFl)
+        {
+            m_bFl = bFl;
+            m_iFl++;
+//            qDebug() << "Front left : " << m_iFl;
+        }
+
+        if(bFr != m_bFr)
+        {
+            m_bFr = bFr;
+            m_iFr++;
+//            qDebug() << "Front right : " << m_iFr;
+        }
+
+        if(bRl != m_bRl)
+        {
+            m_bRl = bRl;
+            m_iRl++;
+//            qDebug() << "roar left : " << m_iRl;
+        }
+
+        if(bRr != m_bRr)
+        {
+            m_bRr = bRr;
+            m_iRr++;
+//            qDebug() << "roar right : " << m_iRr;
+        }
+    }
+}
+
