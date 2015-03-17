@@ -34,7 +34,7 @@ SOURCES += src/main.cpp\
     src/captor/magneto.cpp \
     src/captor/odo.cpp \
     src/captor/motor.cpp \
-    iamoteur.cpp
+    src/iamoteur.cpp
 
 
 HEADERS  += src/mainwindow.h \
@@ -53,7 +53,7 @@ HEADERS  += src/mainwindow.h \
     src/captor/magneto.h \
     src/captor/odo.h \
     src/captor/motor.h \
-    iamoteur.h
+    src/iamoteur.h
 
 FORMS    += mainwindow.ui\
 
