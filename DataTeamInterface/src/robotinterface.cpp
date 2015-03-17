@@ -42,7 +42,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pTimer = new QTimer();
     m_pTimer->setInterval(500);
 
-    draw = true;
+    draw = test = true;
     m_pGraphScene = new QGraphicsScene();
     m_pGraphScene->setSceneRect(0,0,690,190);
     m_pPoint = new QPoint(690/2, 180);
@@ -225,19 +225,14 @@ void RobotInterface::onLidarDataAvailable()
 {
     QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
-    if(draw)
-    {
-         draw =false;
-        QTime time;
-        time.start();
         m_pGraphScene->clear();
-        m_pGraphScene->addRect(0+m_pPoint->rx()-14,0+m_pPoint->ry(),28,40);
-        for(int i=0; i< 270;i++){
-             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/5) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/5), 2, 2);
+        m_pGraphScene->addRect(0+m_pPoint->rx()-21,0+m_pPoint->ry(),42,50);
+        for(int i=45; i< 226;i++){
+            if(test)
+                qDebug()<<"Test :: "<< i-45 << " ::"<<cos((i-45)*PI/180) * lstDistance.at(i) << "//" <<lstDistance.at(i);
+             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/10) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/10), 2, 2);
         }
-        draw = true;
-    }
-
+        test = false;
 }
 
 /**
