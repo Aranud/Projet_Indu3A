@@ -24,7 +24,7 @@ public:
 
     bool ConnectCaptor(QString p_sAddresse, qint16 p_iPort);
     void DisconnectCaptor();
-    bool SendData(QByteArray p_pDataToSend);
+    virtual bool SendData(QByteArray p_pDataToSend);
     QByteArray ReverseData(QByteArray p_baData);
 
     bool getIsConnected();
