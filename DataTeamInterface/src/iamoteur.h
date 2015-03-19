@@ -9,7 +9,7 @@
 
 #define START_LIDAR_VISIBILITY_RANGE 45
 #define END_LIDAR_VISIBILITY_RANGE 225
-#define DEFAULT_DISTANCE_VALUE 1000
+#define DEFAULT_DISTANCE_VALUE 4000
 #define DEFAULT_DEGREE_VALUE 0
 
 class IAMoteur : public QObject
@@ -30,7 +30,6 @@ private:
 
     int m_iRigoleCount;
 
-    bool m_bSauteRigoleFini;
     bool m_bRr, m_bRl, m_bFr, m_bFl;
     int m_iRr, m_iRl, m_iFr, m_iFl;
 
@@ -53,12 +52,10 @@ public:
     explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor, Odo *p_pOdo, QObject *parent = 0);
     ~IAMoteur();
 
-    void EtatParcelle();
     void MachineAEtat();
 
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
-
 
 signals:
 

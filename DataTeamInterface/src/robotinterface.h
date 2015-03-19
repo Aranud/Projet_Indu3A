@@ -53,7 +53,7 @@ private:
     int m_iCompteur;
 
     QTimer* m_pTimer;
-    bool draw,test;
+    bool m_bDraw;
 
     eDirection m_eDirection;
     IAMoteur* m_pIAMoteur;

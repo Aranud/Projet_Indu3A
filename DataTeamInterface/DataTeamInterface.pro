@@ -36,7 +36,6 @@ SOURCES += src/main.cpp\
     src/captor/motor.cpp \
     src/iamoteur.cpp
 
-
 HEADERS  += src/mainwindow.h \
     src/tcpconnection.h \
     src/protocole.h \
