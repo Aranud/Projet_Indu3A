@@ -40,7 +40,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pIAMoteur = new IAMoteur(m_pLidar, m_pMotor, m_pOdo);
 
     m_pTimer = new QTimer();
-    m_pTimer->setInterval(500);
+    m_pTimer->setInterval(50);
 
     m_bDraw = true;
     m_pGraphScene = new QGraphicsScene();
@@ -145,7 +145,7 @@ bool RobotInterface::connectRobot()
 void RobotInterface::PushButonRight()
 {
     m_eDirection = eDirectionRight;
-
+    m_iCompteur = 0;
     if(m_pTimer->isActive())
         m_pTimer->stop();
     else
@@ -305,18 +305,25 @@ void RobotInterface::onMagnetoDataAvailable()
 void RobotInterface::slotTimeOut()
 {
      QByteArray baValue;
+     double Largeur = 80.0;
+     double droite = 0.0;
+     double gauche = 0.0;
+     double angle = 90.0;
+     int antraxe = 42;
+
+     if( (m_iCompteur =  m_pUi->fl_2->text().toInt()  - m_iCompteur) <= 0 );
+        m_iCompteur = m_pUi->fl_2->text().toInt();
+
 
      if(m_eDirection == eDirectionLeft)
      {
          baValue[0] = 32;
          baValue[1] = 127;
-         m_iCompteur++;
      }
      else if(m_eDirection == eDirectionRight)
      {
-         baValue[0] = 127;
-         baValue[1] = 32;
-         m_iCompteur++;
+         baValue[0] = 127;//g
+         baValue[1] = 76;//d
      }
      else if(m_eDirection == eDirectionFront)
      {
@@ -326,8 +333,9 @@ void RobotInterface::slotTimeOut()
      else
          return;
 
-     if(m_iCompteur >= 11)
+     if(m_iCompteur >=160)
      {
+         qDebug()<<"Tick FL = "<<m_iCompteur << "\n Tick FR = " <<   m_pUi->fr_2->text().toInt();
         m_iCompteur = 0;
         m_pTimer->stop();
         return;
