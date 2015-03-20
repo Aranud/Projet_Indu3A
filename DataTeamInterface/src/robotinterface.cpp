@@ -178,6 +178,7 @@ void RobotInterface::PushButonFront()
         m_pTimer->start();
 }
 
+
 /**
  * @brief RobotInterface::onGpsDataAvailable
  */
@@ -295,6 +296,14 @@ void RobotInterface::onMagnetoDataAvailable()
 
 }
 
+
+/**
+ * @brief RobotInterface::PushButonReset
+ */
+void RobotInterface::PushButonReset()
+{
+
+}
 
 /*******************************************************************************/
 /********************************** SLOT ***************************************/

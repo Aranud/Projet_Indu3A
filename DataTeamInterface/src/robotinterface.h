@@ -75,6 +75,7 @@ public:
     void PushButonRight();
     void PushButonLeft();
     void PushButonFront();
+    void PushButonReset();
 
 signals:
     void emitCaptorConnected(int);

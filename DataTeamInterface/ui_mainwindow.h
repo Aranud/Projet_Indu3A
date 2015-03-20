@@ -124,6 +124,7 @@ public:
     QLabel *magnetoXResult;
     QLabel *magnetoYResult;
     QLabel *magnetoZResult;
+    QPushButton *pbReset;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -152,7 +153,7 @@ public:
         leDataToSend->setGeometry(QRect(60, 150, 271, 20));
         img = new QLabel(centralWidget);
         img->setObjectName(QStringLiteral("img"));
-        img->setGeometry(QRect(140, 210, 151, 91));
+        img->setGeometry(QRect(130, 200, 161, 101));
         altitude = new QLabel(centralWidget);
         altitude->setObjectName(QStringLiteral("altitude"));
         altitude->setGeometry(QRect(30, 210, 21, 16));
@@ -428,6 +429,9 @@ public:
         magnetoZResult = new QLabel(centralWidget);
         magnetoZResult->setObjectName(QStringLiteral("magnetoZResult"));
         magnetoZResult->setGeometry(QRect(640, 150, 61, 16));
+        pbReset = new QPushButton(centralWidget);
+        pbReset->setObjectName(QStringLiteral("pbReset"));
+        pbReset->setGeometry(QRect(350, 40, 75, 23));
         MainWindow->setCentralWidget(centralWidget);
         line_5->raise();
         line_8->raise();
@@ -522,6 +526,7 @@ public:
         magnetoXResult->raise();
         magnetoYResult->raise();
         magnetoZResult->raise();
+        pbReset->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 738, 21));
@@ -625,6 +630,7 @@ public:
         magnetoXResult->setText(QString());
         magnetoYResult->setText(QString());
         magnetoZResult->setText(QString());
+        pbReset->setText(QApplication::translate("MainWindow", "Reset", 0));
     } // retranslateUi
 
 };
