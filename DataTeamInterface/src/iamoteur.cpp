@@ -214,20 +214,23 @@ void IAMoteur::InterieurRigole()
         bool bInverse = false;
         m_eEtatIAMotor == eEtatIAMotorGauche ? bInverse = true : bInverse = false;
 
-        double Kp = 0.5, Ki = 0.0, Kd = 0.0;
+        double Kp = 0.1, Ki = 0.05, Kd = 0.08;
 
-        double error = m_structDataIA.dLargerRigoleMoyenne / 2.0 - m_structDataIA.iDistanceRef;
-        double derivative = (error - m_dError) / 50.0;
-        m_dIntegral += error * 50.0;
+        qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
+        double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
+
+         qDebug() << "error :  " << error<<"\n error ref = "<<m_dError ;
+        double derivative = (error - m_dError) /0.5;
+
+        m_dIntegral += error * 0.5;
         m_dError = error;
 
         double dCorrection = Kp * error
         + Ki * m_dIntegral
         + Kd * derivative;
 
-        dCorrection > 127 ? dCorrection = 127 : 0;
-
         qDebug() << "Correc : " << dCorrection;
+       dCorrection > 100 ? dCorrection = 100 : 0;
 
         ControlMotor(dCorrection, 127 - dCorrection, bInverse);
     }
@@ -261,14 +264,34 @@ void IAMoteur::ExterieurRigole()
             m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite)
             bInverse = true;
 
-    if(m_structDataIA.iDegreeRef < 20)
+    double Kp = 0.1, Ki = 0.05, Kd = 0.08;
+
+    qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
+    double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
+
+     qDebug() << "error :  " << error<<"\n error ref = "<<m_dError ;
+    double derivative = (error - m_dError) /0.5;
+
+    m_dIntegral += error * 0.5;
+    m_dError = error;
+
+    double dCorrection = Kp * error
+    + Ki * m_dIntegral
+    + Kd * derivative;
+
+    qDebug() << "Correc : " << dCorrection;
+   dCorrection > 100 ? dCorrection = 100 : 0;
+
+    ControlMotor(dCorrection, 127 - dCorrection, bInverse);;
+
+    /*if(m_structDataIA.iDegreeRef < 20)
         ControlMotor(127, 96, bInverse);
     else if(m_structDataIA.iDegreeRef < 45)
         ControlMotor(127, 63, bInverse);
     else if(m_structDataIA.iDegreeRef < 60)
         ControlMotor(127, 32, bInverse);
     else
-        ControlMotor(127, 0, bInverse);
+        ControlMotor(127, 0, bInverse);*/
 }
 
 /**************************************************/
@@ -445,9 +468,9 @@ void IAMoteur::CalculLargeurRigole()
     double dLargeurMesure = (cos(m_structDataIA.iDegreeGauche * PI / 180.0) * m_structDataIA.iDistanceGauche)
                   - (cos((180 - m_structDataIA.iDegreeDroite) * PI / 180.0) * m_structDataIA.iDistanceDroite);
 
-    if(m_structDataIA.lstdLargerRigole.length() < 10)
+    if(m_structDataIA.lstdLargerRigole.length() < 50)
         m_structDataIA.lstdLargerRigole.append(dLargeurMesure);
-    else if(qAbs(m_structDataIA.dLargerRigoleMoyenne - dLargeurMesure) <= 100)  // Si la differences n'est pas supérieur
+    else if(qAbs(m_structDataIA.dLargerRigoleMoyenne - dLargeurMesure) <= 200)  // Si la differences n'est pas supérieur
     {
         double dValueMax = 0, dValueMin = 4000, dValueRef = 0;
 
@@ -503,7 +526,7 @@ void IAMoteur::ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse
  */
 int IAMoteur::CalculLargeurReference()
 {
-    return (m_structDataIA.dLargerRigoleMoyenne / 2.0) - (m_structDataIA.dLargerRigoleMoyenne / 8.0);
+    return (m_structDataIA.dLargerRigoleMoyenne / 2.0) - (m_structDataIA.dLargerRigoleMoyenne / 16.0);
 }
 
 /*******************************************************************************/
