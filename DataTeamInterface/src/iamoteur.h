@@ -24,11 +24,14 @@ private:
 
     eEtatIAMotor m_eEtatIAMotor;
     eActionRobot m_eActionRobot;
+    eActionRobot m_eActionRobotPrec;
     eActionRobot m_eActionRobotPrecVirage;
 
     structDataIA m_structDataIA;
 
     int m_iRigoleCount;
+    double m_dIntegral;
+    double m_dError;
 
     bool m_bRr, m_bRl, m_bFr, m_bFl;
     int m_iRr, m_iRl, m_iFr, m_iFl;
@@ -40,12 +43,13 @@ private:
     bool IsBackEnough();
     void ResetOdoValue();
 
-    void MonTest();
     void InterieurRigole();
-    void Virage();
     void ExterieurRigole();
+    void Virage();
+
 
     void DataResult();
+    void CalculLargeurRigole();
     void ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse);
 
 public:
