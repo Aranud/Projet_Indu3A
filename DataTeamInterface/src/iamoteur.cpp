@@ -181,7 +181,7 @@ void IAMoteur::InterieurRigole()
         m_iRigoleCount++;
         qDebug() << "Sortie Actif";
     }
-    else if(m_structDataIA.iDistanceRef >= (m_structDataIA.dLargerRigoleMoyenne / 2.0) - (m_structDataIA.dLargerRigoleMoyenne / 8.0))
+    else if(m_structDataIA.iDistanceRef >= CalculLargeurReference())
     {
         if (m_structDataIA.iDegreeRef > 60)
         {
@@ -246,43 +246,29 @@ void IAMoteur::ExterieurRigole()
 
     if(m_structDataIA.iDistanceRef >= m_structDataIA.dLargerRigoleMoyenne)            // Si le point le plus proche est très éloigné
     {
-        ControlMotor(127, 127, false);
+        ControlMotor(127, 127, bInverse);
         m_eActionRobot = m_eActionRobotPrecVirage;
         m_eActionRobotPrec = eActionRobotRigoleExterieure;
         m_eEtatIAMotor = eEtatIAMotorSortie;
         m_iRigoleCount++;
     }
 
-    if(m_structDataIA.iDistanceRef >= m_structDataIA.dLargerRigoleMoyenne / 2.0)
-    {
-
-        if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
+    if(m_structDataIA.iDistanceRef >= CalculLargeurReference() &&
+       m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
             bInverse = true;
 
-        if(m_structDataIA.iDegreeRef < 20)
-            ControlMotor(127, 96, bInverse);
-        else if(m_structDataIA.iDegreeRef < 45)
-            ControlMotor(127, 63, bInverse);
-        else if(m_structDataIA.iDegreeRef < 60)
-            ControlMotor(127, 32, bInverse);
-        else
-            ControlMotor(127, 0, bInverse);
-    }
-    else if(m_structDataIA.iDistanceRef < m_structDataIA.dLargerRigoleMoyenne / 2)
-    {
-        bool bInverse = false;
-        if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite)
+    else if(m_structDataIA.iDistanceRef < CalculLargeurReference() &&
+            m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite)
             bInverse = true;
 
-        if(m_structDataIA.iDegreeRef < 20)
-            ControlMotor(127, 96, bInverse);
-        else if(m_structDataIA.iDegreeRef < 45)
-            ControlMotor(127, 63, bInverse);
-        else if(m_structDataIA.iDegreeRef < 60)
-            ControlMotor(127, 32, bInverse);
-        else
-            ControlMotor(127, 0, bInverse);
-    }
+    if(m_structDataIA.iDegreeRef < 20)
+        ControlMotor(127, 96, bInverse);
+    else if(m_structDataIA.iDegreeRef < 45)
+        ControlMotor(127, 63, bInverse);
+    else if(m_structDataIA.iDegreeRef < 60)
+        ControlMotor(127, 32, bInverse);
+    else
+        ControlMotor(127, 0, bInverse);
 }
 
 /**************************************************/
@@ -313,7 +299,7 @@ void IAMoteur::Virage()
     {
         ControlMotor(127, 127, bInverse);
 
-        if(iDistanceSide > 250)
+        if(m_iFl > 3 && m_iFr > 3 && iDistanceSide > 250)
         {
             m_eEtatIAMotor = eEtatIAMotorDebutVirage;
             qDebug() << "Sortie Suffisant";
@@ -323,7 +309,7 @@ void IAMoteur::Virage()
     {
         ControlMotor(127, 127, bInverse);
 
-        if(iDegreeSide <= 30 && iDistanceSide <= 1000)
+        if(m_iFl > 1 && m_iFr > 1 && iDegreeSide <= 30 && iDistanceSide <= 1000)
         {
             m_eEtatIAMotor = eEtatIAMotorFinVirage;
             ResetOdoValue();
@@ -509,6 +495,15 @@ void IAMoteur::ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse
     }
 
     m_pMotor->SendData(baDataToSend);
+}
+
+/**
+ * @brief IAMoteur::CalculLargeurReference
+ * @return
+ */
+int IAMoteur::CalculLargeurReference()
+{
+    return (m_structDataIA.dLargerRigoleMoyenne / 2.0) - (m_structDataIA.dLargerRigoleMoyenne / 8.0);
 }
 
 /*******************************************************************************/

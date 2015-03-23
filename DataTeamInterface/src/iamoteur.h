@@ -51,6 +51,7 @@ private:
     void DataResult();
     void CalculLargeurRigole();
     void ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse);
+    int CalculLargeurReference();
 
 public:
     explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor, Odo *p_pOdo, QObject *parent = 0);
