@@ -94,13 +94,13 @@ void IAMoteur::MachineAEtat()
  */
 bool IAMoteur::IsHalfTurnRight()
 {
-    if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr > 25/* && m_iRl > 27*/)
+    if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr >= 25/* && m_iRl > 27*/)
         return true;
     return false;
 }
 bool IAMoteur::IsLastHalfTurnRight()
 {
-    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr > 22 /*&& m_iRl > 23*/)
+    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr >= 22 /*&& m_iRl > 23*/)
         return true;
     return false;
 }
@@ -111,13 +111,13 @@ bool IAMoteur::IsLastHalfTurnRight()
  */
 bool IAMoteur::IsHalfTurnLeft()
 {
-    if(/*m_iRr > 26 &&*/ m_iFl > 25/* && m_iFr > 27 && m_iRl > 19*/)
+    if(/*m_iRr > 26 &&*/ m_iFl >= 25/* && m_iFr > 27 && m_iRl > 19*/)
         return true;
     return false;
 }
 bool IAMoteur::IsLastHalfTurnLeft()
 {
-    if(/*m_iRr > 22 && */m_iFl > 16/* && m_iFr > 21 && m_iRl > 14*/)
+    if(/*m_iRr > 22 && */m_iFl >= 16/* && m_iFr > 21 && m_iRl > 14*/)
         return true;
     return false;
 }
@@ -176,6 +176,8 @@ void IAMoteur::InterieurRigole()
             m_eActionRobotPrecVirage = eActionRobotGrandVirageGauche;
         }
 
+        m_dError = 0;
+        m_dIntegral = 0;
         m_eActionRobotPrec = eActionRobotRigole;
         m_eEtatIAMotor = eEtatIAMotorSortie;
         m_iRigoleCount++;
@@ -184,7 +186,7 @@ void IAMoteur::InterieurRigole()
     else if(m_structDataIA.iDistanceRef >= CalculLargeurReference() || m_eEtatIAMotor ==  eEtatIAMotorAvant)
     {
             ControlMotor(127, 127, false);
-            qDebug() << "Avant";
+            //qDebug() << "Avant";
     }
     else
     {/*
@@ -220,8 +222,10 @@ void IAMoteur::ExterieurRigole()
 {
     bool bInverse = false;
 
-    if(m_structDataIA.iDistanceRef >= m_structDataIA.dLargerRigoleMoyenne)            // Si le point le plus proche est très éloigné
+    if( m_structDataIA.iDistanceRef >= (m_structDataIA.dLargerRigoleMoyenne *1.25) )           // Si le point le plus proche est très éloigné
     {
+        m_dError = 0;
+        m_dIntegral = 0;
         ControlMotor(127, 127, bInverse);
         m_eActionRobot = m_eActionRobotPrecVirage;
         m_eActionRobotPrec = eActionRobotRigoleExterieure;
@@ -241,14 +245,11 @@ void IAMoteur::ExterieurRigole()
              qDebug()<<"dois tourner a gauche";
     }*/
 
-    if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche){
-                bInverse = false;
-                qDebug()<<"ref toujour a gauche";
-    }
-    else{
+    if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
+        bInverse = false;
+    else
         bInverse = true;
-        qDebug()<<"ref toujour a a droite";
-    }
+
     PID(bInverse);
 
     /*if(m_structDataIA.iDegreeRef < 20)
@@ -289,7 +290,8 @@ void IAMoteur::Virage()
     {
         ControlMotor(127, 127, bInverse);
 
-        if(m_iFl > 3 && m_iFr > 3 && iDistanceSide > 250)
+        if(m_iFl >= 3 && m_iFr >= 3 && iDistanceSide >= m_structDataIA.dLargerRigoleMoyenne / 2
+                && iDistanceOpposite >= m_structDataIA.dLargerRigoleMoyenne )
         {
             m_eEtatIAMotor = eEtatIAMotorDebutVirage;
             qDebug() << "Sortie Suffisant";
@@ -299,7 +301,7 @@ void IAMoteur::Virage()
     {
         ControlMotor(127, 127, bInverse);
 
-        if(m_iFl > 1 && m_iFr > 1 && iDegreeSide <= 30 && iDistanceSide <= 1000)
+        if(m_iFl > 1 && m_iFr > 1 && iDegreeSide <= 30 && iDistanceSide <= m_structDataIA.dLargerRigoleMoyenne)
         {
             m_eEtatIAMotor = eEtatIAMotorFinVirage;
             ResetOdoValue();
@@ -331,7 +333,7 @@ void IAMoteur::Virage()
         {
             ResetOdoValue();
 
-            if(iDegreeSide < 30 && iDistanceSide <= 1000 &&
+            if(iDegreeSide < 30 && iDistanceSide <=  m_structDataIA.dLargerRigoleMoyenne &&
               (m_eActionRobotPrecVirage == eActionRobotPetitVirageDroite ||
               m_eActionRobotPrecVirage == eActionRobotPetitVirageGauche ||
               m_eActionRobotPrec == eActionRobotRigole))
@@ -362,7 +364,7 @@ void IAMoteur::Virage()
             ResetOdoValue();
             m_eEtatIAMotor = eEtatIAMotorNone;
 
-            if(iDistanceOpposite > 1000 && iDegreeOpposite < 30)
+            if(iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && iDegreeOpposite < 30)
             {
                 m_eActionRobot = eActionRobotRigoleExterieure;
                 qDebug() << "Fin Virage, Rigole Exterieur";
@@ -379,25 +381,9 @@ void IAMoteur::Virage()
 void IAMoteur::PID(bool bInverse)
 {
 
-    if(m_structDataIA.iDistanceDroite == m_structDataIA.iDistanceRef)
-        qDebug()  << "Ref a Droite";
-    if(m_structDataIA.iDistanceGauche== m_structDataIA.iDistanceRef)
-        qDebug()  << "Ref a Gauche";
-
-    if(bInverse)
-         qDebug()<<"dois tourner a droite";
-    else
-         qDebug()<<"dois tourner a gauche";
-
-
-    double Kp = 0.1, Ki = 0.05, Kd = 0.08;
-
-    qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
+    double Kp = 0.5, Ki = 0.2, Kd = 0.2;
     double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
-
-     qDebug() << "error :  " << error<<"\n error ref = "<<m_dError ;
     double derivative = (error - m_dError) /0.5;
-
     m_dIntegral += error * 0.5;
     m_dError = error;
 
@@ -405,8 +391,25 @@ void IAMoteur::PID(bool bInverse)
     + Ki * m_dIntegral
     + Kd * derivative;
 
-    qDebug() << "Correc : " << dCorrection;
-   dCorrection > 100 ? dCorrection = 100 : 0;
+    if(m_eActionRobot == eActionRobotRigoleExterieure){
+        if( !bInverse && dCorrection < 0){
+            dCorrection = dCorrection*-1;
+            bInverse = true;
+            qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
+        }
+        else if( bInverse && dCorrection < 0){
+            dCorrection = dCorrection*-1;
+            bInverse = false;
+            qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
+        }
+        else if (bInverse  && dCorrection > 0)
+            qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
+
+        else if (!bInverse && dCorrection > 0)
+            qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
+    }
+    else
+        dCorrection > 75 ? dCorrection = 75 : 0;
 
     ControlMotor(127, 127 - dCorrection, bInverse);
 }
