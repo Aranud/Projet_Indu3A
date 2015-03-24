@@ -181,20 +181,10 @@ void IAMoteur::InterieurRigole()
         m_iRigoleCount++;
         qDebug() << "Sortie Actif";
     }
-    else if(m_structDataIA.iDistanceRef >= CalculLargeurReference())
+    else if(m_structDataIA.iDistanceRef >= CalculLargeurReference() || m_eEtatIAMotor ==  eEtatIAMotorAvant)
     {
-        if (m_structDataIA.iDegreeRef > 60)
-        {
-            bool bInverse;
-            m_eEtatIAMotor == eEtatIAMotorGauche ? bInverse = true : bInverse = false;
-            ControlMotor(127, 96, bInverse);
-            qDebug() << "Avant Leger Correction";
-        }
-        else
-        {
             ControlMotor(127, 127, false);
             qDebug() << "Avant";
-        }
     }
     else
     {/*
@@ -215,6 +205,7 @@ void IAMoteur::InterieurRigole()
         m_eEtatIAMotor == eEtatIAMotorGauche ? bInverse = true : bInverse = false;
 
         PID(bInverse);
+
     }
 }
 
@@ -238,14 +229,26 @@ void IAMoteur::ExterieurRigole()
         m_iRigoleCount++;
     }
 
-    if(m_structDataIA.iDistanceRef >= CalculLargeurReference() &&
-       m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
+   /* if(m_structDataIA.iDistanceRef >= CalculLargeurReference() &&
+       m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche){
             bInverse = true;
+            qDebug()<<"dois tourner a droite";
+    }
 
     else if(m_structDataIA.iDistanceRef < CalculLargeurReference() &&
-            m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite)
-            bInverse = true;
+            m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite){
+            bInverse = false;
+             qDebug()<<"dois tourner a gauche";
+    }*/
 
+    if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche){
+                bInverse = false;
+                qDebug()<<"ref toujour a gauche";
+    }
+    else{
+        bInverse = true;
+        qDebug()<<"ref toujour a a droite";
+    }
     PID(bInverse);
 
     /*if(m_structDataIA.iDegreeRef < 20)
@@ -375,6 +378,18 @@ void IAMoteur::Virage()
 
 void IAMoteur::PID(bool bInverse)
 {
+
+    if(m_structDataIA.iDistanceDroite == m_structDataIA.iDistanceRef)
+        qDebug()  << "Ref a Droite";
+    if(m_structDataIA.iDistanceGauche== m_structDataIA.iDistanceRef)
+        qDebug()  << "Ref a Gauche";
+
+    if(bInverse)
+         qDebug()<<"dois tourner a droite";
+    else
+         qDebug()<<"dois tourner a gauche";
+
+
     double Kp = 0.1, Ki = 0.05, Kd = 0.08;
 
     qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
@@ -393,7 +408,7 @@ void IAMoteur::PID(bool bInverse)
     qDebug() << "Correc : " << dCorrection;
    dCorrection > 100 ? dCorrection = 100 : 0;
 
-    ControlMotor(dCorrection, 127 - dCorrection, bInverse);
+    ControlMotor(127, 127 - dCorrection, bInverse);
 }
 
 /**************************************************/
