@@ -46,6 +46,7 @@ private:
     void InterieurRigole();
     void ExterieurRigole();
     void Virage();
+    void PID(bool bInverse);
 
 
     void DataResult();

@@ -214,25 +214,7 @@ void IAMoteur::InterieurRigole()
         bool bInverse = false;
         m_eEtatIAMotor == eEtatIAMotorGauche ? bInverse = true : bInverse = false;
 
-        double Kp = 0.1, Ki = 0.05, Kd = 0.08;
-
-        qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
-        double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
-
-         qDebug() << "error :  " << error<<"\n error ref = "<<m_dError ;
-        double derivative = (error - m_dError) /0.5;
-
-        m_dIntegral += error * 0.5;
-        m_dError = error;
-
-        double dCorrection = Kp * error
-        + Ki * m_dIntegral
-        + Kd * derivative;
-
-        qDebug() << "Correc : " << dCorrection;
-       dCorrection > 100 ? dCorrection = 100 : 0;
-
-        ControlMotor(dCorrection, 127 - dCorrection, bInverse);
+        PID(bInverse);
     }
 }
 
@@ -264,25 +246,7 @@ void IAMoteur::ExterieurRigole()
             m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite)
             bInverse = true;
 
-    double Kp = 0.1, Ki = 0.05, Kd = 0.08;
-
-    qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
-    double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
-
-     qDebug() << "error :  " << error<<"\n error ref = "<<m_dError ;
-    double derivative = (error - m_dError) /0.5;
-
-    m_dIntegral += error * 0.5;
-    m_dError = error;
-
-    double dCorrection = Kp * error
-    + Ki * m_dIntegral
-    + Kd * derivative;
-
-    qDebug() << "Correc : " << dCorrection;
-   dCorrection > 100 ? dCorrection = 100 : 0;
-
-    ControlMotor(dCorrection, 127 - dCorrection, bInverse);;
+    PID(bInverse);
 
     /*if(m_structDataIA.iDegreeRef < 20)
         ControlMotor(127, 96, bInverse);
@@ -407,6 +371,29 @@ void IAMoteur::Virage()
             }
         }
     }
+}
+
+void IAMoteur::PID(bool bInverse)
+{
+    double Kp = 0.1, Ki = 0.05, Kd = 0.08;
+
+    qDebug() << "largeur : " << (m_structDataIA.dLargerRigoleMoyenne / 2.0)<<"\n ref = "<<m_structDataIA.iDistanceRef ;
+    double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
+
+     qDebug() << "error :  " << error<<"\n error ref = "<<m_dError ;
+    double derivative = (error - m_dError) /0.5;
+
+    m_dIntegral += error * 0.5;
+    m_dError = error;
+
+    double dCorrection = Kp * error
+    + Ki * m_dIntegral
+    + Kd * derivative;
+
+    qDebug() << "Correc : " << dCorrection;
+   dCorrection > 100 ? dCorrection = 100 : 0;
+
+    ControlMotor(dCorrection, 127 - dCorrection, bInverse);
 }
 
 /**************************************************/
