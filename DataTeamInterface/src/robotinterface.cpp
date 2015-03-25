@@ -1,15 +1,17 @@
 ﻿#include "robotinterface.h"
 
-
 /**
  * @brief RobotInterface::RobotInterface
  * @param ui
  */
 RobotInterface::RobotInterface(Ui::MainWindow* ui)
 {
-
     m_pUi = ui;
     m_pProtocole = new Protocole();
+
+    m_pTCPSocketServer = new TCPSocketServer();
+
+    connect(m_pTCPSocketServer, SIGNAL(emitDataReceived(QString)), this, SLOT(slotOnIPADSendSomething(QString)));
 
     m_lstCaptors.clear();
 
@@ -33,7 +35,6 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_lstCaptors.append(m_pMagneto);
     m_lstCaptors.append(m_pOdo);
     m_lstCaptors.append(m_pLidar);
-
 
     m_bRr = m_bRl = m_bFr = m_bFl = false;
 
@@ -83,6 +84,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pUi->pbLevel1->setEnabled(false);
     m_pUi->pbLevel2->setEnabled(false);
     m_pUi->pbLevel3->setEnabled(false);
+
 }
 
 /**
@@ -92,6 +94,9 @@ RobotInterface::~RobotInterface()
 {
     foreach (Captor* captor, m_lstCaptors)
        captor->DisconnectCaptor();
+
+    if(m_pTCPSocketServer)
+        delete(m_pTCPSocketServer);
 }
 
 /*******************************************************************************/
@@ -483,4 +488,17 @@ void RobotInterface::slotOnRigolEnd()
 {
     m_pTimer->stop();
     m_eDirection = eDirectionNone;
+/**
+ * @brief RobotInterface::slotOnIPADSendSomething
+ */
+void RobotInterface::slotOnIPADSendSomething(QString p_sData)
+{
+    if(p_sData == "epreuve1")
+    {
+        PushButonFront();
+    }
+    else if(p_sData == "epreuve2")
+    {
+        PushButonLeft();
+    }
 }

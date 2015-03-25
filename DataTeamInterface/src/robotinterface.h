@@ -6,6 +6,8 @@
 #include <QTime>
 #include <QList>
 #include <QSignalMapper>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 
 #include "protocole.h"
 #include "gps.h"
@@ -18,9 +20,8 @@
 #include "odo.h"
 #include "motor.h"
 #include "ui_mainwindow.h"
-#include "QGraphicsView"
-#include "QGraphicsScene"
 #include "iamoteur.h"
+#include "tcpsocketserver.h"
 
 class RobotInterface : public QObject
 {
@@ -34,8 +35,8 @@ private:
 
     QList<Captor*> m_lstCaptors;
 
-     QSignalMapper* m_pSignalConnectionMapper;
-     QSignalMapper* m_pSignalCaptorMapper;
+    QSignalMapper* m_pSignalConnectionMapper;
+    QSignalMapper* m_pSignalCaptorMapper;
 
     GPS *m_pGps;
     Gyro *m_pGyro;
@@ -45,7 +46,7 @@ private:
     Lidar *m_pLidar;
     Odo *m_pOdo;
     Motor *m_pMotor;
-     Magneto* m_pMagneto;
+    Magneto* m_pMagneto;
 
     bool m_bRr,m_bRl,m_bFr,m_bFl;
     //Remote *m_pRemote;
@@ -57,6 +58,8 @@ private:
 
     eDirection m_eDirection;
     IAMoteur* m_pIAMoteur;
+
+    TCPSocketServer* m_pTCPSocketServer;
 
     void onGpsDataAvailable();
     void onGyroDataAvailable();
@@ -81,6 +84,7 @@ public slots:
     void slotOnConectedCaptorReady(int p_iValue);
     void slotOnRigolEnd();
 
+    void slotOnIPADSendSomething(QString p_sData);
 };
 
 #endif // ROBOTINTERFACE_H
