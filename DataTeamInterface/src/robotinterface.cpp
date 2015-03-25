@@ -488,8 +488,6 @@ void RobotInterface::slotOnRigolEnd()
 {
     m_pTimer->stop();
     m_eDirection = eDirectionNone;
-}
-
 /**
  * @brief RobotInterface::slotOnIPADSendSomething
  */
@@ -497,10 +495,10 @@ void RobotInterface::slotOnIPADSendSomething(QString p_sData)
 {
     if(p_sData == "epreuve1")
     {
-        //PushButonFront();
+        PushButonFront();
     }
     else if(p_sData == "epreuve2")
     {
-        //PushButonLeft();
+        PushButonLeft();
     }
 }
