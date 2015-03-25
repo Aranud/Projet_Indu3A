@@ -72,18 +72,15 @@ public:
     RobotInterface(Ui::MainWindow* ui);
     ~RobotInterface();
     bool connectRobot();
-    void PushButonRight();
-    void PushButonLeft();
-    void PushButonFront();
-    void PushButonReset();
-
-signals:
-    void emitCaptorConnected(int);
+    void pushLevel1();
+    void pushButton(int button);
 
 public slots:   
     void slotTimeOut();
     void slotOnCaptorSignals(int p_iValue);
     void slotOnConectedCaptorReady(int p_iValue);
+    void slotOnRigolEnd();
+
 };
 
 #endif // ROBOTINTERFACE_H

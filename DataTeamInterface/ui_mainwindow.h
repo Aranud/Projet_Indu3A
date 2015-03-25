@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QHeaderView>
@@ -21,6 +22,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -125,6 +127,12 @@ public:
     QLabel *magnetoYResult;
     QLabel *magnetoZResult;
     QPushButton *pbReset;
+    QPushButton *pbAvantGauche;
+    QPushButton *pbArriereGauche;
+    QPushButton *pbAvantDroit;
+    QPushButton *pbArierreDroit;
+    QDoubleSpinBox *ratio;
+    QSpinBox *maxWheel;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -348,7 +356,7 @@ public:
         pbGauche->setGeometry(QRect(450, 250, 51, 23));
         labelDemitour = new QLabel(centralWidget);
         labelDemitour->setObjectName(QStringLiteral("labelDemitour"));
-        labelDemitour->setGeometry(QRect(600, 280, 131, 20));
+        labelDemitour->setGeometry(QRect(660, 280, 71, 20));
         label_24 = new QLabel(centralWidget);
         label_24->setObjectName(QStringLiteral("label_24"));
         label_24->setGeometry(QRect(20, 290, 47, 13));
@@ -369,7 +377,7 @@ public:
         label_25->setGeometry(QRect(450, 200, 51, 16));
         label_26 = new QLabel(centralWidget);
         label_26->setObjectName(QStringLiteral("label_26"));
-        label_26->setGeometry(QRect(570, 280, 51, 21));
+        label_26->setGeometry(QRect(630, 280, 31, 21));
         label_22 = new QLabel(centralWidget);
         label_22->setObjectName(QStringLiteral("label_22"));
         label_22->setGeometry(QRect(450, 150, 16, 16));
@@ -432,6 +440,28 @@ public:
         pbReset = new QPushButton(centralWidget);
         pbReset->setObjectName(QStringLiteral("pbReset"));
         pbReset->setGeometry(QRect(350, 40, 75, 23));
+        pbAvantGauche = new QPushButton(centralWidget);
+        pbAvantGauche->setObjectName(QStringLiteral("pbAvantGauche"));
+        pbAvantGauche->setGeometry(QRect(450, 220, 51, 23));
+        pbArriereGauche = new QPushButton(centralWidget);
+        pbArriereGauche->setObjectName(QStringLiteral("pbArriereGauche"));
+        pbArriereGauche->setGeometry(QRect(450, 280, 51, 23));
+        pbAvantDroit = new QPushButton(centralWidget);
+        pbAvantDroit->setObjectName(QStringLiteral("pbAvantDroit"));
+        pbAvantDroit->setGeometry(QRect(570, 220, 51, 23));
+        pbArierreDroit = new QPushButton(centralWidget);
+        pbArierreDroit->setObjectName(QStringLiteral("pbArierreDroit"));
+        pbArierreDroit->setGeometry(QRect(570, 280, 51, 23));
+        ratio = new QDoubleSpinBox(centralWidget);
+        ratio->setObjectName(QStringLiteral("ratio"));
+        ratio->setGeometry(QRect(691, 250, 41, 22));
+        ratio->setMaximum(100);
+        ratio->setValue(1.67);
+        maxWheel = new QSpinBox(centralWidget);
+        maxWheel->setObjectName(QStringLiteral("maxWheel"));
+        maxWheel->setGeometry(QRect(630, 250, 51, 22));
+        maxWheel->setMaximum(127);
+        maxWheel->setValue(127);
         MainWindow->setCentralWidget(centralWidget);
         line_5->raise();
         line_8->raise();
@@ -527,6 +557,12 @@ public:
         magnetoYResult->raise();
         magnetoZResult->raise();
         pbReset->raise();
+        pbAvantGauche->raise();
+        pbArriereGauche->raise();
+        pbAvantDroit->raise();
+        pbArierreDroit->raise();
+        ratio->raise();
+        maxWheel->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 738, 21));
@@ -603,14 +639,14 @@ public:
         fr->setText(QString());
         rl->setText(QString());
         rr->setText(QString());
-        pbDroite->setText(QApplication::translate("MainWindow", "Droite", 0));
-        pbGauche->setText(QApplication::translate("MainWindow", "Gauche", 0));
+        pbDroite->setText(QApplication::translate("MainWindow", "\342\206\222", 0));
+        pbGauche->setText(QApplication::translate("MainWindow", "\342\206\220", 0));
         labelDemitour->setText(QApplication::translate("MainWindow", "Unused", 0));
         label_24->setText(QApplication::translate("MainWindow", "time", 0));
         timeResult->setText(QString());
-        pbAvant->setText(QApplication::translate("MainWindow", "Avant", 0));
-        pbArriere->setText(QApplication::translate("MainWindow", "Arri\303\250re", 0));
-        pbDt->setText(QApplication::translate("MainWindow", "DT", 0));
+        pbAvant->setText(QApplication::translate("MainWindow", "\342\206\221", 0));
+        pbArriere->setText(QApplication::translate("MainWindow", "\342\206\223", 0));
+        pbDt->setText(QApplication::translate("MainWindow", "\342\206\273", 0));
         label_25->setText(QApplication::translate("MainWindow", "Contr\303\264le", 0));
         label_26->setText(QApplication::translate("MainWindow", "etat:", 0));
         label_22->setText(QApplication::translate("MainWindow", "x:", 0));
@@ -631,6 +667,10 @@ public:
         magnetoYResult->setText(QString());
         magnetoZResult->setText(QString());
         pbReset->setText(QApplication::translate("MainWindow", "Reset", 0));
+        pbAvantGauche->setText(QApplication::translate("MainWindow", "\342\206\226", 0));
+        pbArriereGauche->setText(QApplication::translate("MainWindow", "\342\206\231", 0));
+        pbAvantDroit->setText(QApplication::translate("MainWindow", "\342\206\227", 0));
+        pbArierreDroit->setText(QApplication::translate("MainWindow", "\342\206\230", 0));
     } // retranslateUi
 
 };

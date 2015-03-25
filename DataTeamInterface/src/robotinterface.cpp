@@ -64,13 +64,20 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     connect(m_pSignalConnectionMapper, SIGNAL(mapped(int)), this, SLOT(slotOnConectedCaptorReady(int)));
     connect(m_pSignalCaptorMapper, SIGNAL(mapped(int)), this, SLOT(slotOnCaptorSignals(int)));
+    connect(m_pIAMoteur,SIGNAL(emitRigolEnd()),this,SLOT(slotOnRigolEnd()));
 
     m_pUi->pbSendData->setEnabled(false);
+
     m_pUi->pbAvant->setEnabled(false);
     m_pUi->pbArriere->setEnabled(false);
+    m_pUi->pbAvantGauche->setEnabled(false);
+    m_pUi->pbArriereGauche->setEnabled(false);
+    m_pUi->pbAvantDroit->setEnabled(false);
+    m_pUi->pbArierreDroit->setEnabled(false);
     m_pUi->pbGauche->setEnabled(false);
     m_pUi->pbDroite->setEnabled(false);
     m_pUi->pbDt->setEnabled(false);
+
     m_pUi->pbBordure->setEnabled(false);
     m_pUi->pbRigole->setEnabled(false);
     m_pUi->pbLevel1->setEnabled(false);
@@ -122,6 +129,10 @@ bool RobotInterface::connectRobot()
          m_pUi->pbSendData->setEnabled(false);
          m_pUi->pbAvant->setEnabled(false);
          m_pUi->pbArriere->setEnabled(false);
+         m_pUi->pbAvantGauche->setEnabled(false);
+         m_pUi->pbArriereGauche->setEnabled(false);
+         m_pUi->pbAvantDroit->setEnabled(false);
+         m_pUi->pbArierreDroit->setEnabled(false);
          m_pUi->pbGauche->setEnabled(false);
          m_pUi->pbDroite->setEnabled(false);
          m_pUi->pbDt->setEnabled(false);
@@ -140,24 +151,11 @@ bool RobotInterface::connectRobot()
 }
 
 /**
- * @brief RobotInterface::PushButonRight
+ * @brief RobotInterface::pushLevel1
  */
-void RobotInterface::PushButonRight()
+void RobotInterface::pushLevel1()
 {
-    m_eDirection = eDirectionRight;
-    m_iCompteur = 0;
-    if(m_pTimer->isActive())
-        m_pTimer->stop();
-    else
-        m_pTimer->start();
-}
-
-/**
- * @brief RobotInterface::PushButonLeft
- */
-void RobotInterface::PushButonLeft()
-{
-    m_eDirection = eDirectionLeft;
+    m_eDirection = eIAMotorLevel1;
 
     if(m_pTimer->isActive())
         m_pTimer->stop();
@@ -165,17 +163,44 @@ void RobotInterface::PushButonLeft()
         m_pTimer->start();
 }
 
-/**
- * @brief RobotInterface::PushButonFront
- */
-void RobotInterface::PushButonFront()
+void RobotInterface::pushButton(int button)
 {
-    m_eDirection = eDirectionFront;
 
-    if(m_pTimer->isActive())
-        m_pTimer->stop();
-    else
+    if(m_eDirection != eIAMotorLevel1){
         m_pTimer->start();
+        switch(button){
+            case 1:
+                m_eDirection = eDirectionFront;
+                break;
+            case 2:
+                m_eDirection = eDirectionLeft;
+                break;
+            case 3:
+                m_eDirection = eDirectionBack;
+                break;
+            case 4:
+                m_eDirection = eDirectionRight;
+                break;
+            case 5:
+                m_eDirection = eDirectionFrontLeft;
+                break;
+            case 6:
+                m_eDirection =eDirectionBackRight  ;
+                break;
+            case 7:
+                m_eDirection =eDirectionBackLeft ;
+                break;
+            case 8:
+                m_eDirection = eDirectionFrontRight;
+                break;
+            case 9:
+                m_eDirection = eDirectionTest;
+                break;
+            default:
+                m_eDirection = eDirectionNone;
+                break;
+        }
+    }
 }
 
 
@@ -300,10 +325,6 @@ void RobotInterface::onMagnetoDataAvailable()
 /**
  * @brief RobotInterface::PushButonReset
  */
-void RobotInterface::PushButonReset()
-{
-
-}
 
 /*******************************************************************************/
 /********************************** SLOT ***************************************/
@@ -314,44 +335,66 @@ void RobotInterface::PushButonReset()
 void RobotInterface::slotTimeOut()
 {
      QByteArray baValue;
-     double Largeur = 80.0;
-     double droite = 0.0;
-     double gauche = 0.0;
-     double angle = 90.0;
-     int antraxe = 42;
 
-     if( (m_iCompteur =  m_pUi->fl_2->text().toInt()  - m_iCompteur) <= 0 );
+    if( (m_iCompteur =  m_pUi->fl_2->text().toInt()  - m_iCompteur) <= 0 )
         m_iCompteur = m_pUi->fl_2->text().toInt();
 
 
      if(m_eDirection == eDirectionLeft)
      {
-         baValue[0] = 32;
+         baValue[0] = -127;
          baValue[1] = 127;
      }
      else if(m_eDirection == eDirectionRight)
      {
          baValue[0] = 127;//g
-         baValue[1] = 76;//d
+         baValue[1] = -127;//d
      }
      else if(m_eDirection == eDirectionFront)
      {
-         m_pIAMoteur->MachineAEtat();
-         return;
+         baValue[0] = 127;
+         baValue[1] = 127;
      }
-     else
-         return;
-
-     if(m_iCompteur >=160)
+     else if(m_eDirection == eDirectionBack)
      {
-         qDebug()<<"Tick FL = "<<m_iCompteur << "\n Tick FR = " <<   m_pUi->fr_2->text().toInt();
-        m_iCompteur = 0;
-        m_pTimer->stop();
-        return;
+         baValue[0] = -127;//g
+         baValue[1] = -127;//d
+     }
+     else if(m_eDirection == eDirectionFrontLeft)
+     {
+         baValue[0] = m_pUi->maxWheel->value()/m_pUi->ratio->value();
+         baValue[1] = m_pUi->maxWheel->value();
+     }
+     else if(m_eDirection == eDirectionFrontRight)
+     {
+         baValue[0] = m_pUi->maxWheel->value();//g
+         baValue[1] = m_pUi->maxWheel->value()/m_pUi->ratio->value();//d
+     }
+     else if(m_eDirection == eDirectionBackLeft)
+     {
+         baValue[0] = -1* (m_pUi->maxWheel->value()/m_pUi->ratio->value());
+         baValue[1] = -1*  m_pUi->maxWheel->value();
+     }
+     else if(m_eDirection == eDirectionBackRight)
+     {
+         baValue[0] = -1*  m_pUi->maxWheel->value();
+         baValue[1] = -1* (m_pUi->maxWheel->value()/m_pUi->ratio->value());
+     }
+     else if(m_eDirection == eDirectionTest)
+     {
+         baValue[0] = m_pUi->maxWheel->value()/m_pUi->ratio->value();
+         baValue[1] = 127;
+     }
+     else if(m_eDirection == eIAMotorLevel1)
+     {
+         m_pIAMoteur->MachineAEtat();
+     }
+     else if(m_eDirection == eDirectionNone)
+     {
+         m_pTimer->stop();
      }
 
      m_pMotor->SendData(baValue);
-
 }
 
 /**
@@ -403,19 +446,22 @@ void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
         m_pUi->pbSendData->setEnabled(true);
         m_pUi->pbAvant->setEnabled(true);
         m_pUi->pbArriere->setEnabled(true);
+        m_pUi->pbAvantGauche->setEnabled(true);
+        m_pUi->pbArriereGauche->setEnabled(true);
+        m_pUi->pbAvantDroit->setEnabled(true);
+        m_pUi->pbArierreDroit->setEnabled(true);
         m_pUi->pbGauche->setEnabled(true);
         m_pUi->pbDroite->setEnabled(true);
         m_pUi->pbDt->setEnabled(true);
         break;
 
     case eIDCommmandLidar:
-        m_pUi->pbRigole->setEnabled(true);
-        m_pUi->pbBordure->setEnabled(true);
-
-        if(m_pMotor->getIsConnected()){
+            if(m_pMotor->getIsConnected()){
             m_pUi->pbLevel1->setEnabled(true);
             m_pUi->pbLevel2->setEnabled(true);
             m_pUi->pbLevel3->setEnabled(true);
+            m_pUi->pbRigole->setEnabled(true);
+            m_pUi->pbBordure->setEnabled(true);
         }
         break;
     default:
@@ -431,4 +477,10 @@ void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
         else
             m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_DISABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
     }
+}
+
+void RobotInterface::slotOnRigolEnd()
+{
+    m_pTimer->stop();
+    m_eDirection = eDirectionNone;
 }

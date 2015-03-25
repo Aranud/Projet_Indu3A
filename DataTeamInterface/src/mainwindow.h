@@ -42,9 +42,25 @@ public slots:
 private slots:
     void on_pbConnection_clicked();
     void on_pbSendData_clicked();
-    void on_pbDroite_clicked();
-    void on_pbGauche_clicked();
-    void on_pbAvant_clicked();
+    void on_pbDroite_pressed();
+    void on_pbGauche_pressed();
+    void on_pbAvant_pressed();
+    void on_pbArriere_pressed();
+    void on_pbLevel1_clicked();
+    void on_pbAvantGauche_pressed();
+    void on_pbDt_pressed();
+    void on_pbAvantDroit_pressed();
+    void on_pbArriereGauche_pressed();
+    void on_pbArierreDroit_pressed();
+    void on_pbAvantGauche_released();
+    void on_pbAvant_released();
+    void on_pbAvantDroit_released();
+    void on_pbGauche_released();
+    void on_pbDt_released();
+    void on_pbDroite_released();
+    void on_pbArriereGauche_released();
+    void on_pbArriere_released();
+    void on_pbArierreDroit_released();
 };
 
 #endif // MAINWINDOW_H

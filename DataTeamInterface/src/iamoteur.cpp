@@ -15,6 +15,8 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, Odo *p_pOdo, QObject *paren
     m_eActionRobotPrecVirage = eActionRobotNone;
 
     m_iRigoleCount = 0;
+    m_iReturnRigol = 0;
+    m_iReturnToDo = 0;
 
     m_iFl = 0;
     m_iFr = 0;
@@ -100,7 +102,7 @@ bool IAMoteur::IsHalfTurnRight()
 }
 bool IAMoteur::IsLastHalfTurnRight()
 {
-    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr >= 22 /*&& m_iRl > 23*/)
+    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr >= 25 /*&& m_iRl > 23*/)
         return true;
     return false;
 }
@@ -117,7 +119,7 @@ bool IAMoteur::IsHalfTurnLeft()
 }
 bool IAMoteur::IsLastHalfTurnLeft()
 {
-    if(/*m_iRr > 22 && */m_iFl >= 16/* && m_iFr > 21 && m_iRl > 14*/)
+    if(/*m_iRr > 22 && */m_iFl >= 14/* && m_iFr > 21 && m_iRl > 14*/)
         return true;
     return false;
 }
@@ -176,12 +178,17 @@ void IAMoteur::InterieurRigole()
             m_eActionRobotPrecVirage = eActionRobotGrandVirageGauche;
         }
 
+        //qDebug()<<" EMIT ? Returnrigol = "<< m_iReturnRigol<< "\nReturnToDo = "<<m_iReturnToDo ;
+        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0){
+            m_eActionRobot = eActionRobotNone;
+            emit emitRigolEnd();
+        }
+
         m_dError = 0;
         m_dIntegral = 0;
         m_eActionRobotPrec = eActionRobotRigole;
         m_eEtatIAMotor = eEtatIAMotorSortie;
-        m_iRigoleCount++;
-        qDebug() << "Sortie Actif";
+        //qDebug() << "Sortie Actif";
     }
     else if(m_structDataIA.iDistanceRef >= CalculLargeurReference() || m_eEtatIAMotor ==  eEtatIAMotorAvant)
     {
@@ -230,7 +237,6 @@ void IAMoteur::ExterieurRigole()
         m_eActionRobot = m_eActionRobotPrecVirage;
         m_eActionRobotPrec = eActionRobotRigoleExterieure;
         m_eEtatIAMotor = eEtatIAMotorSortie;
-        m_iRigoleCount++;
     }
 
    /* if(m_structDataIA.iDistanceRef >= CalculLargeurReference() &&
@@ -294,7 +300,7 @@ void IAMoteur::Virage()
                 && iDistanceOpposite >= m_structDataIA.dLargerRigoleMoyenne )
         {
             m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-            qDebug() << "Sortie Suffisant";
+            //qDebug() << "Début virage";
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorSaute)
@@ -305,7 +311,7 @@ void IAMoteur::Virage()
         {
             m_eEtatIAMotor = eEtatIAMotorFinVirage;
             ResetOdoValue();
-            qDebug() << "Fin Saut";
+            //qDebug() << "Fin virage";
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorArriere)
@@ -322,7 +328,7 @@ void IAMoteur::Virage()
                 m_eActionRobotPrecVirage = eActionRobotPetitVirageDroite;
 
             ResetOdoValue();
-            qDebug() << "Fin Arriere";
+            //qDebug() << "Fin Arriere";
         }
     }
     else if(m_eEtatIAMotor == eEtatIAMotorDebutVirage)
@@ -345,12 +351,12 @@ void IAMoteur::Virage()
 
                 m_eEtatIAMotor = eEtatIAMotorSaute;
                 m_eActionRobotPrec = eActionRobotNone;
-                qDebug() << "Debut Saut";
+                //qDebug() << "Debut virage";
             }
             else
             {
                 m_eEtatIAMotor = eEtatIAMotorArriere;
-                qDebug() << "Debut Arriere";
+                //qDebug() << "Debut Arriere";
             }
         }
     }
@@ -360,7 +366,7 @@ void IAMoteur::Virage()
 
         if((IsLastHalfTurnRight() || IsLastHalfTurnLeft()))
         {
-            qDebug() << "Roue Gauche " << m_iFl << " --- Roue Droite " << m_iFr;
+            //qDebug() << "Roue Gauche " << m_iFl << " --- Roue Droite " << m_iFr;
             ResetOdoValue();
             m_eEtatIAMotor = eEtatIAMotorNone;
 
@@ -368,10 +374,19 @@ void IAMoteur::Virage()
             {
                 m_eActionRobot = eActionRobotRigoleExterieure;
                 qDebug() << "Fin Virage, Rigole Exterieur";
+
+                if(m_iReturnRigol <=0){
+                    m_iReturnToDo = m_iRigoleCount - 1;
+                }
+                m_iReturnRigol++;
             }
             else
             {
                 m_eActionRobot = eActionRobotRigole;
+                if(m_iReturnRigol <=0)
+                    m_iRigoleCount++;
+                else if(m_iReturnRigol >=2)
+                    m_iReturnToDo --;
                 qDebug() << "Fin Virage, Rigole Interieur";
             }
         }
@@ -381,7 +396,7 @@ void IAMoteur::Virage()
 void IAMoteur::PID(bool bInverse)
 {
 
-    double Kp = 0.5, Ki = 0.2, Kd = 0.2;
+    double Kp = 0.6, Ki = 0.2, Kd = 0.3;
     double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
     double derivative = (error - m_dError) /0.5;
     m_dIntegral += error * 0.5;
@@ -395,18 +410,13 @@ void IAMoteur::PID(bool bInverse)
         if( !bInverse && dCorrection < 0){
             dCorrection = dCorrection*-1;
             bInverse = true;
-            qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
+            //qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
         }
         else if( bInverse && dCorrection < 0){
             dCorrection = dCorrection*-1;
             bInverse = false;
-            qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
+            //qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
         }
-        else if (bInverse  && dCorrection > 0)
-            qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
-
-        else if (!bInverse && dCorrection > 0)
-            qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
     }
     else
         dCorrection > 75 ? dCorrection = 75 : 0;

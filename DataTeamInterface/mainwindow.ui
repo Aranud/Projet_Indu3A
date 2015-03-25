@@ -853,7 +853,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Droite</string>
+     <string>→</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbGauche">
@@ -866,15 +866,15 @@
      </rect>
     </property>
     <property name="text">
-     <string>Gauche</string>
+     <string>←</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelDemitour">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>660</x>
       <y>280</y>
-      <width>131</width>
+      <width>71</width>
       <height>20</height>
      </rect>
     </property>
@@ -918,7 +918,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Avant</string>
+     <string>↑</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbArriere">
@@ -931,7 +931,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Arrière</string>
+     <string>↓</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbDt">
@@ -944,7 +944,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>DT</string>
+     <string>↻</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_25">
@@ -963,9 +963,9 @@
    <widget class="QLabel" name="label_26">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>630</x>
       <y>280</y>
-      <width>51</width>
+      <width>31</width>
       <height>21</height>
      </rect>
     </property>
@@ -1230,6 +1230,90 @@
      <string>Reset</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pbAvantGauche">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>220</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↖</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbArriereGauche">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>280</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↙</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbAvantDroit">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>220</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↗</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbArierreDroit">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>280</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↘</string>
+    </property>
+   </widget>
+   <widget class="QDoubleSpinBox" name="ratio">
+    <property name="geometry">
+     <rect>
+      <x>691</x>
+      <y>250</y>
+      <width>41</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <double>100.000000000000000</double>
+    </property>
+    <property name="value">
+     <double>1.670000000000000</double>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="maxWheel">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>250</y>
+      <width>51</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>127</number>
+    </property>
+    <property name="value">
+     <number>127</number>
+    </property>
+   </widget>
    <zorder>line_5</zorder>
    <zorder>line_8</zorder>
    <zorder>line</zorder>
@@ -1324,6 +1408,12 @@
    <zorder>magnetoYResult</zorder>
    <zorder>magnetoZResult</zorder>
    <zorder>pbReset</zorder>
+   <zorder>pbAvantGauche</zorder>
+   <zorder>pbArriereGauche</zorder>
+   <zorder>pbAvantDroit</zorder>
+   <zorder>pbArierreDroit</zorder>
+   <zorder>ratio</zorder>
+   <zorder>maxWheel</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

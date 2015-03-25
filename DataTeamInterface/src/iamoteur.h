@@ -29,7 +29,10 @@ private:
 
     structDataIA m_structDataIA;
 
+    int m_iReturnRigol;
     int m_iRigoleCount;
+    int m_iReturnToDo;
+
     double m_dIntegral;
     double m_dError;
 
@@ -64,6 +67,7 @@ public:
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
 
 signals:
+    void emitRigolEnd();
 
 public slots:
     void onDataFromOdoReady();

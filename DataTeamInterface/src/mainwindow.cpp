@@ -94,23 +94,115 @@ void MainWindow::on_pbSendData_clicked()
 
 }
 
-void MainWindow::on_pbDroite_clicked()
+void MainWindow::on_pbAvant_pressed()
 {
-    ui->labelDemitour->setText("Demi tour in process");
-    m_pRobot->PushButonRight();
-    //ui->labelDemitour->setText("Unused");
+    ui->labelDemitour->setText("Avance");
+    m_pRobot->pushButton(1);
 }
 
-void MainWindow::on_pbGauche_clicked()
+void MainWindow::on_pbGauche_pressed()
 {
-    ui->labelDemitour->setText("Demi tour in process");
-    m_pRobot->PushButonLeft();
-    //ui->labelDemitour->setText("Unused");
+    ui->labelDemitour->setText("Tourne à gauche");
+    m_pRobot->pushButton(2);
 }
 
-void MainWindow::on_pbAvant_clicked()
+void MainWindow::on_pbArriere_pressed()
 {
-    ui->labelDemitour->setText("Demi tour in process");
-    m_pRobot->PushButonFront();
-    ui->labelDemitour->setText("Unused");
+    ui->labelDemitour->setText("Tourne à droite");
+    m_pRobot->pushButton(3);
+}
+
+void MainWindow::on_pbDroite_pressed()
+{
+    ui->labelDemitour->setText("Recule");
+    m_pRobot->pushButton(4);
+}
+
+void MainWindow::on_pbAvantGauche_pressed()
+{
+    ui->labelDemitour->setText("Avant Gauche");
+    m_pRobot->pushButton(5);
+}
+
+void MainWindow::on_pbArierreDroit_pressed()
+{
+    ui->labelDemitour->setText("Arrière Droit");
+    m_pRobot->pushButton(6);
+}
+
+void MainWindow::on_pbArriereGauche_pressed()
+{
+    ui->labelDemitour->setText("Arrière Droit");
+    m_pRobot->pushButton(7);
+}
+
+void MainWindow::on_pbAvantDroit_pressed()
+{
+    ui->labelDemitour->setText("Avant Droit");
+    m_pRobot->pushButton(8);
+}
+void MainWindow::on_pbDt_pressed()
+{
+    ui->labelDemitour->setText("test rotation");
+    m_pRobot->pushButton(9);
+}
+void MainWindow::on_pbLevel1_clicked()
+{
+    ui->labelDemitour->setText("Level 1 en cours");
+    m_pRobot->pushLevel1();
+     ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbAvantGauche_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbAvant_released()
+{
+     m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbAvantDroit_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbGauche_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbDt_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbDroite_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbArriereGauche_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbArriere_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
+}
+
+void MainWindow::on_pbArierreDroit_released()
+{
+    m_pRobot->pushButton(0);
+    ui->labelDemitour->setText("Fin");
 }

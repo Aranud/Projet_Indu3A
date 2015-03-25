@@ -36,7 +36,14 @@ typedef enum eDirection
     eDirectionNone,
     eDirectionLeft,
     eDirectionRight,
-    eDirectionFront
+    eDirectionFront,
+    eDirectionBack,
+    eDirectionFrontLeft,
+    eDirectionFrontRight,
+    eDirectionBackLeft,
+    eDirectionBackRight,
+    eDirectionTest,
+    eIAMotorLevel1
 
 }E_Direction;
 
