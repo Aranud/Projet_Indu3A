@@ -4,8 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-QT       += network
+QT += core gui
+QT += network
+QT += websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -34,7 +35,8 @@ SOURCES += src/main.cpp\
     src/captor/magneto.cpp \
     src/captor/odo.cpp \
     src/captor/motor.cpp \
-    src/iamoteur.cpp
+    src/iamoteur.cpp \
+    src/tcpsocketserver.cpp
 
 HEADERS  += src/mainwindow.h \
     src/tcpconnection.h \
@@ -52,7 +54,8 @@ HEADERS  += src/mainwindow.h \
     src/captor/magneto.h \
     src/captor/odo.h \
     src/captor/motor.h \
-    src/iamoteur.h
+    src/iamoteur.h \
+    src/tcpsocketserver.h
 
 FORMS    += mainwindow.ui\
 
