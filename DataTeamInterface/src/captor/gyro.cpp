@@ -88,9 +88,9 @@ void Gyro::setZGyro(const qint16 &p_iZGyro)
  */
 void Gyro::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    m_iXGyro = ReverseData(p_baDataExtracted.mid(0, 2)).toHex().toInt();
-    m_iYGyro = ReverseData(p_baDataExtracted.mid(2, 2)).toHex().toInt();
-    m_iZGyro = ReverseData(p_baDataExtracted.mid(4, 2)).toHex().toInt();
+    m_iXGyro = ReverseData(p_baDataExtracted.mid(0, 2)).toHex().toInt(0,16);
+    m_iYGyro = ReverseData(p_baDataExtracted.mid(2, 2)).toHex().toInt(0,16);
+    m_iZGyro = ReverseData(p_baDataExtracted.mid(4, 2)).toHex().toInt(0,16);
 
     emit emitDataAvailable();
 }

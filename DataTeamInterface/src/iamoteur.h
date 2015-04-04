@@ -39,6 +39,8 @@ private:
     bool m_bRr, m_bRl, m_bFr, m_bFl;
     int m_iRr, m_iRl, m_iFr, m_iFl;
 
+    double Kp, Ki, Kd;
+
     bool IsHalfTurnRight();
     bool IsLastHalfTurnRight();
     bool IsHalfTurnLeft();
@@ -65,6 +67,15 @@ public:
 
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
+
+    double getKp();
+    void setKp(double value);
+
+    double getKi();
+    void setKi(double value);
+
+    double getKd();
+    void setKd(double value);
 
 signals:
     void emitRigolEnd();

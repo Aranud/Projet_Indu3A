@@ -77,14 +77,21 @@ public:
     bool connectRobot();
     void pushLevel1();
     void pushButton(int button);
+    void P_valueChanged(double dKp);
+    void I_valueChanged(double dKi);
+    void D_valueChanged(double dKd);
 
 public slots:   
     void slotTimeOut();
     void slotOnCaptorSignals(int p_iValue);
     void slotOnConectedCaptorReady(int p_iValue);
     void slotOnRigolEnd();
-
     void slotOnIPADSendSomething(QString p_sData);
+
+private slots:
+    void on_P_valueChanged(double arg1);
+    void on_I_valueChanged(double arg1);
+    void on_D_valueChanged(double arg1);
 };
 
 #endif // ROBOTINTERFACE_H

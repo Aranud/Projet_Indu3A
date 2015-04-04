@@ -89,9 +89,9 @@ void Accelero::setZAccelero(const qint16 &p_iZAccelero)
  */
 void Accelero::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    m_iXAccelero = ReverseData(p_baDataExtracted.mid(0, 2)).toHex().toInt();
-    m_iYAccelero = ReverseData(p_baDataExtracted.mid(2, 2)).toHex().toInt();
-    m_iZAccelero = ReverseData(p_baDataExtracted.mid(4, 2)).toHex().toInt();
+    m_iXAccelero = ReverseData(p_baDataExtracted.mid(0, 2)).toHex().toInt(0,16);
+    m_iYAccelero = ReverseData(p_baDataExtracted.mid(2, 2)).toHex().toInt(0,16);
+    m_iZAccelero = ReverseData(p_baDataExtracted.mid(4, 2)).toHex().toInt(0,16);
 
     emit emitDataAvailable();
 }

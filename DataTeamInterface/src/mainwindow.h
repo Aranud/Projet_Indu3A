@@ -61,6 +61,9 @@ private slots:
     void on_pbArriereGauche_released();
     void on_pbArriere_released();
     void on_pbArierreDroit_released();
+    void on_P_valueChanged(double dKp);
+    void on_I_valueChanged(double dKi);
+    void on_D_valueChanged(double dKd);
 };
 
 #endif // MAINWINDOW_H

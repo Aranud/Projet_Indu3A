@@ -94,6 +94,36 @@ void IAMoteur::MachineAEtat()
  * @brief IAMoteur::IsHalfTurnRight
  * @return
  */
+
+double IAMoteur::getKp()
+{
+    return Kp;
+}
+
+void IAMoteur::setKp(double value)
+{
+    Kp = value;
+}
+
+double IAMoteur::getKi()
+{
+    return Ki;
+}
+
+void IAMoteur::setKi(double value)
+{
+    Ki = value;
+}
+
+double IAMoteur::getKd()
+{
+    return Kd;
+}
+
+void IAMoteur::setKd(double value)
+{
+    Kd = value;
+}
 bool IAMoteur::IsHalfTurnRight()
 {
     if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr >= 25/* && m_iRl > 27*/)
@@ -181,6 +211,12 @@ void IAMoteur::InterieurRigole()
         //qDebug()<<" EMIT ? Returnrigol = "<< m_iReturnRigol<< "\nReturnToDo = "<<m_iReturnToDo ;
         if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0){
             m_eActionRobot = eActionRobotNone;
+            ResetOdoValue();
+            m_iRigoleCount = 0;
+            m_iReturnRigol = 0;
+            m_iReturnToDo = 0;
+            m_dIntegral = 0;
+            m_dError = 0;
             emit emitRigolEnd();
         }
 
@@ -373,7 +409,7 @@ void IAMoteur::Virage()
             if(iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && iDegreeOpposite < 30)
             {
                 m_eActionRobot = eActionRobotRigoleExterieure;
-                qDebug() << "Fin Virage, Rigole Exterieur";
+                //qDebug() << "Fin Virage, Rigole Exterieur";
 
                 if(m_iReturnRigol <=0){
                     m_iReturnToDo = m_iRigoleCount - 1;
@@ -387,7 +423,7 @@ void IAMoteur::Virage()
                     m_iRigoleCount++;
                 else if(m_iReturnRigol >=2)
                     m_iReturnToDo --;
-                qDebug() << "Fin Virage, Rigole Interieur";
+                //qDebug() << "Fin Virage, Rigole Interieur";
             }
         }
     }
@@ -395,8 +431,6 @@ void IAMoteur::Virage()
 
 void IAMoteur::PID(bool bInverse)
 {
-
-    double Kp = 0.6, Ki = 0.2, Kd = 0.3;
     double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
     double derivative = (error - m_dError) /0.5;
     m_dIntegral += error * 0.5;
@@ -404,7 +438,7 @@ void IAMoteur::PID(bool bInverse)
 
     double dCorrection = Kp * error
     + Ki * m_dIntegral
-    + Kd * derivative;
+    + Kd * derivative;  
 
     if(m_eActionRobot == eActionRobotRigoleExterieure){
         if( !bInverse && dCorrection < 0){

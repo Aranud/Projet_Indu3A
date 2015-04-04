@@ -40,6 +40,10 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     m_pIAMoteur = new IAMoteur(m_pLidar, m_pMotor, m_pOdo);
 
+     m_pIAMoteur->setKp(m_pUi->P->value());
+     m_pIAMoteur->setKi(m_pUi->I->value());
+     m_pIAMoteur->setKd(m_pUi->D->value());
+
     m_pTimer = new QTimer();
     m_pTimer->setInterval(50);
 
@@ -78,9 +82,6 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pUi->pbGauche->setEnabled(false);
     m_pUi->pbDroite->setEnabled(false);
     m_pUi->pbDt->setEnabled(false);
-
-    m_pUi->pbBordure->setEnabled(false);
-    m_pUi->pbRigole->setEnabled(false);
     m_pUi->pbLevel1->setEnabled(false);
     m_pUi->pbLevel2->setEnabled(false);
     m_pUi->pbLevel3->setEnabled(false);
@@ -141,8 +142,6 @@ bool RobotInterface::connectRobot()
          m_pUi->pbGauche->setEnabled(false);
          m_pUi->pbDroite->setEnabled(false);
          m_pUi->pbDt->setEnabled(false);
-         m_pUi->pbBordure->setEnabled(false);
-         m_pUi->pbRigole->setEnabled(false);
          m_pUi->pbLevel1->setEnabled(false);
          m_pUi->pbLevel2->setEnabled(false);
          m_pUi->pbLevel3->setEnabled(false);
@@ -160,7 +159,15 @@ bool RobotInterface::connectRobot()
  */
 void RobotInterface::pushLevel1()
 {
-    m_eDirection = eIAMotorLevel1;
+
+    qDebug()<<"Direction1 :: "<<m_eDirection;
+
+    if(m_eDirection != eIAMotorLevel1)
+        m_eDirection = eIAMotorLevel1;
+    else
+        m_eDirection = eDirectionNone;
+
+     qDebug()<<"Direction2 :: "<<m_eDirection;
 
     if(m_pTimer->isActive())
         m_pTimer->stop();
@@ -218,7 +225,13 @@ void RobotInterface::onGpsDataAvailable()
     m_pUi->longitudeResult->setText(QString::number(m_pGps->getLongitude()));
     m_pUi->latitudeResult->setText(QString::number(m_pGps->getLatitude()));
     m_pUi->qualityResult->setText(m_pGps->getQuality());
-    m_pUi->timeResult->setText(QString::number(m_pGps->getTime()));
+    double time = m_pGps->getTime();
+   QDateTime date = QDateTime::fromMSecsSinceEpoch(time);
+   //qDebug()<<"Date :: "<< date;
+    m_pUi->timeResult->setText(date.toString());
+    m_pUi->speedResult->setText(QString::number(m_pGps->getGroundSpeed()));
+    m_pUi->numberSatResult->setText(QString::number(m_pGps->getSateliteNumber()));
+
 }
 
 /**
@@ -326,10 +339,22 @@ void RobotInterface::onMagnetoDataAvailable()
 
 }
 
+void RobotInterface::P_valueChanged(double dKp)
+{
+  m_pIAMoteur->setKp(dKp);
+}
 
-/**
- * @brief RobotInterface::PushButonReset
- */
+void RobotInterface::I_valueChanged(double dKi)
+{
+   m_pIAMoteur->setKi(dKi);
+}
+
+void RobotInterface::D_valueChanged(double dKd)
+{
+   m_pIAMoteur->setKd(dKd);
+}
+
+
 
 /*******************************************************************************/
 /********************************** SLOT ***************************************/
@@ -347,23 +372,23 @@ void RobotInterface::slotTimeOut()
 
      if(m_eDirection == eDirectionLeft)
      {
-         baValue[0] = -127;
-         baValue[1] = 127;
+         baValue[0] = -1*m_pUi->maxWheel->value();
+         baValue[1] =       m_pUi->maxWheel->value();
      }
      else if(m_eDirection == eDirectionRight)
      {
-         baValue[0] = 127;//g
-         baValue[1] = -127;//d
+         baValue[0] =       m_pUi->maxWheel->value();//g
+         baValue[1] = -1*m_pUi->maxWheel->value();//d
      }
      else if(m_eDirection == eDirectionFront)
      {
-         baValue[0] = 127;
-         baValue[1] = 127;
+         baValue[0] = m_pUi->maxWheel->value();
+         baValue[1] = m_pUi->maxWheel->value();
      }
      else if(m_eDirection == eDirectionBack)
      {
-         baValue[0] = -127;//g
-         baValue[1] = -127;//d
+         baValue[0] = -1*m_pUi->maxWheel->value();//g
+         baValue[1] = -1*m_pUi->maxWheel->value();//d
      }
      else if(m_eDirection == eDirectionFrontLeft)
      {
@@ -392,14 +417,17 @@ void RobotInterface::slotTimeOut()
      }
      else if(m_eDirection == eIAMotorLevel1)
      {
+         //qDebug()<<"plop";
          m_pIAMoteur->MachineAEtat();
      }
      else if(m_eDirection == eDirectionNone)
      {
+         //qDebug()<<"coucou";
          m_pTimer->stop();
      }
 
-     m_pMotor->SendData(baValue);
+    if(m_eDirection != eIAMotorLevel1)
+        m_pMotor->SendData(baValue);
 }
 
 /**
@@ -465,8 +493,6 @@ void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
             m_pUi->pbLevel1->setEnabled(true);
             m_pUi->pbLevel2->setEnabled(true);
             m_pUi->pbLevel3->setEnabled(true);
-            m_pUi->pbRigole->setEnabled(true);
-            m_pUi->pbBordure->setEnabled(true);
         }
         break;
     default:
@@ -488,6 +514,7 @@ void RobotInterface::slotOnRigolEnd()
 {
     m_pTimer->stop();
     m_eDirection = eDirectionNone;
+}
 /**
  * @brief RobotInterface::slotOnIPADSendSomething
  */
@@ -495,10 +522,26 @@ void RobotInterface::slotOnIPADSendSomething(QString p_sData)
 {
     if(p_sData == "epreuve1")
     {
-        PushButonFront();
+        pushLevel1();
     }
     else if(p_sData == "epreuve2")
     {
-        PushButonLeft();
-    }
+        //PushButonLeft();
+    }   
+}
+
+void RobotInterface::on_P_valueChanged(double P)
+{
+    m_pIAMoteur->setKp(P);
+}
+
+void RobotInterface::on_I_valueChanged(double I)
+{
+     m_pIAMoteur->setKi(I);
+}
+
+
+void RobotInterface::on_D_valueChanged(double D)
+{
+     m_pIAMoteur->setKd(D);
 }

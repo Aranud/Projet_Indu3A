@@ -206,3 +206,18 @@ void MainWindow::on_pbArierreDroit_released()
     m_pRobot->pushButton(0);
     ui->labelDemitour->setText("Fin");
 }
+
+void MainWindow::on_P_valueChanged(double dKp)
+{
+   m_pRobot->P_valueChanged(dKp);
+}
+
+void MainWindow::on_I_valueChanged(double dKi)
+{
+   m_pRobot->I_valueChanged(dKi);
+}
+
+void MainWindow::on_D_valueChanged(double dKd)
+{
+   m_pRobot->D_valueChanged(dKd);
+}
