@@ -17,7 +17,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     m_pGps = new GPS(m_pProtocole);
     m_pGyro = new Gyro(m_pProtocole);
-  //  m_pJoystick = new Joystick(m_pProtocole);
+    m_pJoystick = new Joystick(m_pProtocole);
     m_pActuator = new Actuator(m_pProtocole);
     m_pAccelero = new Accelero(m_pProtocole);
     m_pLidar = new Lidar(m_pProtocole);
@@ -29,7 +29,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_lstCaptors.append(m_pMotor);
     m_lstCaptors.append(m_pGps);
     m_lstCaptors.append(m_pGyro);
-    //m_lstCaptors.append(m_pJoystick);
+    m_lstCaptors.append(m_pJoystick);
     m_lstCaptors.append(m_pActuator);
     m_lstCaptors.append(m_pAccelero);
     m_lstCaptors.append(m_pMagneto);
@@ -114,7 +114,7 @@ bool RobotInterface::connectRobot()
      {
         m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
         m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
-        // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+         m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
         m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
         m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
         m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
