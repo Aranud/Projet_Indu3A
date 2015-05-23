@@ -13,9 +13,9 @@ GPS::GPS(Protocole *p_pProtocole)
     m_dLongitude = 0.0;
     m_dAltitude = 0.0;
     m_dGroundSpeed = 0.0;
+    m_iSateliteNumber = 0;
 
     m_baUnit.clear();
-    m_baSateliteNumber.clear();
     m_baQuality.clear();
 }
 
@@ -143,18 +143,18 @@ void GPS::setUnit(const QByteArray &p_baUnit)
  * @brief GPS::getSateliteNumber
  * @return
  */
-QByteArray GPS::getSateliteNumber() const
+int GPS::getSateliteNumber() const
 {
-    return m_baSateliteNumber;
+    return m_iSateliteNumber;
 }
 
 /**
  * @brief GPS::setSateliteNumber
  * @param p_baSateliteNumber
  */
-void GPS::setSateliteNumber(const QByteArray &p_baSateliteNumber)
+void GPS::setSateliteNumber(const int &p_iSateliteNumber)
 {
-    m_baSateliteNumber = p_baSateliteNumber;
+    m_iSateliteNumber = p_iSateliteNumber;
 }
 
 /**
@@ -200,7 +200,7 @@ void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
     m_dAltitude = reinterpret_cast<double&>(llTemp);
 
     m_baUnit = p_baDataExtracted.mid(32, 1).toHex();
-    m_baSateliteNumber = p_baDataExtracted.mid(33, 1).toHex();
+    m_iSateliteNumber = p_baDataExtracted.mid(33, 1).toHex().toInt(0, 16);
     m_baQuality = p_baDataExtracted.mid(34, 1).toHex();
 
     llTemp = ReverseData(p_baDataExtracted.mid(35, 8)).toHex().toLongLong(0, 16);

@@ -89,9 +89,9 @@ void Magneto::setZMagneto(const qint16 &p_iZMagneto)
  */
 void Magneto::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    m_iXMagneto = ReverseData(p_baDataExtracted.mid(0, 2)).toHex().toInt();
-    m_iYMagneto = ReverseData(p_baDataExtracted.mid(2, 2)).toHex().toInt();
-    m_iZMagneto = ReverseData(p_baDataExtracted.mid(4, 2)).toHex().toInt();
+    m_iXMagneto = ReverseData(p_baDataExtracted.mid(0, 2)).toHex().toInt(0,16);
+    m_iYMagneto = ReverseData(p_baDataExtracted.mid(2, 2)).toHex().toInt(0,16);
+    m_iZMagneto = ReverseData(p_baDataExtracted.mid(4, 2)).toHex().toInt(0,16);
 
     emit emitDataAvailable();
 }

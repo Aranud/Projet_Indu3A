@@ -5,7 +5,7 @@
 #include "captor.h"
 #include "simplexbox360controller.h"
 
-#define AUTO_POLLING_TIME_ELASPE 20
+#define AUTO_POLLING_TIME_ELASPE 500
 
 class Joystick : public Captor
 {

@@ -50,7 +50,7 @@ qint16 Actuator::getActuator() const
  */
 void Actuator::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
-    m_iActuator = p_baDataExtracted.toHex().toInt();
+    m_iActuator = p_baDataExtracted.toHex().toInt(0,16);
 
     emit emitDataAvailable();
 }

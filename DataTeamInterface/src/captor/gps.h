@@ -15,7 +15,7 @@ private:
     double m_dAltitude;
     double m_dGroundSpeed;
     QByteArray m_baUnit;
-    QByteArray m_baSateliteNumber;
+    int m_iSateliteNumber;
     QByteArray m_baQuality;
 
 public:
@@ -40,8 +40,8 @@ public:
     QByteArray getUnit() const;
     void setUnit(const QByteArray &p_baUnit);
 
-    QByteArray getSateliteNumber() const;
-    void setSateliteNumber(const QByteArray &p_baSateliteNumber);
+    int getSateliteNumber() const;
+    void setSateliteNumber(const int &p_baSateliteNumber);
 
     QByteArray getQuality() const;
     void setQuality(const QByteArray &p_baQuality);

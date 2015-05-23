@@ -42,8 +42,10 @@ void Motor::setEtatIAMotor(const eEtatIAMotor &eEtatIAMotor)
  */
 bool Motor::SendData(QByteArray p_pDataToSend)
 {
-    bool bDataSend = m_pTCPConnection->SendData(m_pProtocole->FormateCommand(m_eIDCommand, p_pDataToSend));
 
+    //qDebug()<<"p_pDataToSend = "<< p_pDataToSend <<"\nProtocole = "<< m_pProtocole->FormateCommand(m_eIDCommand, p_pDataToSend).toHex();
+
+    bool bDataSend = m_pTCPConnection->SendData(m_pProtocole->FormateCommand(m_eIDCommand, p_pDataToSend));
 
     if(p_pDataToSend.length() == 2)
     {

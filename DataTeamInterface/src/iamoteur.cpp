@@ -112,6 +112,36 @@ void IAMoteur::MachineAEtat()
  * @brief IAMoteur::IsHalfTurnRight
  * @return
  */
+
+double IAMoteur::getKp()
+{
+    return Kp;
+}
+
+void IAMoteur::setKp(double value)
+{
+    Kp = value;
+}
+
+double IAMoteur::getKi()
+{
+    return Ki;
+}
+
+void IAMoteur::setKi(double value)
+{
+    Ki = value;
+}
+
+double IAMoteur::getKd()
+{
+    return Kd;
+}
+
+void IAMoteur::setKd(double value)
+{
+    Kd = value;
+}
 bool IAMoteur::IsHalfTurnRight()
 {
     if(((m_iFl * 64.65) + (m_iFr * 64.65)) / 2 > CalculDistanceArcVirage())
@@ -218,14 +248,18 @@ void IAMoteur::InterieurRigole()
         ControlMotor(92, 92, false);    // Avance
         qDebug() << "Fin Rigole interieur ";
 
-        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0)
-        {
-            m_ePositionRobot = ePositionRobotNone;
-            emit signalRigolEnd();
-            return;
-        }
-
         InversePositionVirage();        // Demande le virage oppose au precedent
+        //qDebug()<<" EMIT ? Returnrigol = "<< m_iReturnRigol<< "\nReturnToDo = "<<m_iReturnToDo ;
+        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0){
+            m_eActionRobot = eActionRobotNone;
+            ResetOdoValue();
+            m_iRigoleCount = 0;
+            m_iReturnRigol = 0;
+            m_iReturnToDo = 0;
+            m_dIntegral = 0;
+            m_dError = 0;
+            emit emitRigolEnd();
+        }
 
         m_dError = 0;
         m_dIntegral = 0;
@@ -396,19 +430,29 @@ void IAMoteur::FinVirage()
         // Si aucun obstacle n'est detecter sur le cote oppose, il s'agit d'une rigole exterieure
         if(m_structVirageIA.iDistanceOpposite > m_structDataIA.dLargerRigoleMoyenne && m_structVirageIA.iDegreeOpposite < 30)
         {
-            m_ePositionRobot = ePositionRobotRigoleExterieure;
+            //qDebug() << "Roue Gauche " << m_iFl << " --- Roue Droite " << m_iFr;
+            ResetOdoValue();
+            m_eEtatIAMotor = eEtatIAMotorNone;
 
-            if(m_iReturnRigol <= 0)
-                m_iReturnToDo = m_iRigoleCount - 1;
-            m_iReturnRigol++;
-        }
-        else    // Sinon, Oz est dans une rigole interieur
-        {
-            m_ePositionRobot = ePositionRobotRigole;
-            if(m_iReturnRigol <= 0)
-                m_iRigoleCount++;
-            else if(m_iReturnRigol >= 2)
-                m_iReturnToDo --;
+            if(iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && iDegreeOpposite < 30)
+            {
+                m_ePositionRobot = ePositionRobotRigoleExterieure;
+                //qDebug() << "Fin Virage, Rigole Exterieur";
+
+                if(m_iReturnRigol <=0){
+                    m_iReturnToDo = m_iRigoleCount - 1;
+                }
+                m_iReturnRigol++;
+            }
+            else
+            {
+                m_ePositionRobot = ePositionRobotRigole;
+                if(m_iReturnRigol <=0)
+                    m_iRigoleCount++;
+                else if(m_iReturnRigol >=2)
+                    m_iReturnToDo --;
+                //qDebug() << "Fin Virage, Rigole Interieur";
+            }
         }
     }
 }
@@ -431,7 +475,7 @@ void IAMoteur::PID(bool bInverse)
 
     double dCorrection = Kp * error
     + Ki * m_dIntegral
-    + Kd * derivative;
+    + Kd * derivative;  
 
     if(m_ePositionRobot == ePositionRobotRigoleExterieure){
         if( !bInverse && dCorrection < 0){

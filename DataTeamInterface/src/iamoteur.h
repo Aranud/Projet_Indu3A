@@ -45,6 +45,8 @@ private:
     int m_iRr, m_iRl, m_iFr, m_iFl;
 
     // Test Odométrique
+    double Kp, Ki, Kd;
+
     bool IsHalfTurnRight();
     bool IsLastHalfTurnRight();
     bool IsHalfTurnLeft();
@@ -90,6 +92,14 @@ public:
 
     ePositionRobot getPositionRobot() const;
     void setPositionRobot(const ePositionRobot &p_ePositionRobot);
+    double getKp();
+    void setKp(double value);
+
+    double getKi();
+    void setKi(double value);
+
+    double getKd();
+    void setKd(double value);
 
 signals:
     void signalRigolEnd();
