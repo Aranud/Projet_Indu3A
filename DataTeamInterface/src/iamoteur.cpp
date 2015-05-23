@@ -251,14 +251,14 @@ void IAMoteur::InterieurRigole()
         InversePositionVirage();        // Demande le virage oppose au precedent
         //qDebug()<<" EMIT ? Returnrigol = "<< m_iReturnRigol<< "\nReturnToDo = "<<m_iReturnToDo ;
         if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0){
-            m_eActionRobot = eActionRobotNone;
+            m_ePositionRobot = ePositionRobotNone;
             ResetOdoValue();
             m_iRigoleCount = 0;
             m_iReturnRigol = 0;
             m_iReturnToDo = 0;
             m_dIntegral = 0;
             m_dError = 0;
-            emit emitRigolEnd();
+            emit signalRigolEnd();
         }
 
         m_dError = 0;
@@ -434,7 +434,7 @@ void IAMoteur::FinVirage()
             ResetOdoValue();
             m_eEtatIAMotor = eEtatIAMotorNone;
 
-            if(iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && iDegreeOpposite < 30)
+            if(m_structVirageIA.iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && m_structVirageIA.iDegreeOpposite < 30)
             {
                 m_ePositionRobot = ePositionRobotRigoleExterieure;
                 //qDebug() << "Fin Virage, Rigole Exterieur";
