@@ -6,18 +6,24 @@
  */
 RobotInterface::RobotInterface(Ui::MainWindow* ui)
 {
+	//ui interface 
     m_pUi = ui;
-    m_pProtocole = new Protocole();
-
+    //Instance protocol class for define how the software communicate with NAIO
+	m_pProtocole = new Protocole();
+	
+	//Open the socket for communication 
     m_pTCPSocketServer = new TCPSocketServer();
 
+	//Connect the event data received from socket to robotinterface
     connect(m_pTCPSocketServer, SIGNAL(emitDataReceived(QString)), this, SLOT(slotOnIPADSendSomething(QString)));
 
+	//set list of captor
     m_lstCaptors.clear();
-
+	
+	//set all captor
     m_pGps = new GPS(m_pProtocole);
     m_pGyro = new Gyro(m_pProtocole);
-    m_pJoystick = new Joystick(m_pProtocole);
+	//  m_pJoystick = new Joystick(m_pProtocole);
     m_pActuator = new Actuator(m_pProtocole);
     m_pAccelero = new Accelero(m_pProtocole);
     m_pLidar = new Lidar(m_pProtocole);
@@ -25,28 +31,34 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pOdo = new Odo(m_pProtocole);
     m_pMotor = new Motor(m_pProtocole);
     //m_pRemote = new Remote(m_pProtocole);
-
+	
+	
     m_lstCaptors.append(m_pMotor);
     m_lstCaptors.append(m_pGps);
     m_lstCaptors.append(m_pGyro);
-    m_lstCaptors.append(m_pJoystick);
+    //m_lstCaptors.append(m_pJoystick);
     m_lstCaptors.append(m_pActuator);
     m_lstCaptors.append(m_pAccelero);
     m_lstCaptors.append(m_pMagneto);
     m_lstCaptors.append(m_pOdo);
     m_lstCaptors.append(m_pLidar);
-
+	
+	//boolean wheel
     m_bRr = m_bRl = m_bFr = m_bFl = false;
-
+	
+	//Iamotor : the main algorithme
     m_pIAMoteur = new IAMoteur(m_pLidar, m_pMotor, m_pOdo);
-
+	
+	//kp ki kd => PID
      m_pIAMoteur->setKp(m_pUi->P->value());
      m_pIAMoteur->setKi(m_pUi->I->value());
      m_pIAMoteur->setKd(m_pUi->D->value());
 
+	 //timer for algorithme
     m_pTimer = new QTimer();
     m_pTimer->setInterval(50);
-
+	
+	//draw a graphic scene for see the point catch by the lidar
     m_bDraw = true;
     m_pGraphScene = new QGraphicsScene();
     m_pGraphScene->setSceneRect(0,0,690,190);
@@ -54,7 +66,8 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pUi->graphicsView->setScene(m_pGraphScene);
 
     connect(m_pTimer, SIGNAL(timeout()), this, SLOT(slotTimeOut()));
-
+	
+	//mapping of all conection event signal from captor
     m_pSignalConnectionMapper = new QSignalMapper(this);
     m_pSignalCaptorMapper = new QSignalMapper(this);
 
@@ -93,6 +106,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
  */
 RobotInterface::~RobotInterface()
 {
+	//destrcuteur
     foreach (Captor* captor, m_lstCaptors)
        captor->DisconnectCaptor();
 
@@ -112,9 +126,10 @@ bool RobotInterface::connectRobot()
 {
      if(m_pUi->pbConnection->text() == "Connexion")
      {
+		 //on se connecte 
         m_pGps->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gpsPort->text().toInt());
         m_pGyro->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->gyroPort->text().toInt());
-         m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
+        // m_pJoystick->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->motorPort->text().toInt());
         m_pActuator->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->actuatorPort->text().toInt());
         m_pLidar->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->lidarPort->text().toInt());
         m_pMagneto->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->magnetoPort->text().toInt());
@@ -124,6 +139,7 @@ bool RobotInterface::connectRobot()
         //m_pRemote->ConnectCaptor(m_pUi->leServerAddress->text(), m_pUi->remotePort->text().toInt());
      }
      else{
+		 //sinon on se deconnecte
          if(m_pTimer->isActive())
             m_pTimer->stop();
 
@@ -146,7 +162,7 @@ bool RobotInterface::connectRobot()
          m_pUi->pbLevel2->setEnabled(false);
          m_pUi->pbLevel3->setEnabled(false);
 
-
+		//changer l'image de connection
          m_pUi->img->setPixmap(QPixmap(":icons/ICON_OZ_DISABLE").scaled(m_pUi->img->width(),m_pUi->img->height(),Qt::KeepAspectRatio));
      }
 
@@ -159,7 +175,7 @@ bool RobotInterface::connectRobot()
  */
 void RobotInterface::pushLevel1()
 {
-
+	//lancement du 1er algorithme
     qDebug()<<"Direction1 :: "<<m_eDirection;
 
     if(m_eDirection != eIAMotorLevel1)
@@ -175,9 +191,12 @@ void RobotInterface::pushLevel1()
         m_pTimer->start();
 }
 
+/**
+ * @brief RobotInterface::pusButton
+ */
 void RobotInterface::pushButton(int button)
 {
-
+	//Si un bouton est appuyé, choix :
     if(m_eDirection != eIAMotorLevel1){
         m_pTimer->start();
         switch(button){
@@ -220,7 +239,7 @@ void RobotInterface::pushButton(int button)
  * @brief RobotInterface::onGpsDataAvailable
  */
 void RobotInterface::onGpsDataAvailable()
-{
+{	//reception data gps
     m_pUi->altitudeResult->setText(QString::number(m_pGps->getAltitude()));
     m_pUi->longitudeResult->setText(QString::number(m_pGps->getLongitude()));
     m_pUi->latitudeResult->setText(QString::number(m_pGps->getLatitude()));
@@ -238,7 +257,8 @@ void RobotInterface::onGpsDataAvailable()
  * @brief RobotInterface::onGyroDataAvailable
  */
 void RobotInterface::onGyroDataAvailable()
-{
+{	
+	//reception data gyro
     m_pUi->gyroXResult->setText(QString::number(m_pGyro->getXGyro()));
     m_pUi->gyroYResult->setText(QString::number(m_pGyro->getYGyro()));
     m_pUi->gyroZResult->setText(QString::number(m_pGyro->getZGyro()));
@@ -256,7 +276,8 @@ void RobotInterface::onActuatorDataAvailable()
  * @brief RobotInterface::onAcceleroDataAvailable
  */
 void RobotInterface::onAcceleroDataAvailable()
-{
+{	
+	//reception data accelero
     m_pUi->acceleroXResult->setText(QString::number(m_pAccelero->getXAccelero()));
     m_pUi->acceleroYResult->setText(QString::number(m_pAccelero->getYAccelero()));
     m_pUi->acceleroZResult->setText(QString::number(m_pAccelero->getZAccelero()));
@@ -267,6 +288,7 @@ void RobotInterface::onAcceleroDataAvailable()
  */
 void RobotInterface::onLidarDataAvailable()
 {
+	//reception data Lidar
     QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
         m_pGraphScene->clear();
@@ -281,6 +303,7 @@ void RobotInterface::onLidarDataAvailable()
  */
 void RobotInterface::onOdoDataAvailable()
 {
+	//reception data odo
     bool bFl,bFr,bRl,bRr;
     m_pUi->fl->setText(QString::number(bFl = m_pOdo->getFrontLeft()));
     m_pUi->fr->setText(QString::number(bFr =m_pOdo->getFrontRight()));
@@ -332,7 +355,7 @@ void RobotInterface::onMotorDataAvailable()
  */
 void RobotInterface::onMagnetoDataAvailable()
 {
-
+	//reception data magneto
     m_pUi->magnetoXResult->setText(QString::number(m_pMagneto->getXMagneto()) );
     m_pUi->magnetoYResult->setText(QString::number(m_pMagneto->getYMagneto()) );
     m_pUi->magnetoZResult->setText(QString::number(m_pMagneto->getZMagneto()) );
@@ -341,16 +364,19 @@ void RobotInterface::onMagnetoDataAvailable()
 
 void RobotInterface::P_valueChanged(double dKp)
 {
+	//changement de la valeur P du PID
   m_pIAMoteur->setKp(dKp);
 }
 
 void RobotInterface::I_valueChanged(double dKi)
 {
+	//changement de la valeur I du PID
    m_pIAMoteur->setKi(dKi);
 }
 
 void RobotInterface::D_valueChanged(double dKd)
 {
+	//changement de la valeur D du PID
    m_pIAMoteur->setKd(dKd);
 }
 
@@ -364,6 +390,8 @@ void RobotInterface::D_valueChanged(double dKd)
  */
 void RobotInterface::slotTimeOut()
 {
+	
+	//choix de direction apres timeoutr
      QByteArray baValue;
 
     if( (m_iCompteur =  m_pUi->fl_2->text().toInt()  - m_iCompteur) <= 0 )
@@ -373,11 +401,11 @@ void RobotInterface::slotTimeOut()
      if(m_eDirection == eDirectionLeft)
      {
          baValue[0] = -1*m_pUi->maxWheel->value();
-         baValue[1] =       m_pUi->maxWheel->value();
+         baValue[1] =    m_pUi->maxWheel->value();
      }
      else if(m_eDirection == eDirectionRight)
      {
-         baValue[0] =       m_pUi->maxWheel->value();//g
+         baValue[0] =    m_pUi->maxWheel->value();//g
          baValue[1] = -1*m_pUi->maxWheel->value();//d
      }
      else if(m_eDirection == eDirectionFront)
@@ -417,12 +445,10 @@ void RobotInterface::slotTimeOut()
      }
      else if(m_eDirection == eIAMotorLevel1)
      {
-         //qDebug()<<"plop";
          m_pIAMoteur->MachineAEtat();
      }
      else if(m_eDirection == eDirectionNone)
      {
-         //qDebug()<<"coucou";
          m_pTimer->stop();
      }
 
@@ -435,6 +461,7 @@ void RobotInterface::slotTimeOut()
  */
 void RobotInterface::slotOnCaptorSignals(int p_iValue)
 {
+	//reception Signal
     switch(p_iValue){
     case eIDCommandGyro:
         onGyroDataAvailable();
@@ -473,7 +500,7 @@ void RobotInterface::slotOnCaptorSignals(int p_iValue)
  */
 void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
 {
-
+	//connexion vérifié
     switch(p_iValue){
     case eIDCommmandMotors:
         m_pUi->pbSendData->setEnabled(true);
@@ -512,6 +539,7 @@ void RobotInterface::slotOnConectedCaptorReady(int p_iValue)
 
 void RobotInterface::slotOnRigolEnd()
 {
+	//fin d'algorithme
     m_pTimer->stop();
     m_eDirection = eDirectionNone;
 }
@@ -530,17 +558,24 @@ void RobotInterface::slotOnIPADSendSomething(QString p_sData)
     }   
 }
 
+/**
+ * @brief RobotInterface::on_P_valueChanged
+ */
 void RobotInterface::on_P_valueChanged(double P)
 {
     m_pIAMoteur->setKp(P);
 }
-
+/**
+ * @brief RobotInterface::on_I_valueChanged
+ */
 void RobotInterface::on_I_valueChanged(double I)
 {
      m_pIAMoteur->setKi(I);
 }
 
-
+/**
+ * @brief RobotInterface::on_D_valueChanged
+ */
 void RobotInterface::on_D_valueChanged(double D)
 {
      m_pIAMoteur->setKd(D);
