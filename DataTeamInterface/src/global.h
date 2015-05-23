@@ -1,11 +1,12 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define DEFAUT_NAME "NAIO01"
-#include "QObject"
+#include <QObject>
 #include <math.h>
-#define PI 3.14159265
 
+#define DEFAUT_NAME "NAIO01"
+#define PI 3.14159265
+#define PI_180 (PI / 180.0)
 
 typedef enum eIDCommand
 {
@@ -47,15 +48,16 @@ typedef enum eDirection
 
 }E_Direction;
 
-typedef enum eActionRobot
+typedef enum ePositionRobot
 {
-    eActionRobotNone,
-    eActionRobotRigole,
-    eActionRobotGrandVirageDroite,
-    eActionRobotGrandVirageGauche,
-    eActionRobotPetitVirageGauche,
-    eActionRobotPetitVirageDroite,
-    eActionRobotRigoleExterieure,
+    ePositionRobotNone,
+    ePositionRobotRigole,
+    ePositionRobotGrandVirageDroite,
+    ePositionRobotGrandVirageGauche,
+    ePositionRobotPetitVirageGauche,
+    ePositionRobotPetitVirageDroite,
+    ePositionRobotRigoleExterieure
+
 }E_ActionRobot;
 
 typedef enum eEtatIAMotor
@@ -64,10 +66,10 @@ typedef enum eEtatIAMotor
     eEtatIAMotorAvant,
     eEtatIAMotorGauche,
     eEtatIAMotorDroite,
-    eEtatIAMotorArriere,
+    eEtatIAMotorReculeVirage,
     eEtatIAMotorDebutVirage,
     eEtatIAMotorFinVirage,
-    eEtatIAMotorSortie,
+    eEtatIAMotorSortieRigole,
     eEtatIAMotorSortieExterieur,
     eEtatIAMotorSauteRigole,
     eEtatIAMotorSaute,
@@ -97,5 +99,15 @@ typedef struct structDataIA
     double dLargerRigoleMoyenne;
 
 }struct_DataIA;
+
+typedef struct structVirageData
+{
+    bool bInverse;
+    int iDistanceSide;
+    int iDistanceOpposite;
+    int iDegreeSide;
+    int iDegreeOpposite;
+
+}struct_VirageData;
 
 #endif // GLOBAL_H

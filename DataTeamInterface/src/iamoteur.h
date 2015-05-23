@@ -9,8 +9,12 @@
 
 #define START_LIDAR_VISIBILITY_RANGE 45
 #define END_LIDAR_VISIBILITY_RANGE 225
+
 #define DEFAULT_DISTANCE_VALUE 4000
 #define DEFAULT_DEGREE_VALUE 0
+
+#define AVERAGE_DISTANCE_SAMPLE_MAX 50
+#define LIMIT_RANGE 200
 
 class IAMoteur : public QObject
 {
@@ -23,11 +27,12 @@ private:
     double MaxReadedValueMotor;
 
     eEtatIAMotor m_eEtatIAMotor;
-    eActionRobot m_eActionRobot;
-    eActionRobot m_eActionRobotPrec;
-    eActionRobot m_eActionRobotPrecVirage;
+    ePositionRobot m_ePositionRobot;
+    ePositionRobot m_ePositionRobotPrec;
+    ePositionRobot m_ePositionRobotPrecVirage;
 
     structDataIA m_structDataIA;
+    structVirageData m_structVirageIA;
 
     int m_iReturnRigol;
     int m_iRigoleCount;
@@ -39,6 +44,7 @@ private:
     bool m_bRr, m_bRl, m_bFr, m_bFl;
     int m_iRr, m_iRl, m_iFr, m_iFl;
 
+    // Test Odométrique
     bool IsHalfTurnRight();
     bool IsLastHalfTurnRight();
     bool IsHalfTurnLeft();
@@ -46,15 +52,29 @@ private:
     bool IsBackEnough();
     void ResetOdoValue();
 
+    void InversePositionVirage();
+
+    // Gestion des passages rigoles
     void InterieurRigole();
     void ExterieurRigole();
-    void Virage();
+
+    // Gestion des virages
+    void MachineEtatVirage();
+    void SortieRigole();
+    void ReculeVirage();
+    void SauteRigole();
+    void DebutVirage();
+    void FinVirage();
+
+    // Controle des moteurs
     void PID(bool bInverse);
-
-
-    void DataResult();
-    void CalculLargeurRigole();
     void ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse);
+
+    // Traitement des données
+    void DataResult();
+    void DataResultVirage();
+    void CalculLargeurRigole();
+    double CalculDistanceArcVirage();
     int CalculLargeurReference();
 
 public:
@@ -63,14 +83,19 @@ public:
 
     void MachineAEtat();
 
+    // Ascessor - Mutator
+
     eEtatIAMotor getEtatIAMotor() const;
     void setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor);
 
+    ePositionRobot getPositionRobot() const;
+    void setPositionRobot(const ePositionRobot &p_ePositionRobot);
+
 signals:
-    void emitRigolEnd();
+    void signalRigolEnd();
 
 public slots:
-    void onDataFromOdoReady();
+    void slotOnDataReadyFromOdo();
 
 };
 

@@ -2,29 +2,7 @@
 
 /**
  * @brief Captor::Captor
- * @param parent
  */
-
-bool Captor::getIsConnected()
-{
-    return m_IsConnected;
-}
-
-void Captor::setIsConnected(bool IsConnected)
-{
-    m_IsConnected = IsConnected;
-}
-
-
-eIDCommand Captor::getEIDCommand()
-{
-    return m_eIDCommand;
-}
-
-void Captor::setEIDCommand(eIDCommand &eIDCommand)
-{
-    m_eIDCommand = eIDCommand;
-}
 Captor::Captor()
 {
     m_eIDCommand = eIDCommandNone;
@@ -46,6 +24,42 @@ Captor::Captor()
 Captor::~Captor()
 {
 
+}
+
+/*******************************************************************************/
+/**************************** ACCESSOR - MUTATOR *******************************/
+/*******************************************************************************/
+
+bool Captor::getIsConnected()
+{
+    return m_IsConnected;
+}
+
+/**
+ * @brief Captor::setIsConnected
+ * @param IsConnected
+ */
+void Captor::setIsConnected(bool IsConnected)
+{
+    m_IsConnected = IsConnected;
+}
+
+/**
+ * @brief Captor::getEIDCommand
+ * @return
+ */
+eIDCommand Captor::getEIDCommand()
+{
+    return m_eIDCommand;
+}
+
+/**
+ * @brief Captor::setEIDCommand
+ * @param eIDCommand
+ */
+void Captor::setEIDCommand(eIDCommand &eIDCommand)
+{
+    m_eIDCommand = eIDCommand;
 }
 
 /*******************************************************************************/

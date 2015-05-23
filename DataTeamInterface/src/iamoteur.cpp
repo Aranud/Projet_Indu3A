@@ -10,9 +10,10 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, Odo *p_pOdo, QObject *paren
     m_pMotor = p_pMotor;
     m_pLidar = p_pLidar;
     m_pOdo = p_pOdo;
+
     m_eEtatIAMotor = eEtatIAMotorNone;
-    m_eActionRobot = eActionRobotRigole;
-    m_eActionRobotPrecVirage = eActionRobotNone;
+    m_ePositionRobot = ePositionRobotRigole;
+    m_ePositionRobotPrecVirage = ePositionRobotNone;
 
     m_iRigoleCount = 0;
     m_iReturnRigol = 0;
@@ -26,7 +27,7 @@ IAMoteur::IAMoteur(Lidar *p_pLidar, Motor *p_pMotor, Odo *p_pOdo, QObject *paren
     m_dIntegral = 0;
     m_dError = 0;
 
-    connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(onDataFromOdoReady()));
+    connect(m_pOdo, SIGNAL(emitDataAvailable()), this, SLOT(slotOnDataReadyFromOdo()));
 }
 
 /**
@@ -59,6 +60,24 @@ void IAMoteur::setEtatIAMotor(const eEtatIAMotor &p_eEtatIAMotor)
     m_eEtatIAMotor = p_eEtatIAMotor;
 }
 
+/**
+ * @brief IAMoteur::getPositionRobot
+ * @return
+ */
+ePositionRobot IAMoteur::getPositionRobot() const
+{
+    return m_ePositionRobot;
+}
+
+/**
+ * @brief IAMoteur::setPositionRobot
+ * @param value
+ */
+void IAMoteur::setPositionRobot(const ePositionRobot &p_ePositionRobot)
+{
+    m_ePositionRobot = p_ePositionRobot;
+}
+
 /*******************************************************************************/
 /*********************************** METHOD ************************************/
 /*******************************************************************************/
@@ -73,15 +92,14 @@ void IAMoteur::MachineAEtat()
 {
     DataResult();
 
-    switch(m_eActionRobot)
+    switch(m_ePositionRobot)
     {
-        case eActionRobotRigole : InterieurRigole(); break;
-        case eActionRobotPetitVirageDroite :
-        case eActionRobotPetitVirageGauche :
-        case eActionRobotGrandVirageDroite :
-        case eActionRobotGrandVirageGauche : Virage(); break;
-
-        case eActionRobotRigoleExterieure : ExterieurRigole(); break;
+        case ePositionRobotRigole : InterieurRigole(); break;
+        case ePositionRobotRigoleExterieure : ExterieurRigole(); break;
+        case ePositionRobotPetitVirageDroite :
+        case ePositionRobotPetitVirageGauche :
+        case ePositionRobotGrandVirageDroite :
+        case ePositionRobotGrandVirageGauche : MachineEtatVirage(); break;
         default :  break;
     }
 }
@@ -96,13 +114,9 @@ void IAMoteur::MachineAEtat()
  */
 bool IAMoteur::IsHalfTurnRight()
 {
-    if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr >= 25/* && m_iRl > 27*/)
-        return true;
-    return false;
-}
-bool IAMoteur::IsLastHalfTurnRight()
-{
-    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr >= 25 /*&& m_iRl > 23*/)
+    if(((m_iFl * 64.65) + (m_iFr * 64.65)) / 2 > CalculDistanceArcVirage())
+    //if(m_iFr * 64.65 > CalculDistanceArcVirage())
+    //if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr >= 25/* && m_iRl > 27*/)
         return true;
     return false;
 }
@@ -113,10 +127,27 @@ bool IAMoteur::IsLastHalfTurnRight()
  */
 bool IAMoteur::IsHalfTurnLeft()
 {
-    if(/*m_iRr > 26 &&*/ m_iFl >= 25/* && m_iFr > 27 && m_iRl > 19*/)
+    //if(m_iFl * 64.65 > CalculDistanceArcVirage())
+    //if(/*m_iRr > 26 &&*/ m_iFl >= 25/* && m_iFr > 27 && m_iRl > 19*/)
+        return true;
+    //return false;
+}
+
+/**
+ * @brief IAMoteur::IsLastHalfTurnRight
+ * @return
+ */
+bool IAMoteur::IsLastHalfTurnRight()
+{
+    if(/*m_iRr > 15 && m_iFl > 22 &&*/ m_iFr >= 25 /*&& m_iRl > 23*/)
         return true;
     return false;
 }
+
+/**
+ * @brief IAMoteur::IsLastHalfTurnLeft
+ * @return
+ */
 bool IAMoteur::IsLastHalfTurnLeft()
 {
     if(/*m_iRr > 22 && */m_iFl >= 14/* && m_iFr > 21 && m_iRl > 14*/)
@@ -146,6 +177,28 @@ void IAMoteur::ResetOdoValue()
     m_iRl = 0;
 }
 
+/**
+ * @brief IAMoteur::InversePositionVirage
+ */
+void IAMoteur::InversePositionVirage()
+{
+    // Si le robot avait precedement effectuer un virage a gauche le suivant sera a droite
+    if(m_ePositionRobotPrecVirage == ePositionRobotNone
+    || m_ePositionRobotPrecVirage == ePositionRobotGrandVirageGauche
+    || m_ePositionRobotPrecVirage == ePositionRobotPetitVirageGauche)
+    {
+        m_ePositionRobot = ePositionRobotGrandVirageDroite;
+        m_ePositionRobotPrecVirage = ePositionRobotGrandVirageDroite;
+    }
+    // Si le robot avait precedement effectuer un virage a droite le suivant sera a gauche
+    else if (m_ePositionRobotPrecVirage == ePositionRobotGrandVirageDroite
+          || m_ePositionRobotPrecVirage == ePositionRobotPetitVirageDroite)
+    {
+        m_ePositionRobot = ePositionRobotGrandVirageGauche;
+        m_ePositionRobotPrecVirage = ePositionRobotGrandVirageGauche;
+    }
+}
+
 /*************************************************************/
 /******************** RIGOLE INTERIEUR ***********************/
 /*************************************************************/
@@ -159,62 +212,34 @@ void IAMoteur::InterieurRigole()
     m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche ?
         m_eEtatIAMotor = eEtatIAMotorDroite : m_eEtatIAMotor = eEtatIAMotorGauche;
 
-    // Si le point le plus proche est très éloigné
-    if(m_structDataIA.iDistanceRef >= m_structDataIA.dLargerRigoleMoyenne)
+    // Si le point le plus proche est éloigné de la longueur moyenne de la rigole
+    if(m_structDataIA.iDistanceRef >= m_structDataIA.dLargerRigoleMoyenne * 1.25)
     {
-        ControlMotor(92, 92, false);
+        ControlMotor(92, 92, false);    // Avance
+        qDebug() << "Fin Rigole interieur ";
 
-        if(m_eActionRobotPrecVirage == eActionRobotNone
-        || m_eActionRobotPrecVirage == eActionRobotGrandVirageGauche
-        || m_eActionRobotPrecVirage == eActionRobotPetitVirageGauche)
+        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0)
         {
-            m_eActionRobot = eActionRobotGrandVirageDroite;
-            m_eActionRobotPrecVirage = eActionRobotGrandVirageDroite;
-        }
-        else if (m_eActionRobotPrecVirage == eActionRobotGrandVirageDroite
-              || m_eActionRobotPrecVirage == eActionRobotPetitVirageDroite)
-        {
-            m_eActionRobot = eActionRobotGrandVirageGauche;
-            m_eActionRobotPrecVirage = eActionRobotGrandVirageGauche;
+            m_ePositionRobot = ePositionRobotNone;
+            emit signalRigolEnd();
+            return;
         }
 
-        //qDebug()<<" EMIT ? Returnrigol = "<< m_iReturnRigol<< "\nReturnToDo = "<<m_iReturnToDo ;
-        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0){
-            m_eActionRobot = eActionRobotNone;
-            emit emitRigolEnd();
-        }
+        InversePositionVirage();        // Demande le virage oppose au precedent
 
         m_dError = 0;
         m_dIntegral = 0;
-        m_eActionRobotPrec = eActionRobotRigole;
-        m_eEtatIAMotor = eEtatIAMotorSortie;
-        //qDebug() << "Sortie Actif";
+        m_ePositionRobotPrec = ePositionRobotRigole;
+        m_eEtatIAMotor = eEtatIAMotorSortieRigole;
     }
+    // Si les obstacles a gauche et droite sont eloigne a la largeur de ref. Oz fonce droit
     else if(m_structDataIA.iDistanceRef >= CalculLargeurReference() || m_eEtatIAMotor ==  eEtatIAMotorAvant)
     {
             ControlMotor(127, 127, false);
-            //qDebug() << "Avant";
     }
-    else
-    {/*
-        bool bInverse = false;
-        if(m_eEtatIAMotor == eEtatIAMotorGauche)
-            bInverse = true;
-
-        if(m_structDataIA.iDegreeRef < 20)
-            ControlMotor(127, 96, bInverse);
-        else if(m_structDataIA.iDegreeRef < 45)
-            ControlMotor(127, 63, bInverse);
-        else if(m_structDataIA.iDegreeRef < 60)
-            ControlMotor(127, 32, bInverse);
-        else
-            ControlMotor(127, 0, bInverse);
-*/
-        bool bInverse = false;
-        m_eEtatIAMotor == eEtatIAMotorGauche ? bInverse = true : bInverse = false;
-
-        PID(bInverse);
-
+    else    // Sinon les obstacles sont proches, un PID est applique
+    {
+        PID(m_eEtatIAMotor == eEtatIAMotorGauche ? true : false);
     }
 }
 
@@ -227,45 +252,18 @@ void IAMoteur::InterieurRigole()
  */
 void IAMoteur::ExterieurRigole()
 {
-    bool bInverse = false;
-
-    if( m_structDataIA.iDistanceRef >= (m_structDataIA.dLargerRigoleMoyenne *1.25) )           // Si le point le plus proche est très éloigné
+    // Si le point le plus proche est éloigné de la longueur moyenne de la rigole
+    if(m_structDataIA.iDistanceRef >= (m_structDataIA.dLargerRigoleMoyenne * 1.25))
     {
+        ControlMotor(127, 127, false);
+
         m_dError = 0;
         m_dIntegral = 0;
-        ControlMotor(127, 127, bInverse);
-        m_eActionRobot = m_eActionRobotPrecVirage;
-        m_eActionRobotPrec = eActionRobotRigoleExterieure;
-        m_eEtatIAMotor = eEtatIAMotorSortie;
+        m_ePositionRobot = m_ePositionRobotPrecVirage;          // Effectue le meme virage que precedement
+        m_ePositionRobotPrec = ePositionRobotRigoleExterieure;
+        m_eEtatIAMotor = eEtatIAMotorSortieRigole;          // Oz est en etat de sortie
     }
-
-   /* if(m_structDataIA.iDistanceRef >= CalculLargeurReference() &&
-       m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche){
-            bInverse = true;
-            qDebug()<<"dois tourner a droite";
-    }
-
-    else if(m_structDataIA.iDistanceRef < CalculLargeurReference() &&
-            m_structDataIA.iDistanceRef == m_structDataIA.iDistanceDroite){
-            bInverse = false;
-             qDebug()<<"dois tourner a gauche";
-    }*/
-
-    if(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche)
-        bInverse = false;
-    else
-        bInverse = true;
-
-    PID(bInverse);
-
-    /*if(m_structDataIA.iDegreeRef < 20)
-        ControlMotor(127, 96, bInverse);
-    else if(m_structDataIA.iDegreeRef < 45)
-        ControlMotor(127, 63, bInverse);
-    else if(m_structDataIA.iDegreeRef < 60)
-        ControlMotor(127, 32, bInverse);
-    else
-        ControlMotor(127, 0, bInverse);*/
+    PID(m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche ? false : true);
 }
 
 /**************************************************/
@@ -275,130 +273,159 @@ void IAMoteur::ExterieurRigole()
 /**
  * @brief IAMoteur::Virage
  */
-void IAMoteur::Virage()
+void IAMoteur::MachineEtatVirage()
 {
-    bool bInverse = false;
-    int iDistanceSide = m_structDataIA.iDistanceDroite;
-    int iDistanceOpposite = m_structDataIA.iDistanceGauche;
-    int iDegreeSide = m_structDataIA.iDegreeDroite;
-    int iDegreeOpposite = m_structDataIA.iDegreeGauche;
+    DataResultVirage();
 
-    if(m_eActionRobot == eActionRobotGrandVirageGauche || m_eActionRobot == eActionRobotPetitVirageGauche)
+    switch(m_eEtatIAMotor)
     {
-        bInverse = true;
-        iDistanceSide = m_structDataIA.iDistanceGauche;
-        iDistanceOpposite = m_structDataIA.iDistanceDroite;
-        iDegreeSide = m_structDataIA.iDegreeGauche;
-        iDegreeOpposite = m_structDataIA.iDegreeDroite;
+        case eEtatIAMotorSortieRigole : SortieRigole(); break;
+        case eEtatIAMotorSaute : SauteRigole(); break;
+        case eEtatIAMotorReculeVirage : ReculeVirage(); break;
+        case eEtatIAMotorDebutVirage : DebutVirage(); break;
+        case eEtatIAMotorFinVirage : FinVirage(); break;
+        default : break; // Ne doit pas se produire
     }
+}
 
-    if(m_eEtatIAMotor == eEtatIAMotorSortie)
+/**
+ * @brief IAMoteur::SortieRigole
+ */
+void IAMoteur::SortieRigole()
+{
+    ControlMotor(127, 127, m_structVirageIA.bInverse);
+
+    if(m_iFl >= 3 && m_iFr >= 3 && m_structVirageIA.iDistanceSide >= m_structDataIA.dLargerRigoleMoyenne / 2
+            && m_structVirageIA.iDistanceOpposite >= m_structDataIA.dLargerRigoleMoyenne)
     {
-        ControlMotor(127, 127, bInverse);
+        qDebug() << " Arc Distance : " << CalculDistanceArcVirage();
+        qDebug() << " Moyenne largeur rigole : " << m_structDataIA.dLargerRigoleMoyenne;
 
-        if(m_iFl >= 3 && m_iFr >= 3 && iDistanceSide >= m_structDataIA.dLargerRigoleMoyenne / 2
-                && iDistanceOpposite >= m_structDataIA.dLargerRigoleMoyenne )
+        m_eEtatIAMotor = eEtatIAMotorDebutVirage;
+        qDebug() << "Début virage";
+    }
+}
+
+/**
+ * @brief IAMoteur::ReculeVirage
+ */
+void IAMoteur::ReculeVirage()
+{
+    ControlMotor(-53, -53, m_structVirageIA.bInverse);
+
+    if(IsBackEnough())
+    {
+        m_eEtatIAMotor = eEtatIAMotorFinVirage;
+
+        if(m_ePositionRobot == ePositionRobotGrandVirageGauche)
+            m_ePositionRobotPrecVirage = ePositionRobotPetitVirageGauche;
+        else
+            m_ePositionRobotPrecVirage = ePositionRobotPetitVirageDroite;
+
+        ResetOdoValue();
+    }
+}
+
+/**
+ * @brief IAMoteur::SauteRigole
+ */
+void IAMoteur::SauteRigole()
+{
+    ControlMotor(127, 127, m_structVirageIA.bInverse);
+
+    if(m_iFl > 1 && m_iFr > 1 && m_structVirageIA.iDegreeSide <= 30 && m_structVirageIA.iDistanceSide <= m_structDataIA.dLargerRigoleMoyenne)
+    {
+        m_eEtatIAMotor = eEtatIAMotorFinVirage;
+        ResetOdoValue();
+    }
+}
+
+/**
+ * @brief IAMoteur::DebutVirage
+ */
+void IAMoteur::DebutVirage()
+{
+    ControlMotor(127, 32, m_structVirageIA.bInverse);
+
+    if(IsHalfTurnRight() && IsHalfTurnLeft())
+    {
+        qDebug() << " Arc Distance : " << CalculDistanceArcVirage();
+        qDebug() << " Value FL : " << m_iFl << " Value FR " << m_iFr;
+        qDebug() << " FL mm : " << m_iFl * 64.65 << " FR mm : " << m_iFr * 64.65;
+
+        qDebug() << " DegreeSide : " << m_structVirageIA.iDegreeSide;
+        qDebug() << " DistanceSide : " << m_structVirageIA.iDistanceSide;
+        qDebug() << " Robot Pos Prec : " << m_ePositionRobotPrec;
+
+        ResetOdoValue();
+
+        //  Si le point le plus proche ce trouve a moins de 30° et a une distance d'une rigole
+        // Et que le la position precedent du robot soit une rigole interieur ou un petit virage
+        if(m_structVirageIA.iDegreeSide < 30 && m_structVirageIA.iDistanceSide <= m_structDataIA.dLargerRigoleMoyenne &&
+          (m_ePositionRobotPrecVirage == ePositionRobotPetitVirageDroite ||
+          m_ePositionRobotPrecVirage == ePositionRobotPetitVirageGauche ||
+          m_ePositionRobotPrec == ePositionRobotRigole))
         {
-            m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-            //qDebug() << "Début virage";
+            if(m_ePositionRobot == ePositionRobotPetitVirageGauche)
+                m_ePositionRobotPrecVirage = ePositionRobotGrandVirageGauche;
+            else if(m_ePositionRobot == ePositionRobotGrandVirageDroite)
+                m_ePositionRobotPrecVirage = ePositionRobotGrandVirageDroite;
+
+            m_eEtatIAMotor = eEtatIAMotorSaute;
+            m_ePositionRobotPrec = ePositionRobotNone;
         }
-    }
-    else if(m_eEtatIAMotor == eEtatIAMotorSaute)
-    {
-        ControlMotor(127, 127, bInverse);
-
-        if(m_iFl > 1 && m_iFr > 1 && iDegreeSide <= 30 && iDistanceSide <= m_structDataIA.dLargerRigoleMoyenne)
+        else
         {
-            m_eEtatIAMotor = eEtatIAMotorFinVirage;
-            ResetOdoValue();
-            //qDebug() << "Fin virage";
-        }
-    }
-    else if(m_eEtatIAMotor == eEtatIAMotorArriere)
-    {
-        ControlMotor(-53, -53, bInverse);
-
-        if(IsBackEnough())
-        {
-            m_eEtatIAMotor = eEtatIAMotorFinVirage;
-
-            if(m_eActionRobot == eActionRobotGrandVirageGauche)
-                m_eActionRobotPrecVirage = eActionRobotPetitVirageGauche;
-            else
-                m_eActionRobotPrecVirage = eActionRobotPetitVirageDroite;
-
-            ResetOdoValue();
-            //qDebug() << "Fin Arriere";
-        }
-    }
-    else if(m_eEtatIAMotor == eEtatIAMotorDebutVirage)
-    {
-        ControlMotor(127, 32, bInverse);
-
-        if(IsHalfTurnRight() || IsHalfTurnLeft())
-        {
-            ResetOdoValue();
-
-            if(iDegreeSide < 30 && iDistanceSide <=  m_structDataIA.dLargerRigoleMoyenne &&
-              (m_eActionRobotPrecVirage == eActionRobotPetitVirageDroite ||
-              m_eActionRobotPrecVirage == eActionRobotPetitVirageGauche ||
-              m_eActionRobotPrec == eActionRobotRigole))
-            {
-                if(m_eActionRobot == eActionRobotPetitVirageGauche)
-                    m_eActionRobotPrecVirage = eActionRobotGrandVirageGauche;
-                else if(m_eActionRobot == eActionRobotGrandVirageDroite)
-                    m_eActionRobotPrecVirage = eActionRobotGrandVirageDroite;
-
-                m_eEtatIAMotor = eEtatIAMotorSaute;
-                m_eActionRobotPrec = eActionRobotNone;
-                //qDebug() << "Debut virage";
-            }
-            else
-            {
-                m_eEtatIAMotor = eEtatIAMotorArriere;
-                //qDebug() << "Debut Arriere";
-            }
-        }
-    }
-    else if(m_eEtatIAMotor == eEtatIAMotorFinVirage)
-    {
-        ControlMotor(127, 32, bInverse);
-
-        if((IsLastHalfTurnRight() || IsLastHalfTurnLeft()))
-        {
-            //qDebug() << "Roue Gauche " << m_iFl << " --- Roue Droite " << m_iFr;
-            ResetOdoValue();
-            m_eEtatIAMotor = eEtatIAMotorNone;
-
-            if(iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && iDegreeOpposite < 30)
-            {
-                m_eActionRobot = eActionRobotRigoleExterieure;
-                qDebug() << "Fin Virage, Rigole Exterieur";
-
-                if(m_iReturnRigol <=0){
-                    m_iReturnToDo = m_iRigoleCount - 1;
-                }
-                m_iReturnRigol++;
-            }
-            else
-            {
-                m_eActionRobot = eActionRobotRigole;
-                if(m_iReturnRigol <=0)
-                    m_iRigoleCount++;
-                else if(m_iReturnRigol >=2)
-                    m_iReturnToDo --;
-                qDebug() << "Fin Virage, Rigole Interieur";
-            }
+            m_eEtatIAMotor = eEtatIAMotorReculeVirage;
         }
     }
 }
 
+/**
+ * @brief IAMoteur::FinVirage
+ */
+void IAMoteur::FinVirage()
+{
+    ControlMotor(127, 32, m_structVirageIA.bInverse);
+
+    if((IsLastHalfTurnRight() || IsLastHalfTurnLeft()))
+    {
+        ResetOdoValue();
+        m_eEtatIAMotor = eEtatIAMotorNone;
+
+        // Si aucun obstacle n'est detecter sur le cote oppose, il s'agit d'une rigole exterieure
+        if(m_structVirageIA.iDistanceOpposite > m_structDataIA.dLargerRigoleMoyenne && m_structVirageIA.iDegreeOpposite < 30)
+        {
+            m_ePositionRobot = ePositionRobotRigoleExterieure;
+
+            if(m_iReturnRigol <= 0)
+                m_iReturnToDo = m_iRigoleCount - 1;
+            m_iReturnRigol++;
+        }
+        else    // Sinon, Oz est dans une rigole interieur
+        {
+            m_ePositionRobot = ePositionRobotRigole;
+            if(m_iReturnRigol <= 0)
+                m_iRigoleCount++;
+            else if(m_iReturnRigol >= 2)
+                m_iReturnToDo --;
+        }
+    }
+}
+
+/*************************************************************/
+/*********************** PID / MOTOR CMD *********************/
+/*************************************************************/
+
+/**
+ * @brief IAMoteur::PID
+ * @param bInverse
+ */
 void IAMoteur::PID(bool bInverse)
 {
-
     double Kp = 0.6, Ki = 0.2, Kd = 0.3;
     double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
-    double derivative = (error - m_dError) /0.5;
+    double derivative = (error - m_dError) / 0.5;
     m_dIntegral += error * 0.5;
     m_dError = error;
 
@@ -406,14 +433,14 @@ void IAMoteur::PID(bool bInverse)
     + Ki * m_dIntegral
     + Kd * derivative;
 
-    if(m_eActionRobot == eActionRobotRigoleExterieure){
+    if(m_ePositionRobot == ePositionRobotRigoleExterieure){
         if( !bInverse && dCorrection < 0){
-            dCorrection = dCorrection*-1;
+            dCorrection = dCorrection * -1;
             bInverse = true;
             //qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
         }
         else if( bInverse && dCorrection < 0){
-            dCorrection = dCorrection*-1;
+            dCorrection = dCorrection * -1;
             bInverse = false;
             //qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
         }
@@ -422,6 +449,29 @@ void IAMoteur::PID(bool bInverse)
         dCorrection > 75 ? dCorrection = 75 : 0;
 
     ControlMotor(127, 127 - dCorrection, bInverse);
+}
+
+/**
+ * @brief IAMoteur::ControlMotor
+ * @param p_iMotorLeft
+ * @param p_iMotorRight
+ * @param p_bInverse
+ */
+void IAMoteur::ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse)
+{
+    QByteArray baDataToSend;
+
+    if(p_bInverse)
+    {
+        baDataToSend[0] = p_iMotorRight;
+        baDataToSend[1] = p_iMotorLeft;
+    }
+    else
+    {
+        baDataToSend[0] = p_iMotorLeft;
+        baDataToSend[1] = p_iMotorRight;
+    }
+    m_pMotor->SendData(baDataToSend);
 }
 
 /**************************************************/
@@ -471,8 +521,28 @@ void IAMoteur::DataResult()
         m_structDataIA.iDegreeRef = m_structDataIA.iDegreeDroite;
 
     // Si dans une rigole alors calcul largeur de la rigole
-    if(m_eActionRobot == eActionRobotRigole)
+    if(m_ePositionRobot == ePositionRobotRigole)
         CalculLargeurRigole();
+}
+
+void IAMoteur::DataResultVirage()
+{
+    if(m_ePositionRobot == ePositionRobotGrandVirageGauche || m_ePositionRobot == ePositionRobotPetitVirageGauche)
+    {
+        m_structVirageIA.bInverse = true;
+        m_structVirageIA.iDistanceSide = m_structDataIA.iDistanceGauche;
+        m_structVirageIA.iDistanceOpposite = m_structDataIA.iDistanceDroite;
+        m_structVirageIA.iDegreeSide = m_structDataIA.iDegreeGauche;
+        m_structVirageIA.iDegreeOpposite = m_structDataIA.iDegreeDroite;
+    }
+    else
+    {
+        m_structVirageIA.bInverse = false;
+        m_structVirageIA.iDistanceSide = m_structDataIA.iDistanceDroite;
+        m_structVirageIA.iDistanceOpposite = m_structDataIA.iDistanceGauche;
+        m_structVirageIA.iDegreeSide = m_structDataIA.iDegreeDroite;
+        m_structVirageIA.iDegreeOpposite = m_structDataIA.iDegreeGauche;
+    }
 }
 
 /**
@@ -480,14 +550,14 @@ void IAMoteur::DataResult()
  */
 void IAMoteur::CalculLargeurRigole()
 {
-    double dLargeurMesure = (cos(m_structDataIA.iDegreeGauche * PI / 180.0) * m_structDataIA.iDistanceGauche)
-                  - (cos((180 - m_structDataIA.iDegreeDroite) * PI / 180.0) * m_structDataIA.iDistanceDroite);
+    double dLargeurMesure = (cos(m_structDataIA.iDegreeGauche * PI_180) * m_structDataIA.iDistanceGauche)
+                  - (cos((180 - m_structDataIA.iDegreeDroite) * PI_180) * m_structDataIA.iDistanceDroite);
 
-    if(m_structDataIA.lstdLargerRigole.length() < 50)
+    if(m_structDataIA.lstdLargerRigole.length() < AVERAGE_DISTANCE_SAMPLE_MAX)
         m_structDataIA.lstdLargerRigole.append(dLargeurMesure);
-    else if(qAbs(m_structDataIA.dLargerRigoleMoyenne - dLargeurMesure) <= 200)  // Si la differences n'est pas supérieur
+    else if(qAbs(m_structDataIA.dLargerRigoleMoyenne - dLargeurMesure) <= LIMIT_RANGE)  // Si la differences n'est pas supérieur
     {
-        double dValueMax = 0, dValueMin = 4000, dValueRef = 0;
+        double dValueMax = 0, dValueMin = DEFAULT_DISTANCE_VALUE, dValueRef = 0;
 
         foreach(double dValue, m_structDataIA.lstdLargerRigole)
         {
@@ -502,7 +572,7 @@ void IAMoteur::CalculLargeurRigole()
             m_structDataIA.lstdLargerRigole.replace(m_structDataIA.lstdLargerRigole.indexOf(dValueRef), dLargeurMesure);
     }
 
-    if(m_structDataIA.lstdLargerRigole.length() > 0)    // Securite
+    if(m_structDataIA.lstdLargerRigole.isEmpty() == false)    // Securite
     {
         foreach(double dValue, m_structDataIA.lstdLargerRigole)
             m_structDataIA.dLargerRigoleMoyenne += dValue;
@@ -512,27 +582,12 @@ void IAMoteur::CalculLargeurRigole()
 }
 
 /**
- * @brief IAMoteur::ControlMotor
- * @param p_iMotorLeft
- * @param p_iMotorRight
- * @param p_bInverse
+ * @brief IAMoteur::CalculDistanceArcVirage
+ * @return
  */
-void IAMoteur::ControlMotor(int p_iMotorLeft, int p_iMotorRight, bool p_bInverse)
+double IAMoteur::CalculDistanceArcVirage()
 {
-    QByteArray baDataToSend;
-
-    if(p_bInverse)
-    {
-        baDataToSend[0] = p_iMotorRight;
-        baDataToSend[1] = p_iMotorLeft;
-    }
-    else
-    {
-        baDataToSend[0] = p_iMotorLeft;
-        baDataToSend[1] = p_iMotorRight;
-    }
-
-    m_pMotor->SendData(baDataToSend);
+    return ((90.0 * PI * m_structDataIA.dLargerRigoleMoyenne * 1.25) / 180.0);
 }
 
 /**
@@ -551,10 +606,10 @@ int IAMoteur::CalculLargeurReference()
 /**
  * @brief IAMoteur::onDataFromOdoReady
  */
-void IAMoteur::onDataFromOdoReady()
+void IAMoteur::slotOnDataReadyFromOdo()
 {
-    if(m_eActionRobot == eActionRobotGrandVirageDroite || m_eActionRobot == eActionRobotGrandVirageGauche
-    || m_eActionRobot == eActionRobotPetitVirageDroite || m_eActionRobot == eActionRobotPetitVirageGauche)
+    if(m_ePositionRobot == ePositionRobotGrandVirageDroite || m_ePositionRobot == ePositionRobotGrandVirageGauche
+    || m_ePositionRobot == ePositionRobotPetitVirageDroite || m_ePositionRobot == ePositionRobotPetitVirageGauche)
     {
         if(m_pOdo->getFrontLeft() != m_bFl)
         {

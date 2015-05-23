@@ -50,7 +50,7 @@ bool Motor::SendData(QByteArray p_pDataToSend)
         if(p_pDataToSend.at(0) > 0 && p_pDataToSend.at(1) > 0)
             m_eEtatIAMotor = eEtatIAMotorAvant;
         if(p_pDataToSend.at(0) < 0 && p_pDataToSend.at(1) < 0)
-            m_eEtatIAMotor = eEtatIAMotorArriere;
+            m_eEtatIAMotor = eEtatIAMotorReculeVirage;
     }
 
 
