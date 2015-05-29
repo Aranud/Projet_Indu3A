@@ -176,7 +176,7 @@ bool RobotInterface::connectRobot()
 void RobotInterface::pushLevel1()
 {
 	//lancement du 1er algorithme
-    qDebug()<<"Direction1 :: "<<m_eDirection;
+    qDebug() << "Direction1 :: "<<m_eDirection;
 
     if(m_eDirection != eIAMotorLevel1)
         m_eDirection = eIAMotorLevel1;

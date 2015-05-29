@@ -55,7 +55,17 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
 //    baDataToSend[9] = 0x00;  // SIZE
 //    baDataToSend[10] = 0x02;  // SIZE
 
-    baDataToSend.append(QString("%1").arg(p_baValueCommand.size(), 4, 10, cFillChar));
+    //baDataToSend.append(QString("%1").arg(p_baValueCommand.size(), 4, 10, cFillChar));
+
+        baDataToSend.append(cFillChar);
+        baDataToSend.append(cFillChar);
+        baDataToSend.append(cFillChar);
+        baDataToSend.append(0x02);
+
+//    baDataToSend.append(cFillChar);
+//    baDataToSend.append(cFillChar);
+//    baDataToSend.append(cFillChar);
+//    baDataToSend.append(QString("%1").arg(p_baValueCommand.size()));
 
 //    baDataToSend[11] = 0x7F;  // Left
 //    baDataToSend[12] = 0x7F;  // Right
@@ -69,6 +79,11 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
     baDataToSend.append(cFillChar);
     baDataToSend.append(cFillChar);
     baDataToSend.append(cFillChar);
+
+    //for(int i = 0; i < baDataToSend.length(); i++)
+      //  qDebug() << i << " : " << baDataToSend.at(i);
+//    qDebug() << QString(baDataToSend) << " | ";
+    //qDebug() << baDataToSend.toHex() << " | ";
 
     return baDataToSend;
 }
@@ -91,10 +106,12 @@ QByteArray Protocole::ExtractData(QByteArray p_baData)
  */
 QByteArray Protocole::ReverseData(QByteArray p_baData)
 {
-    QByteArray baData;
-    for(int iIncrement = p_baData.length() - 1; iIncrement >= 0; iIncrement--)
-        baData += p_baData.mid(iIncrement, 1);
-    return baData;
+//    QByteArray baData;
+//    for(int iIncrement = p_baData.length() - 1; iIncrement >= 0; iIncrement--)
+//        baData += p_baData.mid(iIncrement, 1);
+//    return baData;
+
+    return p_baData;
 }
 
 /*******************************************************************************/
