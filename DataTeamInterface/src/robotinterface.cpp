@@ -15,7 +15,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
     m_pTCPSocketServer = new TCPSocketServer();
 
 	//Connect the event data received from socket to robotinterface
-    connect(m_pTCPSocketServer, SIGNAL(emitDataReceived(QString)), this, SLOT(slotOnIPADSendSomething(QString)));
+    connect(m_pTCPSocketServer, SIGNAL(emitDataReceived(QString)), this, SLOT(slotOnReceivedFromIPAD(QString)));
 
 	//set list of captor
     m_lstCaptors.clear();
@@ -82,7 +82,7 @@ RobotInterface::RobotInterface(Ui::MainWindow* ui)
 
     connect(m_pSignalConnectionMapper, SIGNAL(mapped(int)), this, SLOT(slotOnConectedCaptorReady(int)));
     connect(m_pSignalCaptorMapper, SIGNAL(mapped(int)), this, SLOT(slotOnCaptorSignals(int)));
-    connect(m_pIAMoteur,SIGNAL(emitRigolEnd()),this,SLOT(slotOnRigolEnd()));
+    connect(m_pIAMoteur,SIGNAL(signalRigolEnd()),this,SLOT(slotOnRigolEnd()));
 
     m_pUi->pbSendData->setEnabled(false);
 
@@ -197,7 +197,8 @@ void RobotInterface::pushLevel1()
 void RobotInterface::pushButton(int button)
 {
 	//Si un bouton est appuyé, choix :
-    if(m_eDirection != eIAMotorLevel1){
+//    if(m_eDirection != eIAMotorLevel1)
+//    {
         m_pTimer->start();
         switch(button){
             case 1:
@@ -216,10 +217,10 @@ void RobotInterface::pushButton(int button)
                 m_eDirection = eDirectionFrontLeft;
                 break;
             case 6:
-                m_eDirection =eDirectionBackRight  ;
+                m_eDirection = eDirectionBackRight  ;
                 break;
             case 7:
-                m_eDirection =eDirectionBackLeft ;
+                m_eDirection = eDirectionBackLeft ;
                 break;
             case 8:
                 m_eDirection = eDirectionFrontRight;
@@ -230,33 +231,34 @@ void RobotInterface::pushButton(int button)
             default:
                 m_eDirection = eDirectionNone;
                 break;
-        }
+//        }
     }
 }
 
+/*****************************************************************************/
+/********************************** SLOT *************************************/
+/*****************************************************************************/
 
 /**
  * @brief RobotInterface::onGpsDataAvailable
  */
-void RobotInterface::onGpsDataAvailable()
-{	//reception data gps
+void RobotInterface::slotOnGpsDataAvailable()
+{
+    //reception data gps
     m_pUi->altitudeResult->setText(QString::number(m_pGps->getAltitude()));
     m_pUi->longitudeResult->setText(QString::number(m_pGps->getLongitude()));
     m_pUi->latitudeResult->setText(QString::number(m_pGps->getLatitude()));
     m_pUi->qualityResult->setText(m_pGps->getQuality());
-    double time = m_pGps->getTime();
-   QDateTime date = QDateTime::fromMSecsSinceEpoch(time);
-   //qDebug()<<"Date :: "<< date;
+    QDateTime date = QDateTime::fromMSecsSinceEpoch(m_pGps->getTime());
     m_pUi->timeResult->setText(date.toString());
     m_pUi->speedResult->setText(QString::number(m_pGps->getGroundSpeed()));
     m_pUi->numberSatResult->setText(QString::number(m_pGps->getSateliteNumber()));
-
 }
 
 /**
  * @brief RobotInterface::onGyroDataAvailable
  */
-void RobotInterface::onGyroDataAvailable()
+void RobotInterface::slotOnGyroDataAvailable()
 {	
 	//reception data gyro
     m_pUi->gyroXResult->setText(QString::number(m_pGyro->getXGyro()));
@@ -267,7 +269,7 @@ void RobotInterface::onGyroDataAvailable()
 /**
  * @brief RobotInterface::onActuatorDataAvailable
  */
-void RobotInterface::onActuatorDataAvailable()
+void RobotInterface::slotOnActuatorDataAvailable()
 {
     m_pUi->actuatorResult->setText(QString::number(m_pActuator->getActuator()));
 }
@@ -275,7 +277,7 @@ void RobotInterface::onActuatorDataAvailable()
 /**
  * @brief RobotInterface::onAcceleroDataAvailable
  */
-void RobotInterface::onAcceleroDataAvailable()
+void RobotInterface::slotOnAcceleroDataAvailable()
 {	
 	//reception data accelero
     m_pUi->acceleroXResult->setText(QString::number(m_pAccelero->getXAccelero()));
@@ -286,22 +288,23 @@ void RobotInterface::onAcceleroDataAvailable()
 /**
  * @brief RobotInterface::onLidarDataAvailable
  */
-void RobotInterface::onLidarDataAvailable()
+void RobotInterface::slotOnLidarDataAvailable()
 {
 	//reception data Lidar
     QList<qint16> lstDistance = m_pLidar->getDistanceList();
 
         m_pGraphScene->clear();
         m_pGraphScene->addRect(0+m_pPoint->rx()-21,0+m_pPoint->ry(),42,50);
-        for(int i=45; i< 226;i++){
-             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((i+135) * PI/180 ) * (lstDistance.at(i)/10) , m_pPoint->ry() + sin((i+135) * PI/180) *(lstDistance.at(i)/10), 2, 2);
+        for(int iIncrement = 45; iIncrement < 226; iIncrement++)
+        {
+             m_pGraphScene->addEllipse(m_pPoint->rx() + cos((iIncrement+135) * PI/180 ) * (lstDistance.at(iIncrement)/10) , m_pPoint->ry() + sin((iIncrement+135) * PI/180) *(lstDistance.at(iIncrement)/10), 2, 2);
         }
 }
 
 /**
  * @brief RobotInterface::onOdoDataAvailable
  */
-void RobotInterface::onOdoDataAvailable()
+void RobotInterface::slotOnOdoDataAvailable()
 {
 	//reception data odo
     bool bFl,bFr,bRl,bRr;
@@ -338,14 +341,14 @@ void RobotInterface::onOdoDataAvailable()
 /**
  * @brief RobotInterface::onRemoteDataAvailable
  */
-void RobotInterface::onRemoteDataAvailable()
+void RobotInterface::slotOnRemoteDataAvailable()
 {
 }
 
 /**
  * @brief RobotInterface::onMotorDataAvailable
  */
-void RobotInterface::onMotorDataAvailable()
+void RobotInterface::slotOnMotorDataAvailable()
 {
 
 }
@@ -353,7 +356,7 @@ void RobotInterface::onMotorDataAvailable()
 /**
  * @brief RobotInterface::onMagnetoDataAvailable
  */
-void RobotInterface::onMagnetoDataAvailable()
+void RobotInterface::slotOnMagnetoDataAvailable()
 {
 	//reception data magneto
     m_pUi->magnetoXResult->setText(QString::number(m_pMagneto->getXMagneto()) );
@@ -446,6 +449,7 @@ void RobotInterface::slotTimeOut()
      else if(m_eDirection == eIAMotorLevel1)
      {
          m_pIAMoteur->MachineAEtat();
+         return;
      }
      else if(m_eDirection == eDirectionNone)
      {
@@ -464,31 +468,31 @@ void RobotInterface::slotOnCaptorSignals(int p_iValue)
 	//reception Signal
     switch(p_iValue){
     case eIDCommandGyro:
-        onGyroDataAvailable();
+        slotOnGyroDataAvailable();
         break;
     case eIDCommmandAccelero:
-        onAcceleroDataAvailable();
+        slotOnAcceleroDataAvailable();
         break;
     case eIDCommmandActuator:
-        onActuatorDataAvailable();
+        slotOnActuatorDataAvailable();
         break;
     case eIDCommmandGPS:
-        onGpsDataAvailable();
+        slotOnGpsDataAvailable();
         break;
     case eIDCommmandLidar:
-        onLidarDataAvailable();
+        slotOnLidarDataAvailable();
         break;
     case eIDCommmandMagneto:
-        onMagnetoDataAvailable();
+        slotOnMagnetoDataAvailable();
         break;
     case eIDCommmandMotors:
-        onMotorDataAvailable();
+        slotOnMotorDataAvailable();
         break;
     case eIDCommmandOdo:
-        onOdoDataAvailable();
+        slotOnOdoDataAvailable();
         break;
     case eIDCommmandRemote:
-        onRemoteDataAvailable();
+        slotOnRemoteDataAvailable();
         break;
     default:
         break;
@@ -546,7 +550,7 @@ void RobotInterface::slotOnRigolEnd()
 /**
  * @brief RobotInterface::slotOnIPADSendSomething
  */
-void RobotInterface::slotOnIPADSendSomething(QString p_sData)
+void RobotInterface::slotOnReceivedFromIPAD(QString p_sData)
 {
     if(p_sData == "epreuve1")
     {

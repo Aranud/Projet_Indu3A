@@ -14,7 +14,7 @@
 #include "actuator.h"
 #include "gyro.h"
 #include "lidar.h"
-#include "joystick.h"
+//#include "joystick.h"
 #include "accelero.h"
 #include "magneto.h"
 #include "odo.h"
@@ -40,7 +40,7 @@ private:
 
     GPS *m_pGps;
     Gyro *m_pGyro;
-    Joystick* m_pJoystick;
+    //Joystick* m_pJoystick;
     Actuator *m_pActuator;
     Accelero *m_pAccelero;
     Lidar *m_pLidar;
@@ -61,15 +61,15 @@ private:
 
     TCPSocketServer* m_pTCPSocketServer;
 
-    void onGpsDataAvailable();
-    void onGyroDataAvailable();
-    void onActuatorDataAvailable();
-    void onAcceleroDataAvailable();
-    void onLidarDataAvailable();
-    void onMagnetoDataAvailable();
-    void onOdoDataAvailable();
-    void onRemoteDataAvailable();
-    void onMotorDataAvailable();
+    void slotOnGpsDataAvailable();
+    void slotOnGyroDataAvailable();
+    void slotOnActuatorDataAvailable();
+    void slotOnAcceleroDataAvailable();
+    void slotOnLidarDataAvailable();
+    void slotOnMagnetoDataAvailable();
+    void slotOnOdoDataAvailable();
+    void slotOnRemoteDataAvailable();
+    void slotOnMotorDataAvailable();
 
 public:
     RobotInterface(Ui::MainWindow* ui);
@@ -86,7 +86,7 @@ public slots:
     void slotOnCaptorSignals(int p_iValue);
     void slotOnConectedCaptorReady(int p_iValue);
     void slotOnRigolEnd();
-    void slotOnIPADSendSomething(QString p_sData);
+    void slotOnReceivedFromIPAD(QString p_sData);
 
 private slots:
     void on_P_valueChanged(double arg1);

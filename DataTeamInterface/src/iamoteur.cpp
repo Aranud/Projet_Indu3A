@@ -92,6 +92,9 @@ void IAMoteur::MachineAEtat()
 {
     DataResult();
 
+    qDebug() << "Etat Robot : " << m_eEtatIAMotor;
+    qDebug() << "Pos Robot : " << m_ePositionRobot;
+
     switch(m_ePositionRobot)
     {
         case ePositionRobotRigole : InterieurRigole(); break;
@@ -249,8 +252,8 @@ void IAMoteur::InterieurRigole()
         qDebug() << "Fin Rigole interieur ";
 
         InversePositionVirage();        // Demande le virage oppose au precedent
-        //qDebug()<<" EMIT ? Returnrigol = "<< m_iReturnRigol<< "\nReturnToDo = "<<m_iReturnToDo ;
-        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0){
+        if(m_iReturnRigol >= 2 && m_iReturnToDo <= 0)
+        {
             m_ePositionRobot = ePositionRobotNone;
             ResetOdoValue();
             m_iRigoleCount = 0;
@@ -432,27 +435,24 @@ void IAMoteur::FinVirage()
         {
             //qDebug() << "Roue Gauche " << m_iFl << " --- Roue Droite " << m_iFr;
             ResetOdoValue();
-            m_eEtatIAMotor = eEtatIAMotorNone;
+            m_eEtatIAMotor = eEtatIAMotorAvant;
 
-            if(m_structVirageIA.iDistanceOpposite >  m_structDataIA.dLargerRigoleMoyenne && m_structVirageIA.iDegreeOpposite < 30)
-            {
-                m_ePositionRobot = ePositionRobotRigoleExterieure;
-                //qDebug() << "Fin Virage, Rigole Exterieur";
+            m_ePositionRobot = ePositionRobotRigoleExterieure;
+            //qDebug() << "Fin Virage, Rigole Exterieur";
 
-                if(m_iReturnRigol <=0){
-                    m_iReturnToDo = m_iRigoleCount - 1;
-                }
-                m_iReturnRigol++;
+            if(m_iReturnRigol <=0){
+                m_iReturnToDo = m_iRigoleCount - 1;
             }
-            else
-            {
-                m_ePositionRobot = ePositionRobotRigole;
-                if(m_iReturnRigol <=0)
-                    m_iRigoleCount++;
-                else if(m_iReturnRigol >=2)
-                    m_iReturnToDo --;
-                //qDebug() << "Fin Virage, Rigole Interieur";
-            }
+            m_iReturnRigol++;
+        }
+        else
+        {
+            m_ePositionRobot = ePositionRobotRigole;
+            if(m_iReturnRigol <=0)
+                m_iRigoleCount++;
+            else if(m_iReturnRigol >=2)
+                m_iReturnToDo --;
+            //qDebug() << "Fin Virage, Rigole Interieur";
         }
     }
 }

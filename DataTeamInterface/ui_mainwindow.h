@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.1
+** Created by: Qt User Interface Compiler version 5.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -654,7 +654,7 @@ public:
         label_44->raise();
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 738, 21));
+        menuBar->setGeometry(QRect(0, 0, 738, 20));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -671,7 +671,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        leServerAddress->setText(QApplication::translate("MainWindow", "127.0.0.1", 0));
+        leServerAddress->setText(QApplication::translate("MainWindow", "192.168.42.1", 0));
         gpsPort->setText(QApplication::translate("MainWindow", "3334", 0));
         pbSendData->setText(QApplication::translate("MainWindow", "Envoyer", 0));
         pbConnection->setText(QApplication::translate("MainWindow", "Connexion", 0));

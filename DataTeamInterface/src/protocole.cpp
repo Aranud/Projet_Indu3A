@@ -54,6 +54,7 @@ QByteArray Protocole::FormateCommand(eIDCommand p_eIDCommand, QByteArray p_baVal
 //    baDataToSend[8] = 0x00;  // SIZE
 //    baDataToSend[9] = 0x00;  // SIZE
 //    baDataToSend[10] = 0x02;  // SIZE
+
     baDataToSend.append(QString("%1").arg(p_baValueCommand.size(), 4, 10, cFillChar));
 
 //    baDataToSend[11] = 0x7F;  // Left
