@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "tcpconnection.h"
 #include "protocole.h"
-#include "joystick.h"
+//#include "joystick.h"
 #include "global.h"
 #include <QPixmap>
 #include "gps.h"
@@ -25,7 +25,7 @@ public:
 private:
     Ui::MainWindow *ui;
     TCPConnection* m_pTCPConnection;
-    Joystick* m_pJoystick;
+    //Joystick* m_pJoystick;
     Protocole* m_pProtocole;
     RobotInterface* m_pRobot;
 
