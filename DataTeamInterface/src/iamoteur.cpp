@@ -92,9 +92,6 @@ void IAMoteur::MachineAEtat()
 {
     DataResult();
 
-    qDebug() << "Etat Robot : " << m_eEtatIAMotor;
-    qDebug() << "Pos Robot : " << m_ePositionRobot;
-
     switch(m_ePositionRobot)
     {
         case ePositionRobotRigole : InterieurRigole(); break;
@@ -194,7 +191,7 @@ bool IAMoteur::IsLastHalfTurnLeft()
  */
 bool IAMoteur::IsBackEnough()
 {
-    if(/*m_iRr >= 10 &&*/ m_iFl >= 9 && m_iFr >= 10 /*&& m_iRl >= 9*/)
+    if(/*m_iRr >= 10 &&*/ m_iFl * 64.65 >= (m_structDataIA.dLargerRigoleMoyenne / 1.5) && m_iFr * 64.65 >= (m_structDataIA.dLargerRigoleMoyenne / 1.5) /*&& m_iRl >= 9*/)
         return true;
     return false;
 }
@@ -386,13 +383,13 @@ void IAMoteur::DebutVirage()
 
     if(IsHalfTurnRight() && IsHalfTurnLeft())
     {
-        qDebug() << " Arc Distance : " << CalculDistanceArcVirage();
-        qDebug() << " Value FL : " << m_iFl << " Value FR " << m_iFr;
-        qDebug() << " FL mm : " << m_iFl * 64.65 << " FR mm : " << m_iFr * 64.65;
+//        qDebug() << " Arc Distance : " << CalculDistanceArcVirage();
+//        qDebug() << " Value FL : " << m_iFl << " Value FR " << m_iFr;
+//        qDebug() << " FL mm : " << m_iFl * 64.65 << " FR mm : " << m_iFr * 64.65;
 
-        qDebug() << " DegreeSide : " << m_structVirageIA.iDegreeSide;
-        qDebug() << " DistanceSide : " << m_structVirageIA.iDistanceSide;
-        qDebug() << " Robot Pos Prec : " << m_ePositionRobotPrec;
+//        qDebug() << " DegreeSide : " << m_structVirageIA.iDegreeSide;
+//        qDebug() << " DistanceSide : " << m_structVirageIA.iDistanceSide;
+//        qDebug() << " Robot Pos Prec : " << m_ePositionRobotPrec;
 
         ResetOdoValue();
 
@@ -425,7 +422,7 @@ void IAMoteur::FinVirage()
 {
     ControlMotor(127, 32, m_structVirageIA.bInverse);
 
-    if((IsLastHalfTurnRight() || IsLastHalfTurnLeft()))
+    if((IsHalfTurnRight()))
     {
         ResetOdoValue();
         m_eEtatIAMotor = eEtatIAMotorNone;
@@ -434,8 +431,8 @@ void IAMoteur::FinVirage()
         if(m_structVirageIA.iDistanceOpposite > m_structDataIA.dLargerRigoleMoyenne && m_structVirageIA.iDegreeOpposite < 30)
         {
             //qDebug() << "Roue Gauche " << m_iFl << " --- Roue Droite " << m_iFr;
-            ResetOdoValue();
-            m_eEtatIAMotor = eEtatIAMotorAvant;
+//            ResetOdoValue();
+//            m_eEtatIAMotor = eEtatIAMotorAvant;
 
             m_ePositionRobot = ePositionRobotRigoleExterieure;
             //qDebug() << "Fin Virage, Rigole Exterieur";
@@ -467,7 +464,19 @@ void IAMoteur::FinVirage()
  */
 void IAMoteur::PID(bool bInverse)
 {
-    double Kp = 0.6, Ki = 0.2, Kd = 0.3;
+    if(m_ePositionRobot == ePositionRobotRigoleExterieure)
+    {
+        Kp = 0.5;
+        Ki = 0.1;
+        Kd = 0.45;
+    }
+    else
+    {
+        Kp = 0.5;
+        Ki = 0.2;
+        Kd = 0.3;
+    }
+
     double error = ((m_structDataIA.dLargerRigoleMoyenne / 2.0) - m_structDataIA.iDistanceRef);
     double derivative = (error - m_dError) / 0.5;
     m_dIntegral += error * 0.5;
@@ -477,13 +486,16 @@ void IAMoteur::PID(bool bInverse)
     + Ki * m_dIntegral
     + Kd * derivative;  
 
-    if(m_ePositionRobot == ePositionRobotRigoleExterieure){
-        if( !bInverse && dCorrection < 0){
+    if(m_ePositionRobot == ePositionRobotRigoleExterieure)
+    {
+        if( !bInverse && dCorrection < 0)
+        {
             dCorrection = dCorrection * -1;
             bInverse = true;
             //qDebug() <<"ver la droite "<< "Correc : " << dCorrection<<"\n";
         }
-        else if( bInverse && dCorrection < 0){
+        else if( bInverse && dCorrection < 0)
+        {
             dCorrection = dCorrection * -1;
             bInverse = false;
             //qDebug() <<"ver la gauche "<< "Correc : " << dCorrection<<"\n";
@@ -631,7 +643,7 @@ void IAMoteur::CalculLargeurRigole()
  */
 double IAMoteur::CalculDistanceArcVirage()
 {
-    return ((90.0 * PI * m_structDataIA.dLargerRigoleMoyenne * 1.25) / 180.0);
+    return ((90.0 * PI * m_structDataIA.dLargerRigoleMoyenne + 420.0) / 180.0);
 }
 
 /**
