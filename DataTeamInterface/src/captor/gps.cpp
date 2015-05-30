@@ -187,14 +187,25 @@ void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 {
     qlonglong llTemp = 0;
 
+   // qDebug() << " Tram : " << p_baDataExtracted.toHex() << " | Tram Fin ";
+
     llTemp = ReverseData(p_baDataExtracted.mid(0, 8)).toHex().toLongLong(0, 16);
     m_dTime = reinterpret_cast<double&>(llTemp);
 
     llTemp = ReverseData(p_baDataExtracted.mid(8, 8)).toHex().toLongLong(0, 16);
+
+//    qDebug() << " Tram 2: " << p_baDataExtracted.mid(8, 8).toHex() << " | Tram Fin ";
+//    qDebug() << " Tram 2: " << ReverseData(p_baDataExtracted.mid(8, 8)).toHex() << " | Tram Fin ";
+//    qDebug() << "Long long : " << llTemp;
+
     m_dLatitude = reinterpret_cast<double&>(llTemp);
 
     llTemp = ReverseData(p_baDataExtracted.mid(16, 8)).toHex().toLongLong(0, 16);
     m_dLongitude = reinterpret_cast<double&>(llTemp);
+
+//    qDebug() << " Tram 2: " << p_baDataExtracted.mid(16, 8).toHex() << " | Tram Fin ";
+//    qDebug() << " Tram 2: " << ReverseData(p_baDataExtracted.mid(16, 8)).toHex() << " | Tram Fin ";
+//    qDebug() << "Long long : " << llTemp;
 
     llTemp = ReverseData(p_baDataExtracted.mid(24, 8)).toHex().toLongLong(0, 16);
     m_dAltitude = reinterpret_cast<double&>(llTemp);
@@ -205,6 +216,12 @@ void GPS::slotOnDataExtractedReady(QByteArray p_baDataExtracted)
 
     llTemp = ReverseData(p_baDataExtracted.mid(35, 8)).toHex().toLongLong(0, 16);
     m_dGroundSpeed = reinterpret_cast<double&>(llTemp);
+
+//    qDebug() << " Tram 1: " << p_baDataExtracted.mid(0, 8).toHex() << " | Tram Fin ";
+//    qDebug() << " Tram 2: " << p_baDataExtracted.mid(8, 8).toHex() << " | Tram Fin ";
+//    qDebug() << " Tram 3: " << p_baDataExtracted.mid(16, 8).toHex() << " | Tram Fin ";
+//    qDebug() << " Tram 4: " << p_baDataExtracted.mid(24, 8).toHex() << " | Tram Fin ";
+//    qDebug() << " Tram 6: " << p_baDataExtracted.mid(35, 8).toHex() << " | Tram Fin ";
 
     emit emitDataAvailable();
 }

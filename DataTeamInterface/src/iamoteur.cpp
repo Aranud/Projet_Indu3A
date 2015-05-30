@@ -78,36 +78,6 @@ void IAMoteur::setPositionRobot(const ePositionRobot &p_ePositionRobot)
     m_ePositionRobot = p_ePositionRobot;
 }
 
-/*******************************************************************************/
-/*********************************** METHOD ************************************/
-/*******************************************************************************/
-
-/**************************************************/
-/*************** MACHINE ETAT *********************/
-/**************************************************/
-/**
- * @brief IAMoteur::MachineAEtat
- */
-void IAMoteur::MachineAEtat()
-{
-    DataResult();
-
-    switch(m_ePositionRobot)
-    {
-        case ePositionRobotRigole : InterieurRigole(); break;
-        case ePositionRobotRigoleExterieure : ExterieurRigole(); break;
-        case ePositionRobotPetitVirageDroite :
-        case ePositionRobotPetitVirageGauche :
-        case ePositionRobotGrandVirageDroite :
-        case ePositionRobotGrandVirageGauche : MachineEtatVirage(); break;
-        default :  break;
-    }
-}
-
-/**************************************************/
-/**************** TEST BOOLEAN ********************/
-/**************************************************/
-
 /**
  * @brief IAMoteur::IsHalfTurnRight
  * @return
@@ -142,12 +112,88 @@ void IAMoteur::setKd(double value)
 {
     Kd = value;
 }
+
+/*******************************************************************************/
+/*********************************** METHOD ************************************/
+/*******************************************************************************/
+
+/**************************************************/
+/*************** MACHINE ETAT *********************/
+/**************************************************/
+/**
+ * @brief IAMoteur::MachineAEtat
+ */
+void IAMoteur::MachineAEtat()
+{
+    DataResult();
+
+    switch(m_ePositionRobot)
+    {
+        case ePositionRobotRigole : InterieurRigole(); break;
+        case ePositionRobotRigoleExterieure : ExterieurRigole(); break;
+        case ePositionRobotPetitVirageDroite :
+        case ePositionRobotPetitVirageGauche :
+        case ePositionRobotGrandVirageDroite :
+        case ePositionRobotGrandVirageGauche : MachineEtatVirage(); break;
+        default :  break;
+    }
+}
+
+void IAMoteur::Reset()
+{
+    m_eEtatIAMotor = eEtatIAMotorNone;
+    m_ePositionRobot = ePositionRobotRigole;
+    m_ePositionRobotPrecVirage = ePositionRobotNone;
+
+    m_iRigoleCount = 0;
+    m_iReturnRigol = 0;
+    m_iReturnToDo = 0;
+
+    m_iFl = 0;
+    m_iFr = 0;
+    m_iRl = 0;
+    m_iRr = 0;
+
+    m_dIntegral = 0;
+    m_dError = 0;
+
+    m_structDataIA.iDistanceDroite = DEFAULT_DISTANCE_VALUE;
+    m_structDataIA.iDistanceGauche = DEFAULT_DISTANCE_VALUE;
+    m_structDataIA.iDistanceRef = DEFAULT_DISTANCE_VALUE;
+    m_structDataIA.iDegreeFront = DEFAULT_DISTANCE_VALUE;
+
+    m_structDataIA.iDegreeDroite = DEFAULT_DEGREE_VALUE;
+    m_structDataIA.iDegreeGauche = DEFAULT_DEGREE_VALUE;
+    m_structDataIA.iDegreeRef = DEFAULT_DEGREE_VALUE;
+    m_structDataIA.iDegreeFront = DEFAULT_DEGREE_VALUE;
+
+    m_structDataIA.dLargerRigoleMoyenne = 0;
+    m_structDataIA.lstdLargerRigole.clear();
+
+}
+
+/**************************************************/
+/**************** TEST BOOLEAN ********************/
+/**************************************************/
+
 bool IAMoteur::IsHalfTurnRight()
 {
-    if(((m_iFl * 64.65) + (m_iFr * 64.65)) / 2 > CalculDistanceArcVirage())
-    //if(m_iFr * 64.65 > CalculDistanceArcVirage())
-    //if(/*m_iRr > 17 && m_iFl > 26 && */m_iFr >= 25/* && m_iRl > 27*/)
-        return true;
+    if(m_ePositionRobotPrecVirage == ePositionRobotGrandVirageGauche
+    || m_ePositionRobotPrecVirage == ePositionRobotPetitVirageGauche)
+    {
+        if((m_iFl * 64.65) > CalculDistanceArcVirage() || (m_iRl * 64.65) > CalculDistanceArcVirage() - LARGEUR_OZ/1.5)
+            return true;
+    }
+    // Si le robot avait precedement effectuer un virage a droite le suivant sera a gauche
+    else if (m_ePositionRobotPrecVirage == ePositionRobotGrandVirageDroite
+          || m_ePositionRobotPrecVirage == ePositionRobotPetitVirageDroite)
+    {
+        if((m_iFr * 64.65) > CalculDistanceArcVirage() || (m_iRr * 64.65) > CalculDistanceArcVirage() - LARGEUR_OZ/1.5)
+            return true;
+    }
+
+//    if(((m_iFl * 64.65) + (m_iFr * 64.65)) / 2 > CalculDistanceArcVirage())
+//        return true;
     return false;
 }
 
@@ -213,15 +259,16 @@ void IAMoteur::ResetOdoValue()
 void IAMoteur::InversePositionVirage()
 {
     // Si le robot avait precedement effectuer un virage a gauche le suivant sera a droite
-    if(m_ePositionRobotPrecVirage == ePositionRobotNone
-    || m_ePositionRobotPrecVirage == ePositionRobotGrandVirageGauche
+    if(m_ePositionRobotPrecVirage == ePositionRobotNone ||
+       m_ePositionRobotPrecVirage == ePositionRobotGrandVirageGauche
     || m_ePositionRobotPrecVirage == ePositionRobotPetitVirageGauche)
     {
         m_ePositionRobot = ePositionRobotGrandVirageDroite;
         m_ePositionRobotPrecVirage = ePositionRobotGrandVirageDroite;
     }
     // Si le robot avait precedement effectuer un virage a droite le suivant sera a gauche
-    else if (m_ePositionRobotPrecVirage == ePositionRobotGrandVirageDroite
+    else if (
+             m_ePositionRobotPrecVirage == ePositionRobotGrandVirageDroite
           || m_ePositionRobotPrecVirage == ePositionRobotPetitVirageDroite)
     {
         m_ePositionRobot = ePositionRobotGrandVirageGauche;
@@ -241,6 +288,12 @@ void IAMoteur::InterieurRigole()
     // Si distance ref = gauche --> Oz derive a droite (vis-versa)
     m_structDataIA.iDistanceRef == m_structDataIA.iDistanceGauche ?
         m_eEtatIAMotor = eEtatIAMotorDroite : m_eEtatIAMotor = eEtatIAMotorGauche;
+
+//    if(abs(m_structDataIA.iDistanceRef) >= (m_structDataIA.dLargerRigoleMoyenne / 2) * 1.25)
+//    {
+//        m_eEtatIAMotor == eEtatIAMotorDroite ?
+//            m_eEtatIAMotor = eEtatIAMotorGauche : m_eEtatIAMotor = eEtatIAMotorDroite;
+//    }
 
     // Si le point le plus proche est éloigné de la longueur moyenne de la rigole
     if(m_structDataIA.iDistanceRef >= m_structDataIA.dLargerRigoleMoyenne * 1.25)
@@ -287,7 +340,7 @@ void IAMoteur::InterieurRigole()
 void IAMoteur::ExterieurRigole()
 {
     // Si le point le plus proche est éloigné de la longueur moyenne de la rigole
-    if(m_structDataIA.iDistanceRef >= (m_structDataIA.dLargerRigoleMoyenne * 1.25))
+    if(m_structDataIA.iDistanceRef >= (m_structDataIA.dLargerRigoleMoyenne * 1.5))
     {
         ControlMotor(127, 127, false);
 
@@ -332,11 +385,11 @@ void IAMoteur::SortieRigole()
     if(m_iFl >= 3 && m_iFr >= 3 && m_structVirageIA.iDistanceSide >= m_structDataIA.dLargerRigoleMoyenne / 2
             && m_structVirageIA.iDistanceOpposite >= m_structDataIA.dLargerRigoleMoyenne)
     {
-        qDebug() << " Arc Distance : " << CalculDistanceArcVirage();
-        qDebug() << " Moyenne largeur rigole : " << m_structDataIA.dLargerRigoleMoyenne;
+//        qDebug() << " Arc Distance : " << CalculDistanceArcVirage();
+//        qDebug() << " Moyenne largeur rigole : " << m_structDataIA.dLargerRigoleMoyenne;
 
         m_eEtatIAMotor = eEtatIAMotorDebutVirage;
-        qDebug() << "Début virage";
+//        qDebug() << "Début virage";
     }
 }
 
@@ -466,9 +519,13 @@ void IAMoteur::PID(bool bInverse)
 {
     if(m_ePositionRobot == ePositionRobotRigoleExterieure)
     {
-        Kp = 0.5;
+//        Kp = 0.5;
+//        Ki = 0.1;
+//        Kd = 0.45;
+
+        Kp = 0.7;
         Ki = 0.1;
-        Kd = 0.45;
+        Kd = 0.6;
     }
     else
     {
@@ -553,18 +610,27 @@ void IAMoteur::DataResult()
 
     for(int iIncrement = 0; iIncrement < 90; iIncrement++)
     {
+        int iLeftDistance = lstiDistance.at(START_LIDAR_VISIBILITY_RANGE + iIncrement);
+        int iRightDistance = lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement);
+
         //Point le plus proche a gauche
-        if(lstiDistance.at(START_LIDAR_VISIBILITY_RANGE + iIncrement) != 0 && lstiDistance.at(START_LIDAR_VISIBILITY_RANGE + iIncrement) < m_structDataIA.iDistanceGauche)
+        if(iLeftDistance != 0 && iLeftDistance < m_structDataIA.iDistanceGauche)
         {
-            m_structDataIA.iDistanceGauche = lstiDistance.at(START_LIDAR_VISIBILITY_RANGE + iIncrement);
-            m_structDataIA.iDegreeGauche = iIncrement;
+            if((m_structDataIA.dLargerRigoleMoyenne / 8) < CalculX(iLeftDistance, iIncrement))
+            {
+                m_structDataIA.iDistanceGauche = iLeftDistance;
+                m_structDataIA.iDegreeGauche = iIncrement;
+            }
         }
 
         //Point le plus proche a droite
-        if(lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) != 0 && lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement) < m_structDataIA.iDistanceDroite)
+        if(iRightDistance != 0 && iRightDistance < m_structDataIA.iDistanceDroite)
         {
-            m_structDataIA.iDistanceDroite = lstiDistance.at(END_LIDAR_VISIBILITY_RANGE - iIncrement);
-            m_structDataIA.iDegreeDroite = iIncrement;
+            if((m_structDataIA.dLargerRigoleMoyenne / 8) < CalculX(iRightDistance, 180 - iIncrement))
+            {
+                m_structDataIA.iDistanceDroite = iRightDistance;
+                m_structDataIA.iDegreeDroite = iIncrement;
+            }
         }
     }
 
@@ -606,8 +672,11 @@ void IAMoteur::DataResultVirage()
  */
 void IAMoteur::CalculLargeurRigole()
 {
-    double dLargeurMesure = (cos(m_structDataIA.iDegreeGauche * PI_180) * m_structDataIA.iDistanceGauche)
-                  - (cos((180 - m_structDataIA.iDegreeDroite) * PI_180) * m_structDataIA.iDistanceDroite);
+//    double dLargeurMesure = (cos(m_structDataIA.iDegreeGauche * PI_180) * m_structDataIA.iDistanceGauche)
+//                  - (cos((180 - m_structDataIA.iDegreeDroite) * PI_180) * m_structDataIA.iDistanceDroite);
+
+    double dLargeurMesure = CalculX(m_structDataIA.iDistanceGauche, m_structDataIA.iDegreeGauche)
+            + CalculX(m_structDataIA.iDistanceDroite, 180 - m_structDataIA.iDegreeDroite);
 
     if(m_structDataIA.lstdLargerRigole.length() < AVERAGE_DISTANCE_SAMPLE_MAX)
         m_structDataIA.lstdLargerRigole.append(dLargeurMesure);
@@ -653,6 +722,16 @@ double IAMoteur::CalculDistanceArcVirage()
 int IAMoteur::CalculLargeurReference()
 {
     return (m_structDataIA.dLargerRigoleMoyenne / 2.0) - (m_structDataIA.dLargerRigoleMoyenne / 16.0);
+}
+
+double IAMoteur::CalculX(int p_iDistance, int p_iDegree)
+{
+    return abs(cos(p_iDegree * PI_180) * p_iDistance);
+}
+
+double IAMoteur::CalculY(int p_iDistance, int p_iDegree)
+{
+    return abs(sin(p_iDegree * PI_180) * p_iDistance);
 }
 
 /*******************************************************************************/

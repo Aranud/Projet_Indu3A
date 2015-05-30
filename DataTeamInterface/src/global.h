@@ -8,6 +8,9 @@
 #define PI 3.14159265
 #define PI_180 (PI / 180.0)
 
+#define LARGEUR_OZ 420
+#define LONGUEUR_OZ 1000
+
 typedef enum eIDCommand
 {
     eIDCommandNone = -1,
@@ -109,5 +112,15 @@ typedef struct structVirageData
     int iDegreeOpposite;
 
 }struct_VirageData;
+
+typedef struct structNuagePoint
+{
+    bool bInverse;
+    int iDistanceSide;
+    int iDistanceOpposite;
+    int iDegreeSide;
+    int iDegreeOpposite;
+
+}struct_NuagePoint;
 
 #endif // GLOBAL_H

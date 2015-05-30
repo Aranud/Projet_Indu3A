@@ -92,6 +92,7 @@ private slots:
     void on_P_valueChanged(double arg1);
     void on_I_valueChanged(double arg1);
     void on_D_valueChanged(double arg1);
+    void on_pbReset_clicked();
 };
 
 #endif // ROBOTINTERFACE_H

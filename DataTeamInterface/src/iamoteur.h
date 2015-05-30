@@ -79,11 +79,15 @@ private:
     double CalculDistanceArcVirage();
     int CalculLargeurReference();
 
+    double CalculX(int p_iDistance, int p_iDegree);
+    double CalculY(int p_iDistance, int p_iDegree);
+
 public:
     explicit IAMoteur(Lidar *p_pLidar, Motor* p_pMotor, Odo *p_pOdo, QObject *parent = 0);
     ~IAMoteur();
 
     void MachineAEtat();
+    void Reset();
 
     // Ascessor - Mutator
 

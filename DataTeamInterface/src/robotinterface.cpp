@@ -584,3 +584,8 @@ void RobotInterface::on_D_valueChanged(double D)
 {
      m_pIAMoteur->setKd(D);
 }
+
+void RobotInterface::on_pbReset_clicked()
+{
+    m_pIAMoteur->Reset();
+}
