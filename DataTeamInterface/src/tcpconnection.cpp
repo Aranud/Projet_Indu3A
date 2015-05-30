@@ -51,7 +51,7 @@ bool TCPConnection::ConnectFromServer(QString p_sAddress, int p_iPort)
     m_sAddress = p_sAddress;    // Keep a trace
     m_iPort = p_iPort;          // Keep a trace
 
-    //qDebug() << "Try to Connect From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
+    qDebug() << "Try to Connect From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
 
     return true;
 }
@@ -90,7 +90,7 @@ bool TCPConnection::SendData(QByteArray p_baData)
 void TCPConnection::slotOnConnected()
 {
     m_bIsConnectionEtablished = true;
-    //qDebug() << "Connection Etablished From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
+    qDebug() << "Connection Etablished From : " << m_pTcpSocket->peerName() << " ("  << m_sAddress << ":" << m_iPort << ")";
     emit Connected();
 }
 
